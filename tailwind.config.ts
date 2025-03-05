@@ -10,6 +10,7 @@ export default {
     extend: {
       fontFamily: {
         centurygothic: ["var(--centurygothic)", "sans-serif"],
+        playfair: ["var(--font-playfair)", "serif"], 
       },
       colors: {
         background: "var(--background)",
