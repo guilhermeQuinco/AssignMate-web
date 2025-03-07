@@ -1,14 +1,16 @@
-// import axios from "axios";
-// import { cookies } from "next/headers";
+import axios from "axios";
+import { cookies } from "next/headers";
 
-// export async function getUsers() {
-//   const cookieStore = await cookies();
+export async function getUsers() {
+  const cookieStore = await cookies();
 
-//   const token = cookieStore.get("token")?.value;
+  const token = cookieStore.get("token")?.value;
 
-//   const response = await axios.get("http://localhost:3000/api/v1/users", {
-//     token,
-//   });
+  const response = await axios.get("http://localhost:3000/api/v1/users", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
-//   return response.data;
-// }
+  return response.data;
+}
