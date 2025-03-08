@@ -4,11 +4,14 @@ import { Header } from "./_components/header";
 
 const LayoutDashboard = ({ children }: PropsWithChildren) => {
   return (
-    <div className="w-screen  text-white flex flex-row font-playfair">
-      <SideBar />
-      <div className="w-full flex flex-col ">
+    <div className="h-screen flex relative">
+      <div className="w-[14%]  flex flex-grow text-white font-playfair">
+        <SideBar />
+      </div>
+
+      <div className="w-[80%] flex flex-col overflow-scroll relative">
         <Header />
-        <main className="w-full">{children}</main>
+        <main className="w-full mt-[50px]">{children}</main>
       </div>
     </div>
   );

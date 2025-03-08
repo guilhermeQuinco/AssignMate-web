@@ -3,7 +3,10 @@ import Link from "next/link";
 
 export function SideBar() {
   return (
-    <div className="w-full h-screen md:w-80 bg-[#313056] text-white p-6 flex flex-col items-center font-playfair">
+    <div
+      className="
+      bg-[#313056] text-white p-6 flex flex-col flex-grow items-center font-playfair"
+    >
       <div className="mt-8">
         <Image
           src="/logo_login.png"

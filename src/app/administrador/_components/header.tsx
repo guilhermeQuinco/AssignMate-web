@@ -17,7 +17,7 @@ export function Header() {
   }, []);
 
   return (
-    <header className="w-full bg-[#415A77] shadow-md p-2 flex justify-between items-center border-b border-[#313056]">
+    <header className="fixed z-10 h-fit w-full bg-[#415A77] shadow-md p-2 flex justify-between items-center border-b border-[#313056]">
       <div className="text-[#d9d9d9] font-medium text-lg font-playfair tracking-[3px] px-5">
         {currentDate}
       </div>
