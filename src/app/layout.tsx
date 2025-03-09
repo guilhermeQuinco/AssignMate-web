@@ -4,7 +4,7 @@ import "./globals.css";
 
 import localFont from "next/font/local";
 
-export const centurygothic = localFont({
+const centurygothic = localFont({
   src: "./fonts/centurygothic.ttf",
   variable: "--centurygothic",
 });

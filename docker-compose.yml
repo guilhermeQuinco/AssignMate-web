@@ -1,0 +1,10 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: assign-mate-web
+    ports:
+      - "3000:3000"
+    volumes:
+      - /app/node_modules
