@@ -23,7 +23,7 @@ export function SideBar() {
 
       <nav className="w-full space-y-4">
         <Link
-          href={"/administrador"}
+          href={"/dashboard"}
           className="w-full py-3 bg-[#d9d9d9] hover:bg-[#c0c0c0] rounded-lg flex items-center px-4 gap-3 text-[#313056] transition-all"
         >
           <Image
@@ -36,7 +36,7 @@ export function SideBar() {
         </Link>
 
         <Link
-          href={"/administrador/usuarios"}
+          href={"/dashboard/usuarios"}
           className="w-full py-3 bg-[#d9d9d9] hover:bg-[#c0c0c0] rounded-lg flex items-center justify-between px-4 gap-3 text-[#313056] transition-all"
         >
           <div className="justify-between flex flex-row gap-2">
