@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 export function middleware(request: NextRequest) {
   const token = request.cookies.get("token")?.value;
 
-  const protectedRoutes = ["/administrador", "/administrador/usuarios"];
+  const protectedRoutes = ["/dashboard", "/dashboard/usuarios"];
 
   const publicRoutes = ["/login", "/"];
 
@@ -13,7 +13,7 @@ export function middleware(request: NextRequest) {
   }
 
   if (token && publicRoutes.includes(request.nextUrl.pathname)) {
-    return NextResponse.redirect(new URL("/administrador", request.url));
+    return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
   return NextResponse.next();
