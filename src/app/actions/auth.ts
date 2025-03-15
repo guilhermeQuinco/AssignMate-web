@@ -17,8 +17,6 @@ export async function signIn(formData: LoginUserSchema) {
       }
     );
 
-    // const validatedResponse = apiResponseSchema.parse(response.data);
-
     const token = response.data.token;
 
     cookieStore.set("token", token, {
@@ -26,7 +24,7 @@ export async function signIn(formData: LoginUserSchema) {
       path: "/",
     });
 
-    redirect("/administrador");
+    redirect("/dashboard");
   } catch (error) {
     return error;
   }
