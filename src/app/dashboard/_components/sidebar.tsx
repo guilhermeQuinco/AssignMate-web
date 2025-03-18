@@ -47,7 +47,17 @@ export function SideBar() {
           className=" w-full bg-[#d9d9d9] hover:bg-[#c0c0c0] rounded-lg  px-4 gap-3 text-[#313056] transition-all"
         >
           <AccordionItem value="item-1" className="border-none outline-none">
-            <AccordionTrigger>Usuários</AccordionTrigger>
+            <AccordionTrigger>
+              <div className="flex items-center gap-3">
+                <Image
+                  src="/icon_usuario.png"
+                  alt="Ícone Usuários"
+                  width={24}
+                  height={24}
+                />{" "}
+                <span>Usuários</span>
+              </div>
+            </AccordionTrigger>
             <AccordionContent className="flex flex-col gap-3">
               <Link href={"/dashboard/usuarios/alunos"} className="w-full">
                 <div className="w-full px-8">Alunos</div>
