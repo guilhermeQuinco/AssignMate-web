@@ -141,7 +141,7 @@ export default function DataTableAluno({ data }: TableProfessorProps) {
             </div>
 
             <Button className="py-6" asChild>
-              <Link href={"/dashboard/usuarios/professores/novo"}>
+              <Link href={"/dashboard/usuarios/alunos/novo"}>
                 <span>+ Adicionar Aluno</span>
               </Link>
             </Button>
