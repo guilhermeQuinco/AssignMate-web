@@ -1,13 +1,13 @@
 import React from "react";
-import { Container } from "../../_components/container";
+import DataTableAluno from "./_components/data-table-aluno";
+import { AlunoService } from "@/services/aluno";
 
-const Students = () => {
+const Students = async () => {
+  const data = await AlunoService.getAlunos();
   return (
-    <div>
-      <Container>
-        <h1>Alunos</h1>
-      </Container>
-    </div>
+    <main className="bg-[#065D89] min-h-screen">
+      <DataTableAluno data={data} />
+    </main>
   );
 };
 

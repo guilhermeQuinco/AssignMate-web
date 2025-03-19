@@ -1,0 +1,123 @@
+{
+  "professores": [
+    {
+      "matricula": "12345",
+      "nome": "João Silva",
+      "nascimento": "1980-05-15",
+      "email": "joao.silva@example.com",
+      "especialidade": "Desenvolvimento Web"
+    },
+    {
+      "matricula": "67890",
+      "nome": "Maria Oliveira",
+      "nascimento": "1975-10-22",
+      "email": "maria.oliveira@example.com",
+      "especialidade": "Banco de Dados"
+    },
+    {
+      "matricula": "54321",
+      "nome": "Carlos Souza",
+      "nascimento": "1990-03-30",
+      "email": "carlos.souza@example.com",
+      "especialidade": "Inteligência Artificial"
+    },
+    {
+      "matricula": "98765",
+      "nome": "Ana Paula",
+      "nascimento": "1985-07-12",
+      "email": "ana.paula@example.com",
+      "especialidade": "Segurança da Informação"
+    },
+    {
+      "matricula": "11223",
+      "nome": "Roberto Almeida",
+      "nascimento": "1978-11-05",
+      "email": "roberto.almeida@example.com",
+      "especialidade": "Redes de Computadores"
+    },
+    {
+      "matricula": "33445",
+      "nome": "Fernanda Lima",
+      "nascimento": "1982-04-20",
+      "email": "fernanda.lima@example.com",
+      "especialidade": "Desenvolvimento Mobile"
+    },
+    {
+      "matricula": "55667",
+      "nome": "Ricardo Santos",
+      "nascimento": "1970-08-14",
+      "email": "ricardo.santos@example.com",
+      "especialidade": "Cloud Computing"
+    },
+    {
+      "matricula": "77889",
+      "nome": "Patrícia Costa",
+      "nascimento": "1988-12-03",
+      "email": "patricia.costa@example.com",
+      "especialidade": "DevOps"
+    }
+  ],
+  "alunos": [
+    {
+      "matricula": "11111",
+      "nome": "Pedro Souza",
+      "nascimento": "2000-01-10",
+      "email": "pedro.souza@example.com"
+    },
+    {
+      "matricula": "22222",
+      "nome": "Ana Costa",
+      "nascimento": "2001-03-25",
+      "email": "ana.costa@example.com"
+    },
+    {
+      "matricula": "33333",
+      "nome": "Lucas Mendes",
+      "nascimento": "2002-06-18",
+      "email": "lucas.mendes@example.com"
+    },
+    {
+      "matricula": "44444",
+      "nome": "Juliana Santos",
+      "nascimento": "2000-09-30",
+      "email": "juliana.santos@example.com"
+    },
+    {
+      "matricula": "55555",
+      "nome": "Rafael Lima",
+      "nascimento": "2001-12-15",
+      "email": "rafael.lima@example.com"
+    },
+    {
+      "matricula": "66666",
+      "nome": "Camila Fernandes",
+      "nascimento": "2003-04-22",
+      "email": "camila.fernandes@example.com"
+    },
+
+    {
+      "matricula": "77777",
+      "nome": "Bruno Oliveira",
+      "nascimento": "2002-07-19",
+      "email": "bruno.oliveira@example.com"
+    },
+    {
+      "matricula": "88888",
+      "nome": "Mariana Ribeiro",
+      "nascimento": "2001-10-08",
+      "email": "mariana.ribeiro@example.com"
+    },
+    {
+      "matricula": "99999",
+      "nome": "Gustavo Alves",
+      "nascimento": "2000-05-12",
+      "email": "gustavo.alves@example.com"
+    },
+    {
+      "matricula": "10101",
+      "nome": "Isabela Martins",
+      "nascimento": "2003-02-28",
+      "email": "isabela.martins@example.com"
+    }
+  ]
+}
