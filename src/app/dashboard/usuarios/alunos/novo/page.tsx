@@ -1,94 +1,140 @@
+"use client";
+
 import React from "react";
 import { CalendarDays, GraduationCap, Lock } from "lucide-react";
-import { User, Mail} from "lucide-react";
+import { User, Mail } from "lucide-react";
 import { Container } from "@/app/dashboard/_components/container";
-
-
+import { FaArrowLeft } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 
 const Users = () => {
-  
+  const router = useRouter();
+
   return (
-    <div className="min-h-screen bg-[#ffffff] flex items-center justify-center p-4 ">
-
-        <div className="bg-[#2176b3a1] rounded-lg shadow-md p-8 w-full max-w-5xl text-black ">
-          <h1 className="text-2xl font-bold mb-6">Cadastro de Aluno</h1>
-
-          <form className="space-y-6">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="flex flex-col">
-                <label className="font-semibold">Nome do Aluno <span className="text-red-600">*</span></label>
-                <div className="relative">
-                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={20} />
-                  <input
-                  type="text"
-                  className="pl-10 pr-3 py-2 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-[#ffff]"
-                />
-                </div>
-                
-              </div>
-              <div className="flex flex-col">
-                <label className="font-semibold">Data de Nascimento</label>
-                <div className="relative">
-                  <CalendarDays className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={20} />
-                  <input
-                  type="date"
-                  className="pl-10 pr-3 py-2 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-[#ffff]"
-                />
-                </div>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div className="flex flex-col">
-                <label className="font-semibold">E-mail <span className="text-red-600">*</span></label>
-                <div className="relative">
-                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={20} />
-                  <input
-                    type="email"
-                    className="pl-10 pr-3 py-2 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-[#ffff]"
-                  />
-                </div>
-              </div>
-              <div className="flex flex-col">
-                <label className="font-semibold">Matrícula <span className="text-red-600">*</span></label>
-                <div className="relative">
-                <GraduationCap className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={20} />
-                  <input type="text"
-                  className="pl-10 pr-3 py-2 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-[#ffff]" />
-                </div>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div className="flex flex-col">
-                <label className="font-semibold ">Senha <span className="text-red-600">*</span></label>
-                <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={20} />
-                    <input type="password"
-                    className="pl-10 pr-3 py-2 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-[#ffff]"/>
-                </div>
-              </div>
-              <div className="flex flex-col">
-                <label className="font-semibold">Confirmar Senha <span className="text-red-600">*</span></label>
-                <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" size={20} />
-                    <input type="password"
-                    className="pl-10 pr-3 py-2 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-[#ffff]"/>
-                </div>
-              </div>
-            </div>
-
-            <div className="pt-6 flex justify-center">
+    <div className="min-h-screen bg-[#065D89] ">
+      <Container>
+        <main className="flex-1 ">
+          <div className="">
+            <div className="flex p-19 justify-between">
+              <h2 className=" flex  text-4xl font- text-white ">
+                Cadastro de Aluno
+              </h2>
               <button
-                type="submit"
-                className="bg-[#52A00E] text-white py-3 px-5 rounded-lg hover:bg-green-700 transition-colors "
+                className="bg-white text-black px-4 py-2 rounded flex items-center"
+                onClick={() => router.back()}
               >
-                SALVAR
+                <FaArrowLeft className="mr-2" /> Voltar
               </button>
             </div>
-          </form>
-        </div>
 
+            {/* Table */}
+            <div className="flex justify-center items-center rounded-2xl  mt-14 bg-black/10 p-20">
+              <div className="flex items-center justify-center w-full max-w-screen-2xl h-full max-h-4xl  bg-opacity-30 p-50 rounded-4xl">
+                {/* Formulario */}
+                <form className=" items-center justify-center ml-[-100px]  w-[86rem] h-[30rem] grid grid-cols-2 gap-4 px-20 text-black">
+                  {/* Nome do Aluno */}
+                  <div>
+                    <label className="text-white font-semibold">
+                      Nome do Aluno <span className="text-red-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="text"
+                        className="w-[40rem] p-3 pl-10  rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-900 bg-[#D9D9D9]"
+                      />
+                      <span className="absolute left-3 top-3 text-gray-800">
+                        <User className="w-6 h-6 text-[#000]" />
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Data de Nascimento */}
+                  <div className="relative left-52">
+                    <label className="text-white font-semibold">
+                      Data de Nascimento <span className="text-red-500">*</span>
+                    </label>
+                    <div className="">
+                      <input
+                        type="date"
+                        className="w-[20rem]  p-3  rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-[#D9D9D9]"
+                      />
+                      <span className="absolute left-3 top-3 text-gray-500"></span>
+                    </div>
+                  </div>
+
+                  {/* Email */}
+                  <div>
+                    <label className="text-white font-semibold">
+                      E-mail <span className="text-red-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="email"
+                        className="w-[40rem]  p-3 pl-10  rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-[#D9D9D9]"
+                      />
+                      <span className="absolute left-3 top-3 text-gray-500">
+                        <Mail />
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Matrícula */}
+                  <div className="relative left-52">
+                    <label className="text-white font-semibold">
+                      Matrícula
+                    </label>
+                    <div className="relative">
+                      <input className="w-[20rem] p-3 pl-10  rounded-lg bg-[#D9D9D9]" />
+                      <span className="absolute left-3 top-3 text-gray-500">
+                        <GraduationCap />
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Senha */}
+                  <div className="relative top-25 left-25">
+                    <label className="text-white font-semibold">
+                      Confirmar senha <span className="text-red-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="password"
+                        className="w-[20rem] p-3 pl-10  rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-[#D9D9D9]"
+                      />
+                      <span className="absolute left-3 top-3 text-gray-500">
+                        <Lock />
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Confirmar Senha */}
+                  <div className="relative ">
+                    <label className="text-white font-semibold">
+                      Senha <span className="text-red-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="password"
+                        className="w-[20rem] p-3 pl-10 border  rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-[#D9D9D9]"
+                      />
+                      <span className="absolute left-3 top-3 text-gray-500">
+                        <Lock />
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Botón de Guardar */}
+                  <div className="col-span-2 flex justify-center mt-4">
+                    <button className="bg-green-500 border border-black text-white py-3 px-20 rounded-lg font-semibold hover:bg-green-600 transition">
+                      SALVAR
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </main>
+      </Container>
     </div>
   );
 };

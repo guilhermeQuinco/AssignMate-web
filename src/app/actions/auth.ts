@@ -10,14 +10,14 @@ export async function signIn(formData: LoginUserSchema) {
   try {
     const cookieStore = await cookies();
     const response = await axios.post(
-      "http://localhost:3001/api/v1/auth/login",
+      "http://localhost:3005/api/v1/auth/login",
       {
         email: formData.email,
         password: formData.password,
       }
     );
 
-    const token = response.data.token;
+    const token = response.data.access_token;
 
     cookieStore.set("token", token, {
       httpOnly: true,
