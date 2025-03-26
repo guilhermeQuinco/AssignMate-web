@@ -62,16 +62,14 @@ export default function DataTableProfessor({ data }: TableProfessorProps) {
       header: "Matrícula",
     },
     {
-      accessorKey: "nome",
+      accessorKey: "nomeCompleto",
       header: "Nome",
     },
     {
-      accessorKey: "nascimento",
+      accessorKey: "dataNascimento",
       header: "Data de nascimento",
       cell: ({ row }) => {
-        const user = row.original;
-
-        return <span>{DateFormatter(user.nascimento)}</span>;
+        return <span>{DateFormatter(row.original.dataNascimento)}</span>;
       },
     },
     {

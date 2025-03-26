@@ -38,11 +38,9 @@ import { Container } from "../../_components/container";
 import Link from "next/link";
 
 import { useRouter } from "next/navigation";
-import { Aluno, Professor } from "@/types";
-import { DateFormatter } from "@/lib/date";
-
+import { Aluno, Course, Professor } from "@/types";
 interface TableProfessorProps {
-  data: Professor[];
+  data: Course[];
 }
 
 export default function DataTableCourse({ data }: TableProfessorProps) {
@@ -56,7 +54,7 @@ export default function DataTableCourse({ data }: TableProfessorProps) {
 
   const router = useRouter();
 
-  const columns: ColumnDef<Aluno>[] = [
+  const columns: ColumnDef<Course>[] = [
     {
       accessorKey: "codigo",
       header: "Código",
@@ -71,7 +69,9 @@ export default function DataTableCourse({ data }: TableProfessorProps) {
       cell: ({ row }) => {
         const user = row.original;
 
-        return <span>{DateFormatter(user.nascimento)}</span>;
+        return (
+          <span className="w-full line-clamp-1 ">{row.original.descricao}</span>
+        );
       },
     },
   ];
@@ -99,7 +99,7 @@ export default function DataTableCourse({ data }: TableProfessorProps) {
     <Container>
       <div className="w-full">
         <div className="flex items-center py-4 justify-between mb-10">
-          <h1 className="text-[2rem] font-bold">Lista de Alunos</h1>
+          <h1 className="text-[2rem] font-bold">Lista de Cursos</h1>
 
           <div className="flex items-center gap-16  ">
             <div className="flex items-center justify-between  border-2 border-white rounded-full p-3">
@@ -118,7 +118,7 @@ export default function DataTableCourse({ data }: TableProfessorProps) {
             </div>
 
             <Button className="py-6" asChild>
-              <Link href={"/dashboard/usuarios/alunos/novo"}>
+              <Link href={"/dashboard/cursos/novo"}>
                 <span>+ Adicionar curso</span>
               </Link>
             </Button>

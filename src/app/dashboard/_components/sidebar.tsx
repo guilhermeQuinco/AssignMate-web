@@ -107,7 +107,10 @@ export function SideBar() {
           />
           Disciplina
         </button>
-        <button className="w-full py-3 bg-[#d9d9d9] hover:bg-[#c0c0c0] rounded-lg flex items-center px-4 gap-3 text-[#313056] transition-all">
+        <Link
+          href={"/dashboard/cursos"}
+          className="w-full py-3 bg-[#d9d9d9] hover:bg-[#c0c0c0] rounded-lg flex items-center px-4 gap-3 text-[#313056] transition-all"
+        >
           <Image
             src="/icon_curso.png"
             alt="Ícone Cursos"
@@ -115,7 +118,7 @@ export function SideBar() {
             height={24}
           />
           Curso
-        </button>
+        </Link>
       </nav>
     </div>
   );

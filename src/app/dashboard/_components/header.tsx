@@ -1,6 +1,8 @@
 "use client";
 
+import { signOut } from "@/app/actions/auth";
 import { Bell, HelpCircle, LogOut, Settings, User } from "lucide-react";
+import { revalidatePath } from "next/cache";
 import { useEffect, useState } from "react";
 
 export function Header() {
@@ -15,6 +17,10 @@ export function Header() {
     }).format(date);
     setCurrentDate(`Manaus, ${formattedDate}`);
   }, []);
+
+  const deleteSession = async () => {
+    await signOut();
+  };
 
   return (
     <header
@@ -37,7 +43,10 @@ export function Header() {
         <button className="p-2 hover:bg-gray-100 rounded-full">
           <Settings className="w-6 h-6 text-[#d9d9d9]" />
         </button>
-        <button className="p-2 hover:bg-red-100 rounded-full">
+        <button
+          className="p-2 hover:bg-red-100 rounded-full"
+          onClick={deleteSession}
+        >
           <LogOut className="w-6 h-6 text-[#d9d9d9]" />
         </button>
       </div>

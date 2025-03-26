@@ -1,7 +1,7 @@
 export type Professor = {
   matricula: string;
   nome: string;
-  nascimento: string;
+  dataNascimento: string;
   especialidade: string;
   email: string;
 };
@@ -9,6 +9,12 @@ export type Professor = {
 export type Aluno = {
   matricula: string;
   nome: string;
-  nascimento: string;
+  dataNascimento: string;
   email: string;
+};
+
+export type Course = {
+  codigo: string;
+  nome: string;
+  descricao: string;
 };

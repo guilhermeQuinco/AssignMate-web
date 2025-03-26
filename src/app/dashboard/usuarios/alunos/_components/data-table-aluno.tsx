@@ -40,9 +40,18 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Aluno, Professor } from "@/types";
 import { DateFormatter } from "@/lib/date";
+import { Dialog, DialogFooter, DialogHeader } from "@/components/ui/dialog";
+import {
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogTrigger,
+} from "@radix-ui/react-dialog";
+import { Label } from "@radix-ui/react-dropdown-menu";
+import { Input } from "postcss";
 
 interface TableProfessorProps {
-  data: Professor[];
+  data: Aluno[];
 }
 
 export default function DataTableAluno({ data }: TableProfessorProps) {
@@ -62,16 +71,14 @@ export default function DataTableAluno({ data }: TableProfessorProps) {
       header: "Matrícula",
     },
     {
-      accessorKey: "nome",
+      accessorKey: "nomeCompleto",
       header: "Nome",
     },
     {
-      accessorKey: "nascimento",
+      accessorKey: "dataNascimento",
       header: "Data de nascimento",
       cell: ({ row }) => {
-        const user = row.original;
-
-        return <span>{DateFormatter(user.nascimento)}</span>;
+        return <span>{DateFormatter(row.original.dataNascimento)}</span>;
       },
     },
     {
@@ -89,9 +96,6 @@ export default function DataTableAluno({ data }: TableProfessorProps) {
           <div className="flex items-center gap-5">
             <button>
               <Edit size={20} />
-            </button>
-            <button>
-              <Trash size={20} />
             </button>
           </div>
         );
@@ -123,6 +127,28 @@ export default function DataTableAluno({ data }: TableProfessorProps) {
       <div className="w-full">
         <div className="flex items-center py-4 justify-between mb-10">
           <h1 className="text-[2rem] font-bold">Lista de Alunos</h1>
+
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="outline">Edit Profile</Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+              <DialogHeader>
+                <DialogTitle>Edit profile</DialogTitle>
+                <DialogDescription>
+                  Make changes to your profile here. Click save when you're
+                  done.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="grid gap-4 py-4">
+                <div className="grid grid-cols-4 items-center gap-4"></div>
+                <div className="grid grid-cols-4 items-center gap-4"></div>
+              </div>
+              <DialogFooter>
+                <Button type="submit">Save changes</Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
 
           <div className="flex items-center gap-16  ">
             <div className="flex items-center justify-between  border-2 border-white rounded-full p-3">

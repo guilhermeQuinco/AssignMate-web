@@ -1,8 +1,7 @@
 import React from "react";
-import { AlunoService } from "@/services/aluno";
 import { cookies } from "next/headers";
 import DataTableCourse from "./_components/data-table-course";
-import { getCourses } from "@/services/curso";
+import { getCourses } from "./actions/course";
 
 const Courses = async () => {
   const data = await getCourses();

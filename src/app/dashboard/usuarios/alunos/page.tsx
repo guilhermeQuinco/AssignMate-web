@@ -1,12 +1,14 @@
 import React from "react";
 import DataTableAluno from "./_components/data-table-aluno";
-import { AlunoService } from "@/services/aluno";
+
 import { cookies } from "next/headers";
+import { getStudents } from "./actions/students";
 
 const Students = async () => {
-  const accessToken = (await cookies()).get("token")?.value;
+  const data = await getStudents();
 
-  const data = await AlunoService.getAlunos(accessToken!);
+  console.log(data);
+
   return (
     <main className="bg-[#065D89] min-h-screen">
       <DataTableAluno data={data} />

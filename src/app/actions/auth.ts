@@ -29,3 +29,8 @@ export async function signIn(formData: LoginUserSchema) {
     return error;
   }
 }
+
+export async function signOut() {
+  (await cookies()).delete("token");
+  redirect("/login");
+}
