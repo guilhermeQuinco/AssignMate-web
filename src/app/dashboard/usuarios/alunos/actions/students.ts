@@ -24,7 +24,7 @@ export async function addNewStudent(studentData: StudentSchemaType) {
           matricula: studentData.matricula,
           nomeCompleto: studentData.nomeCompleto,
           dataNascimento: studentData.dataNascimento,
-          curso: "Engenharia da Computação",
+          curso: studentData.curso,
           email: studentData.email,
         },
       },

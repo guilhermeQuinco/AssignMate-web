@@ -128,28 +128,6 @@ export default function DataTableAluno({ data }: TableProfessorProps) {
         <div className="flex items-center py-4 justify-between mb-10">
           <h1 className="text-[2rem] font-bold">Lista de Alunos</h1>
 
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant="outline">Edit Profile</Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Edit profile</DialogTitle>
-                <DialogDescription>
-                  Make changes to your profile here. Click save when you're
-                  done.
-                </DialogDescription>
-              </DialogHeader>
-              <div className="grid gap-4 py-4">
-                <div className="grid grid-cols-4 items-center gap-4"></div>
-                <div className="grid grid-cols-4 items-center gap-4"></div>
-              </div>
-              <DialogFooter>
-                <Button type="submit">Save changes</Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
-
           <div className="flex items-center gap-16  ">
             <div className="flex items-center justify-between  border-2 border-white rounded-full p-3">
               <input
