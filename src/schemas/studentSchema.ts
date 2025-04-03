@@ -6,8 +6,6 @@ export const studentSchema = z.object({
   dataNascimento: z.string().min(1, "Insira a data de nascimento"),
   curso: z.string().min(1, "Insira o curso"),
   email: z.string().min(1, "Insira o email"),
-  senha: z.string().min(1, "Insira a matrícula"),
-  confirmarSenha: z.string().min(1, "Insira a matrícula"),
 });
 
 export type StudentSchemaType = z.infer<typeof studentSchema>;

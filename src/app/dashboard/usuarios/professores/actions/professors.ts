@@ -39,3 +39,19 @@ export async function addNewProfessor(professorData: ProfessorSchemaType) {
     return error;
   }
 }
+
+export async function deleteProfessor(id: string) {
+  const token = (await cookies()).get("token")?.value;
+  try {
+    const response = await api.delete(`/professores/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    revalidatePath("/dashboard/usuarios/professores");
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+}

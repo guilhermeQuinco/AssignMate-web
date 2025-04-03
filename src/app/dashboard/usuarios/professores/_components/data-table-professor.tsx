@@ -130,7 +130,7 @@ export default function DataTableProfessor({ data }: TableProfessorProps) {
           <h1 className="text-[2rem] font-bold">Lista de professores</h1>
 
           <div className="flex items-center gap-16  ">
-            <div className="flex items-center justify-between  border-2 border-white rounded-full p-3">
+            <div className="flex items-center justify-between  border-2 border-black rounded-full p-3">
               <input
                 placeholder="Search..."
                 value={
@@ -139,7 +139,7 @@ export default function DataTableProfessor({ data }: TableProfessorProps) {
                 onChange={(event) =>
                   table.getColumn("email")?.setFilterValue(event.target.value)
                 }
-                className="bg-transparent placeholder:text-white outline-none w-[300px]"
+                className="bg-transparent placeholder:text-black outline-none w-[300px]"
               />
 
               <Search />
@@ -147,19 +147,22 @@ export default function DataTableProfessor({ data }: TableProfessorProps) {
 
             <Button className="py-6" asChild>
               <Link href={"/dashboard/usuarios/professores/novo"}>
-                <span>+ Adicionar professor</span>
+                <span className="text-lg font-semibold px-5">+ Adicionar </span>
               </Link>
             </Button>
           </div>
         </div>
         <div className="rounded-md border">
-          <Table>
-            <TableHeader className="bg-[#313056]">
+          <Table className="overflow-hidden rounded-xl">
+            <TableHeader className="bg-zinc-800 uppercase">
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
                     return (
-                      <TableHead key={header.id} className="text-white">
+                      <TableHead
+                        key={header.id}
+                        className="text-white py-4 px-5"
+                      >
                         {header.isPlaceholder
                           ? null
                           : flexRender(
@@ -180,7 +183,7 @@ export default function DataTableProfessor({ data }: TableProfessorProps) {
                     data-state={row.getIsSelected() && "selected"}
                   >
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
+                      <TableCell key={cell.id} className="px-4 text-lg">
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()

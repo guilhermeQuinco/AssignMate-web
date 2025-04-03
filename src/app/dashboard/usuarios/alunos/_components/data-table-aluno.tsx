@@ -21,6 +21,7 @@ import {
   MoreHorizontal,
   Search,
   Trash,
+  Trash2,
 } from "lucide-react";
 
 import {
@@ -40,15 +41,23 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Aluno, Professor } from "@/types";
 import { DateFormatter } from "@/lib/date";
-import { Dialog, DialogFooter, DialogHeader } from "@/components/ui/dialog";
+
+import { Input } from "postcss";
+import { StudentSchemaType } from "@/schemas/studentSchema";
+
+import { Label } from "@radix-ui/react-select";
+import EditStudentModal from "./edit-student-modal";
+
 import {
+  Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
+  DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@radix-ui/react-dialog";
-import { Label } from "@radix-ui/react-dropdown-menu";
-import { Input } from "postcss";
+} from "@/components/ui/dialog";
+import { deleteStudent } from "../actions/students";
 
 interface TableProfessorProps {
   data: Aluno[];
@@ -64,6 +73,12 @@ export default function DataTableAluno({ data }: TableProfessorProps) {
   const [rowSelection, setRowSelection] = React.useState({});
 
   const router = useRouter();
+
+  const handleEdit = async (data: StudentSchemaType) => {};
+
+  const removeStudent = async (id: string) => {
+    await deleteStudent(id);
+  };
 
   const columns: ColumnDef<Aluno>[] = [
     {
@@ -90,13 +105,40 @@ export default function DataTableAluno({ data }: TableProfessorProps) {
       accessorKey: "actions",
       header: "Ação",
       cell: ({ row }) => {
-        const user = row.original;
-
         return (
           <div className="flex items-center gap-5">
-            <button>
-              <Edit size={20} />
-            </button>
+            <EditStudentModal student={row.original} />
+
+            <Dialog>
+              <DialogTrigger asChild>
+                <button>
+                  <Trash2 size={20} />
+                </button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[825px] bg-white">
+                <DialogHeader>
+                  <DialogTitle>Tem Certeza que deseja remover? </DialogTitle>
+                  <DialogDescription>
+                    <span className="text-black">
+                      {row.original.nomeCompleto}
+                    </span>
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-4 py-4">
+                  <div className="grid grid-cols-4 items-center gap-4"></div>
+                  <div className="grid grid-cols-4 items-center gap-4"></div>
+                </div>
+                <DialogFooter>
+                  <Button
+                    type="submit"
+                    className="font-bold"
+                    onClick={() => removeStudent(row.original.id)}
+                  >
+                    Confirmar
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           </div>
         );
       },
@@ -129,7 +171,7 @@ export default function DataTableAluno({ data }: TableProfessorProps) {
           <h1 className="text-[2rem] font-bold">Lista de Alunos</h1>
 
           <div className="flex items-center gap-16  ">
-            <div className="flex items-center justify-between  border-2 border-white rounded-full p-3">
+            <div className="flex items-center justify-between  border-2 border-black rounded-full p-3">
               <input
                 placeholder="Search..."
                 value={
@@ -138,7 +180,7 @@ export default function DataTableAluno({ data }: TableProfessorProps) {
                 onChange={(event) =>
                   table.getColumn("email")?.setFilterValue(event.target.value)
                 }
-                className="bg-transparent placeholder:text-white outline-none w-[300px]"
+                className="bg-transparent placeholder:text-black outline-none w-[300px] "
               />
 
               <Search />
@@ -151,14 +193,20 @@ export default function DataTableAluno({ data }: TableProfessorProps) {
             </Button>
           </div>
         </div>
-        <div className="rounded-md border">
-          <Table>
-            <TableHeader className="bg-[#313056]">
+        <div className="rounded-2xl border overflow-hidden">
+          <Table className="">
+            <TableHeader className="bg-zinc-800 ">
               {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
+                <TableRow
+                  key={headerGroup.id}
+                  className="uppercase font-bold text-md"
+                >
                   {headerGroup.headers.map((header) => {
                     return (
-                      <TableHead key={header.id} className="text-white">
+                      <TableHead
+                        key={header.id}
+                        className="text-white py-4 px-5"
+                      >
                         {header.isPlaceholder
                           ? null
                           : flexRender(
@@ -177,9 +225,10 @@ export default function DataTableAluno({ data }: TableProfessorProps) {
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
+                    className="text-lg"
                   >
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
+                      <TableCell key={cell.id} className="px-5">
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()

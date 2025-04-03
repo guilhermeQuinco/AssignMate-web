@@ -4,6 +4,21 @@ import { signOut } from "@/app/actions/auth";
 import { Bell, HelpCircle, LogOut, Settings, User } from "lucide-react";
 import { revalidatePath } from "next/cache";
 import { useEffect, useState } from "react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
 export function Header() {
   const [currentDate, setCurrentDate] = useState("");
@@ -23,32 +38,28 @@ export function Header() {
   };
 
   return (
-    <header
-      className="fixed z-10 h-fit w-[80%] bg-[#415A77] shadow-md p-2 flex justify-between items-center border-b
-   border-[#313056]"
-    >
-      <div className="text-[#d9d9d9] font-medium text-lg font-playfair tracking-[3px] px-5">
+    <header className="sticky top-0 flex h-14 shrink-0 items-center gap-2 border-b flex-row justify-between px-5 bg-[#d9d9d9] border-zinc-800">
+      <div className="text-black font-medium text-lg font-playfair tracking-[3px] gap-3 flex items-center">
+        <SidebarTrigger />
+        <div className="w-[1px] h-5 bg-black" />
         {currentDate}
       </div>
       <div className="flex items-center space-x-2">
-        <button className="p-2 hover:bg-gray-100 rounded-full">
-          <User className="w-6 h-6 text-[#d9d9d9]" />
-        </button>
-        <button className="p-2 hover:bg-gray-100 rounded-full">
-          <Bell className="w-6 h-6 text-[#d9d9d9]" />
-        </button>
-        <button className="p-2 hover:bg-gray-100 rounded-full">
-          <HelpCircle className="w-6 h-6 text-[#d9d9d9]" />
-        </button>
-        <button className="p-2 hover:bg-gray-100 rounded-full">
-          <Settings className="w-6 h-6 text-[#d9d9d9]" />
-        </button>
-        <button
-          className="p-2 hover:bg-red-100 rounded-full"
-          onClick={deleteSession}
-        >
-          <LogOut className="w-6 h-6 text-[#d9d9d9]" />
-        </button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button className="p-2 hover:bg-gray-100 rounded-full">
+              <User className="w-6 h-6 text-zinc-800" />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-56">
+            <DropdownMenuLabel>Minha Conta</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              <DropdownMenuItem>Perfil</DropdownMenuItem>
+            </DropdownMenuGroup>
+            <DropdownMenuItem onClick={deleteSession}>Log out</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </header>
   );

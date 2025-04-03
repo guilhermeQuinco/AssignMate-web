@@ -40,3 +40,19 @@ export async function addNewStudent(studentData: StudentSchemaType) {
     return error;
   }
 }
+
+export async function deleteStudent(id: string) {
+  const token = (await cookies()).get("token")?.value;
+  try {
+    const response = await api.delete(`/alunos/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    revalidatePath("/dashboard/usuarios/alunos");
+    return response.data;
+  } catch (error) {
+    return error;
+  }
+}

@@ -8,7 +8,7 @@ const Students = async () => {
   const data = await getStudents();
 
   return (
-    <main className="bg-[#065D89] min-h-screen">
+    <main className="bg-[#d9d9d9] min-h-screen">
       <DataTableAluno data={data} />
     </main>
   );

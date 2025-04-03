@@ -5,7 +5,7 @@ export default async function Professors() {
   const data = await getProfessors();
 
   return (
-    <main className="bg-[#065D89] min-h-screen">
+    <main className="min-h-screen bg-[#d9d9d9]">
       <DataTableProfessor data={data} />
     </main>
   );

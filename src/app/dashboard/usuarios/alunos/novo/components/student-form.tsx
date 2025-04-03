@@ -1,13 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectTrigger,
-  SelectValue,
-  SelectContent,
-  SelectItem,
-} from "@radix-ui/react-select";
 import { User, Mail, GraduationCap, Lock } from "lucide-react";
 import React from "react";
 import { FaArrowLeft } from "react-icons/fa";
@@ -18,6 +11,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { addNewStudent } from "../../actions/students";
 import { generateRegistration } from "@/lib/utils";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const StudentForm = ({
   lastRegistration,
@@ -37,17 +39,6 @@ const StudentForm = ({
     resolver: zodResolver(studentSchema),
   });
 
-  const createUser = async (data: StudentSchemaType) => {
-    try {
-      await addNewStudent(data);
-      {
-        isSubmitting ? "" : router.back();
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   function generateNewRegistration() {
     const numberString = lastRegistration.replace("ALUNO", "");
     const number = parseInt(numberString, 10);
@@ -57,6 +48,10 @@ const StudentForm = ({
 
     return newRegistration;
   }
+
+  const onSubmit = async (data: StudentSchemaType) => {
+    console.log(data);
+  };
 
   return (
     <Container>
@@ -80,7 +75,7 @@ const StudentForm = ({
               {/* Formulario */}
               <form
                 className=" ml-[-100px]  h-[30rem] grid grid-cols-2 gap-32 px-20 text-black"
-                onSubmit={handleSubmit(createUser)}
+                onSubmit={handleSubmit(onSubmit)}
               >
                 {/* Nome do Aluno */}
                 <div className="flex flex-col gap-5">
@@ -164,27 +159,49 @@ const StudentForm = ({
                       {errors.matricula?.message}
                     </span>
                   </div>
-                  {/* Curso*/}
+                </div>
+                {/* Curso*/}
+                <div className="">
+                  <label className="text-white font-semibold">
+                    Curso <span className="text-red-500">*</span>
+                  </label>
                   <div className="">
-                    <label className="text-white font-semibold">
-                      Curso <span className="text-red-500">*</span>
-                    </label>
-                    <div className="">
-                      <select className="bg-white p-4 rounded-lg w-full">
-                        {courses.map((item, index) => (
-                          <option value={item} key={item}>
-                            {item}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <span className="text-red-500">
-                      {errors.confirmarSenha?.message}
-                    </span>
-                  </div>
+                    {/* <Select {...register("curso")}>
+                      <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Select a fruit" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          {courses.map((item, index) => (
+                            <option value={item} key={item}>
+                              <SelectItem value={item} key={item}>
+                                {item}
+                              </SelectItem>
+                            </option>
+                          ))}
 
-                  {/* Senha */}
-                  <div className="relative">
+                          
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select> */}
+                    <select
+                      className="bg-white p-4 rounded-lg w-full"
+                      {...register("curso")}
+                    >
+                      <option value="">
+                        {isSubmitting ? "Loading..." : "Choose a category"}
+                      </option>
+                      {courses.map((item, index) => (
+                        <option value={item} key={item}>
+                          {item}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                {/* Senha */}
+                {/* <div className="relative">
                     <label className="text-white font-semibold">
                       Senha <span className="text-red-500">*</span>
                     </label>
@@ -203,7 +220,7 @@ const StudentForm = ({
                       {errors.senha?.message}
                     </span>
                   </div>
-                </div>
+                </div> */}
 
                 {/* <div className="col-span-2 flex justify-center mt-4">
                 <button
