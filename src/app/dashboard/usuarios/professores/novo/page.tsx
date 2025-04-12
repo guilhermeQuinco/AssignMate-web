@@ -14,7 +14,7 @@ const NewProfessor = async () => {
     .at(-1);
 
   return (
-    <section className="bg-[#065D89] min-h-screen">
+    <section className="bg-[#D9D9D9] min-h-screen">
       <ProfessorForm lastRegistration={lastRegistration} />
     </section>
   );
