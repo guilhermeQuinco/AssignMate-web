@@ -22,7 +22,7 @@ export async function addNewProfessor(professorData: ProfessorSchemaType) {
       "/professores",
       {
         matricula: professorData.matricula,
-        nomeCompleto: professorData.nomeCompleto,
+        nomeCompleto: professorData.nome,
         dataNascimento: professorData.dataNascimento,
         especialidade: professorData.especialidade,
         email: professorData.email,

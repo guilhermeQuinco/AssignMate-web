@@ -9,7 +9,6 @@ import { generateRegistration } from "@/lib/utils";
 import { addNewProfessor } from "../../actions/professors";
 
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 
@@ -33,6 +32,10 @@ export default function ProfessorForm({ lastRegistration }: ProfessorFormProps) 
   } = useForm<ProfessorSchemaType>({
     resolver: zodResolver(schema),
   });
+
+  const handleBack = () => {
+    router.push("/dashboard/usuarios/professores");
+  };
 
   function generateNewRegistration() {
     // Caso o seu lastRegistration venha com o prefixo "PROFESSOR",
@@ -64,21 +67,24 @@ export default function ProfessorForm({ lastRegistration }: ProfessorFormProps) 
     <main className="bg-[#d9d9d9] flex-1  min-h-screen p-10 font-['Roboto_Slab']">
       {/* Header */}
       <div className="flex justify-between items-center mb-10">
-        <div className="justify-start text-zinc-900 text-3xl font-medium leading-[48px]">
+        <div className="justify-start text-zinc-600 text-3xl font-medium leading-[48px]">
           Cadastro de Professor
         </div>
-        <div className="w-32 h-10 px-6 bg-zinc-800 rounded-2xl inline-flex justify-center items-center gap-2">
-          <div className="flex justify-center items-center gap-5">
-            <FaArrowLeft className="text-zinc-300 w-4 h-3.5" /> {/* Ícone */}
-            <span className="justify-center text-zinc-300 text-base font-medium leading-normal">Voltar</span>
-          </div>
-        </div>
+        <button
+          type="button"
+          onClick={handleBack}
+          className="w-32 h-10 px-6 bg-zinc-800 rounded-2xl inline-flex justify-center items-center gap-2 text-zinc-300 text-base font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <FaArrowLeft className="w-4 h-3.5" />
+          Voltar
+        </button>
+
       </div>
 
-      <Card className="bg-[#F3EDED] rounded-2xl justify-center items-center gap- flex-wrap content-center max-w-7xl mx-auto">
-        <CardContent className="grid md:grid-cols-2 gap-10 p-20">
+      <Card className="bg-[#F3EDED] rounded-2xl max-w-7xl mx-auto">
+        <CardContent className="flex justify-center grid md:grid-cols-2 gap-10 p-10">
           {/* Matrícula (apenas leitura) */}
-          <div className="space-y-4">
+          <div className="space-y-2">
             <Label className="justify-start text-zinc-600 text-sm  font-semibold">Matrícula</Label>
             <Input readOnly value={matriculaGerada} className="p-5 opacity-40 justify-start text-color-slate-900 text-sm font-medium bg-neutral-500" />
           </div>
@@ -96,7 +102,6 @@ export default function ProfessorForm({ lastRegistration }: ProfessorFormProps) 
             label="Nome"
             register={register("nome")}
             error={errors.nome?.message}
-
           />
 
           {/* Especialidade */}
@@ -115,7 +120,7 @@ export default function ProfessorForm({ lastRegistration }: ProfessorFormProps) 
           />
 
           {/* Senha padrão (apenas leitura) */}
-          <div className="space-y-4">
+          <div className="space-y-2">
             <Label className="justify-start text-zinc-600 text-sm font-semibold">Senha</Label>
             <Input
               readOnly
@@ -125,13 +130,19 @@ export default function ProfessorForm({ lastRegistration }: ProfessorFormProps) 
               className="opacity-40 justify-start text-color-slate-900 text-sm font-medium bg-neutral-400 p-5"
             />
           </div>
+          <div className="md:col-span-2 flex justify-center">
+            <button
+              type="submit"
+              className="w-32 h-10 px-6 bg-zinc-800 rounded-2xl inline-flex justify-center items-center gap-2 text-base text-zinc-300"
+              onClick={handleSubmit(onSubmit)}
+              disabled={isSubmitting}
+            >
+              Salvar
+            </button>
+          </div>
         </CardContent>
 
-        <div className="w-32 h-10 px-6 bg-zinc-800 rounded-2xl inline-flex justify-center items-center">
-          <div className="text-base text-zinc-300" onClick={handleSubmit(onSubmit)} disabled={isSubmitting}>
-            Salvar
-          </div>
-        </div>
+        
 
       </Card>
     </main>
@@ -152,7 +163,7 @@ function FormField({ label, type = "text", register, error }: FormFieldProps) {
       <Label className="justify-start text-zinc-600 text-sm font-semibold">
         {label} <span className="text-rose-500">*</span>
       </Label>
-      <Input {...register} type={type} className="p-5" />
+      <Input {...register} type={type} className="p-5 border-[#ABABAB]" />
       {error && <p className="text-rose-500 text-sm mt-1">{error}</p>}
     </div>
   );
