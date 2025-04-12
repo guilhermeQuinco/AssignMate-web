@@ -127,7 +127,7 @@ export default function DataTableProfessor({ data }: TableProfessorProps) {
     <Container>
       <div className="w-full">
         <div className="flex items-center py-4 justify-between mb-10">
-          <h1 className="text-[2rem] font-bold">Lista de professores</h1>
+          <h1 className="text-[2rem] font-bold">Lista de Professores</h1>
 
           <div className="flex items-center gap-16  ">
             <div className="flex items-center justify-between  border-2 border-black rounded-full p-3">
@@ -147,7 +147,7 @@ export default function DataTableProfessor({ data }: TableProfessorProps) {
 
             <Button className="py-6" asChild>
               <Link href={"/dashboard/usuarios/professores/novo"}>
-                <span className="text-lg font-semibold px-5">+ Adicionar </span>
+                <span >+ Adicionar </span>
               </Link>
             </Button>
           </div>
