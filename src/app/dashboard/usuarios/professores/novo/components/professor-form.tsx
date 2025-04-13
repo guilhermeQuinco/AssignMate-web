@@ -7,6 +7,7 @@ import { z } from "zod";
 import { professorSchema, ProfessorSchemaType } from "@/schemas/professorSchema";
 import { generateRegistration } from "@/lib/utils";
 import { addNewProfessor } from "../../actions/professors";
+//import { Button } from "@/components/ui/button";
 
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
@@ -32,10 +33,6 @@ export default function ProfessorForm({ lastRegistration }: ProfessorFormProps) 
   } = useForm<ProfessorSchemaType>({
     resolver: zodResolver(schema),
   });
-
-  const handleBack = () => {
-    router.push("/dashboard/usuarios/professores");
-  };
 
   function generateNewRegistration() {
     // Caso o seu lastRegistration venha com o prefixo "PROFESSOR",
@@ -72,7 +69,7 @@ export default function ProfessorForm({ lastRegistration }: ProfessorFormProps) 
         </div>
         <button
           type="button"
-          onClick={handleBack}
+          onClick={() => router.back()}
           className="w-32 h-10 px-6 bg-zinc-800 rounded-2xl inline-flex justify-center items-center gap-2 text-zinc-300 text-base font-medium disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <FaArrowLeft className="w-4 h-3.5" />
@@ -141,9 +138,6 @@ export default function ProfessorForm({ lastRegistration }: ProfessorFormProps) 
             </button>
           </div>
         </CardContent>
-
-        
-
       </Card>
     </main>
   );

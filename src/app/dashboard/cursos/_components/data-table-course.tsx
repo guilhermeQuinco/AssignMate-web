@@ -2,6 +2,11 @@
 
 import * as React from "react";
 
+import { Header } from "../../_components/header";
+import { SideBar } from "../../_components/sidebar";
+
+import { SidebarProvider } from "@/components/ui/sidebar";
+
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -34,16 +39,16 @@ import {
 
 import { Button } from "@/components/ui/button";
 
-import { Container } from "../../_components/container";
 import Link from "next/link";
+import { Container } from "../../_components/container";
 
+import { Course } from "@/types";
 import { useRouter } from "next/navigation";
-import { Aluno, Course, Professor } from "@/types";
-interface TableProfessorProps {
+interface TableCourseProps {
   data: Course[];
 }
 
-export default function DataTableCourse({ data }: TableProfessorProps) {
+export default function DataTableCourse({ data }: TableCourseProps) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -95,86 +100,53 @@ export default function DataTableCourse({ data }: TableProfessorProps) {
     },
   });
 
-  return (
-    <Container>
-      <div className="w-full">
-        <div className="flex items-center py-4 justify-between mb-10">
-          <h1 className="text-[2rem] font-bold">Lista de Cursos</h1>
+  return (<SidebarProvider>
+    <div className="flex h-screen w-screen overflow-hidden">
+      <div className="w-[250px] bg-[#111]">
+        <SideBar />
+      </div>
 
-          <div className="flex items-center gap-16  ">
-            <div className="flex items-center justify-between  border-2 border-white rounded-full p-3">
-              <input
-                placeholder="Search..."
-                value={
-                  (table.getColumn("nome")?.getFilterValue() as string) ?? ""
-                }
-                onChange={(event) =>
-                  table.getColumn("nome")?.setFilterValue(event.target.value)
-                }
-                className="bg-transparent placeholder:text-white outline-none w-[300px]"
-              />
+      <div className="flex-1 flex flex-col bg-[#e0e2e3] overflow-hidden">
+        <div className="border-b border-gray-300">
+          <Header />
+        </div>
 
-              <Search />
+        <div className="p-6 overflow-auto">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
+            <h1 className="text-3xl font-bold text-black">
+              Lista de Cursos
+            </h1>
+
+            <div className="flex gap-[10rem] items-center">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 w-4 h-4" />
+                <input
+                  type="text"
+                  placeholder="Pesquisar"
+                  className="w-80 h-10 pl-10 pr-4 py-2 bg-zinc-100 rounded-2xl border border-zinc-800 focus:outline-none focus:ring-2 focus:ring-zinc-500 text-sm"
+                />
+              </div>
+              <button className="bg-black text-white px-4 py-2 rounded-xl hover:bg-gray-700 transition">
+                + Adicionar
+              </button>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-xl shadow overflow-hidden">
+            <div className="grid grid-cols-4 bg-black text-white font-semibold px-4 py-3 text-sm uppercase">
+              <span>Código</span>
+              <span>Nome</span>
+              <span>Descripção</span>
+              <span>Ação</span>
             </div>
 
-            <Button className="py-6" asChild>
-              <Link href={"/dashboard/cursos/novo"}>
-                <span>+ Adicionar curso</span>
-              </Link>
-            </Button>
+            <div className="p-10 text-center text-gray-500 text-sm">
+              Sem nada para mostrar
+            </div>
           </div>
         </div>
-        <div className="rounded-md border">
-          <Table>
-            <TableHeader className="bg-[#313056]">
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => {
-                    return (
-                      <TableHead key={header.id} className="text-white">
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                      </TableHead>
-                    );
-                  })}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody className="bg-white text-black">
-              {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row, index) => (
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-24 text-center"
-                  >
-                    No results.
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </div>
       </div>
-    </Container>
+    </div>
+  </SidebarProvider>
   );
 }

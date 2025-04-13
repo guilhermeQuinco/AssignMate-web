@@ -19,3 +19,9 @@ export type Course = {
   nome: string;
   descricao: string;
 };
+
+export type Turma = {
+  codigo: string;
+  nome: string;
+  descricao: string;
+};

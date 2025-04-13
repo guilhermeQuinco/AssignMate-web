@@ -2,6 +2,11 @@
 
 import * as React from "react";
 
+import { SideBar } from "../../_components/sidebar";
+import { Header } from "../../_components/header";
+
+import { SidebarProvider } from "@/components/ui/sidebar";
+
 import {
   ColumnDef,
   ColumnFiltersState,

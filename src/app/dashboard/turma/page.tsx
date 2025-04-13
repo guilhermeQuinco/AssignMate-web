@@ -1,16 +1,16 @@
 import React from "react";
 import { cookies } from "next/headers";
-import DataTableCourse from "./_components/data-table-turma";
-import { getCourses } from "./actions/turma";
+import DataTableTurma from "./_components/data-table-turma";
+import { getTurmas } from "./actions/turma";
 
-const Courses = async () => {
-  const data = await getCourses();
+const Turmas = async () => {
+  const data = await getTurmas();
 
   return (
     <main className="bg-[#065D89] min-h-screen">
-      <DataTableCourse data={data} />
+      <DataTableTurma data={data} />
     </main>
   );
 };
 
-export default Courses;
+export default Turmas;
