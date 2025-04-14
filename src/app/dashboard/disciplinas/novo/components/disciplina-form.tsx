@@ -3,132 +3,144 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { z } from "zod";
+import { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import { disciplinaSchema, DisciplinaSchemaType } from "@/schemas/disciplinaSchema";
-import { generateRegistration } from "@/lib/utils";
 import { addNewDisciplina } from "../../actions/disciplinas";
-//import { Button } from "@/components/ui/button";
-
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-
 import { FaArrowLeft } from "react-icons/fa";
+import { Button } from "@/components/ui/button";
 
-const schema = disciplinaSchema; // assume que seu schema já define os campos: nome, dataNascimento, especialidade, email
-
-type FormData = z.infer<typeof schema>;
+const schema = disciplinaSchema;
 
 type DisciplinaFormProps = {
-  lastRegistration: string; // Ex: "PROFESSOR0001" ou conforme seu padrão
+  lastRegistration: string; // Exemplo: "MAT0005"
 };
 
 export default function DisciplinaForm({ lastRegistration }: DisciplinaFormProps) {
   const router = useRouter();
+  const [matriculaGerada, setMatriculaGerada] = useState("");
+  const senhaPadrao = "assign2025";
 
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<DisciplinaSchemaType>({
     resolver: zodResolver(schema),
   });
 
-  function generateNewRegistration() {
-    // Caso o seu lastRegistration venha com o prefixo "PROFESSOR",
-    // ajuste-o para o padrão que deseja. Exemplo:
-    const numberString = lastRegistration.replace("PROFESSOR", "");
-    const number = parseInt(numberString, 10);
-    const nextNumber = number + 1;
-    // Caso a lógica de generateRegistration já formate o número para "25P000X", utilize-a:
-    const newRegistration = generateRegistration("25P", nextNumber);
-    return newRegistration;
-  }
+  const nomeDisciplina = watch("nome");
 
-  // Matrícula gerada e senha fixa
-  const matriculaGerada = generateNewRegistration();
-  const senhaPadrao = "assign2025";
+  // Gera a matrícula com base nas três primeiras letras do nome e incrementa de acordo com o último registro.
+  useEffect(() => {
+    if (nomeDisciplina && nomeDisciplina.length >= 3) {
+      const prefixo = nomeDisciplina.substring(0, 3).toUpperCase();
+      // Se o último código registrado começa com esse prefixo, extrai o número; senão, começa em 0.
+      const lastCode = lastRegistration.startsWith(prefixo)
+        ? parseInt(lastRegistration.replace(prefixo, ""), 10)
+        : 0;
+      const nextNumber = (lastCode + 1).toString().padStart(4, "0");
+      setMatriculaGerada(`${prefixo}${nextNumber}`);
+    }
+  }, [nomeDisciplina, lastRegistration]);
 
   async function onSubmit(data: DisciplinaSchemaType) {
+    if (!matriculaGerada) {
+      toast.error("A matrícula não pôde ser gerada. Verifique o nome da disciplina.");
+      return;
+    }
+
     const dadosCompletos = {
       ...data,
       matricula: matriculaGerada,
       senha: senhaPadrao,
     };
-    console.log("Disciplina a ser salva:", dadosCompletos);
-    await addNewDisciplina(dadosCompletos);
-    router.back();
+
+    try {
+      await addNewDisciplina(dadosCompletos);
+      toast.success("Disciplina cadastrada com sucesso!");
+      router.back();
+    } catch (error) {
+      toast.error("Erro ao cadastrar disciplina.");
+      console.error(error);
+    }
   }
 
   return (
-    <main className="bg-[#d9d9d9] flex-1  min-h-screen p-10 font-['Roboto_Slab']">
+    <main className="bg-[#d9d9d9] flex-1 min-h-screen p-10 font-['Roboto_Slab']">
       {/* Header */}
       <div className="flex justify-between items-center mb-10">
-        <div className="justify-start text-zinc-600 text-3xl font-medium leading-[48px]">
-          Cadastro de Turma
-        </div>
+        <div className="text-zinc-600 text-3xl font-medium">Cadastro de Turma</div>
         <button
           type="button"
           onClick={() => router.back()}
-          className="w-32 h-10 px-6 bg-zinc-800 rounded-2xl inline-flex justify-center items-center gap-2 text-zinc-300 text-base font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-32 h-10 px-6 bg-zinc-800 rounded-2xl text-zinc-300 text-base font-medium flex items-center gap-2"
         >
           <FaArrowLeft className="w-4 h-3.5" />
           Voltar
         </button>
-
       </div>
 
       <Card className="bg-[#F3EDED] rounded-2xl max-w-7xl mx-auto">
-        <CardContent className="flex justify-center grid md:grid-cols-2 gap-10 p-10">
-          {/* Matrícula (apenas leitura) */}
+        <CardContent className="grid md:grid-cols-2 gap-10 p-10">
+          {/* Campo: Código (gerado automaticamente) */}
           <div className="space-y-2">
-            <Label className="justify-start text-zinc-600 text-sm  font-semibold">Código</Label>
-            <Input readOnly value={matriculaGerada} className="p-5 opacity-40 justify-start text-color-slate-900 text-sm font-medium bg-neutral-500" />
+            <Label className="text-zinc-600 text-sm font-semibold">Código</Label>
+            <Input
+              readOnly
+              value={matriculaGerada}
+              className="p-5 opacity-40 bg-neutral-500 text-sm font-medium"
+            />
           </div>
 
-          {/* Nome */}
+          {/* Campo: Nome */}
           <FormField
             label="Nome"
             register={register("nome")}
             error={errors.nome?.message}
           />
 
-          {/* Período */}
+          {/* Campo: Período */}
           <FormField
             label="Período"
             register={register("periodo")}
             error={errors.periodo?.message}
           />
 
-          {/* Carga Horária */}
+          {/* Campo: Carga Horária */}
           <FormField
             label="Carga Horária"
             register={register("cargaHoraria")}
             error={errors.cargaHoraria?.message}
           />
 
-          {/* Descrição */}
+          {/* Campo: Descrição */}
           <FormField
             label="Descrição"
             register={register("descricao")}
             error={errors.descricao?.message}
           />
 
-          {/* Senha padrão (apenas leitura) */}
+          {/* Campo: Senha (fixa, somente leitura) */}
           <div className="space-y-2">
-            <Label className="justify-start text-zinc-600 text-sm font-semibold">Senha</Label>
+            <Label className="text-zinc-600 text-sm font-semibold">Senha</Label>
             <Input
               readOnly
-              data-required="false"
               value={senhaPadrao}
               type="password"
-              className="opacity-40 justify-start text-color-slate-900 text-sm font-medium bg-neutral-400 p-5"
+              className="p-5 opacity-40 bg-neutral-400 text-sm font-medium"
             />
           </div>
+
+          {/* Botão de Envio */}
           <div className="md:col-span-2 flex justify-center">
             <button
               type="submit"
-              className="w-32 h-10 px-6 bg-zinc-800 rounded-2xl inline-flex justify-center items-center gap-2 text-base text-zinc-300"
+              className="w-32 h-10 px-6 bg-zinc-800 rounded-2xl text-zinc-300 text-base font-medium"
               onClick={handleSubmit(onSubmit)}
               disabled={isSubmitting}
             >
@@ -141,21 +153,23 @@ export default function DisciplinaForm({ lastRegistration }: DisciplinaFormProps
   );
 }
 
-// Componente de campo de formulário reutilizável
+// Componente reutilizável para os campos do formulário
 type FormFieldProps = {
   label: string;
-  type?: string;
   register: any;
   error?: string;
 };
 
-function FormField({ label, type = "text", register, error }: FormFieldProps) {
+function FormField({ label, register, error }: FormFieldProps) {
   return (
     <div className="space-y-2">
-      <Label className="justify-start text-zinc-600 text-sm font-semibold">
+      <Label className="text-zinc-600 text-sm font-semibold">
         {label} <span className="text-rose-500">*</span>
       </Label>
-      <Input {...register} type={type} className="p-5 border-[#ABABAB]" />
+      <Input
+        {...register}
+        className={`p-5 border-[#ABABAB] ${error ? "border-red-500" : ""}`}
+      />
       {error && <p className="text-rose-500 text-sm mt-1">{error}</p>}
     </div>
   );
