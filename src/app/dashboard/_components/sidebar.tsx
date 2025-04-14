@@ -169,7 +169,7 @@ export function SideBar() {
               asChild
               className="hover:bg-zinc-700 flex flex-row gap-3"
             >
-              <a href="/">
+              <Link href="/">
                 <div className="flex aspect-square size-10 items-center justify-center rounded-lg bg-gray-100 ">
                   <Image
                     src="/logo.png"
@@ -183,7 +183,7 @@ export function SideBar() {
                   <span className="truncate font-semibold">Assign Mate</span>
                   <span className="truncate text-sm">Enterprise</span>
                 </div>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
@@ -235,8 +235,11 @@ export function SideBar() {
         <SidebarGroup>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton className="hover:bg-zinc-700 hover:text-white text-lg">
-                Turma
+              <SidebarMenuButton
+                className="hover:bg-zinc-700 hover:text-white text-lg"
+                isActive={pathname.includes("turmas")}
+                asChild>
+                <Link href={"/dashboard/turmas"}>Turma</Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
@@ -248,8 +251,7 @@ export function SideBar() {
               <SidebarMenuButton
                 className="hover:bg-zinc-700 hover:text-white text-lg"
                 isActive={pathname.includes("cursos")}
-                asChild
-              >
+                asChild>
                 <Link href={"/dashboard/cursos"}>Curso</Link>
               </SidebarMenuButton>
             </SidebarMenuItem>

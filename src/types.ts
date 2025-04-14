@@ -1,6 +1,8 @@
+import { string } from "zod";
+
 export type Professor = {
   matricula: string;
-  nome: string;
+  nomeCompleto: string;
   dataNascimento: string;
   especialidade: string;
   email: string;
@@ -15,13 +17,26 @@ export type Aluno = {
 };
 
 export type Course = {
+  id: string;
   codigo: string;
   nome: string;
   descricao: string;
 };
 
-export type Turma = {
+export type Disciplina = {
+  id: string;
   codigo: string;
   nome: string;
   descricao: string;
+  cargaHoraria: string;
+  periodo: String;
+};
+
+export type Turma = {
+  id: string;
+  codigo: string;
+  nome: string;
+  semestre: string;
+  turno: string;
+  modalidade: string;
 };
