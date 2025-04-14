@@ -97,8 +97,8 @@ export default function ProfessorForm({ lastRegistration }: ProfessorFormProps) 
           {/* Nome */}
           <FormField
             label="Nome"
-            register={register("nome")}
-            error={errors.nome?.message}
+            register={register("nomeCompleto")}
+            error={errors.nomeCompleto?.message}
           />
 
           {/* Especialidade */}

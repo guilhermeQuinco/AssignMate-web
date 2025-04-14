@@ -2,7 +2,6 @@
 
 import { api } from "@/lib/axios";
 import { ProfessorSchemaType } from "@/schemas/professorSchema";
-import { StudentSchemaType } from "@/schemas/studentSchema";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
@@ -22,7 +21,7 @@ export async function addNewProfessor(professorData: ProfessorSchemaType) {
       "/professores",
       {
         matricula: professorData.matricula,
-        nomeCompleto: professorData.nome,
+        nomeCompleto: professorData.nomeCompleto,
         dataNascimento: professorData.dataNascimento,
         especialidade: professorData.especialidade,
         email: professorData.email,
