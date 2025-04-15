@@ -6,6 +6,14 @@ import "./globals.css";
 import localFont from "next/font/local";
 import { ThemeProvider } from "@/components/theme-provider";
 
+import { Roboto_Slab } from "next/font/google";
+
+export const robotoSlab = Roboto_Slab({
+  subsets: ['latin'],
+  variable: '--font-roboto-slab',
+  display: 'swap',
+});
+
 const centurygothic = localFont({
   src: "./fonts/centurygothic.ttf",
   variable: "--centurygothic",
@@ -34,7 +42,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${centurygothic.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${centurygothic.variable} ${robotoSlab.variable} antialiased`}
       >
         <ThemeProvider
           attribute="class"
@@ -42,7 +50,6 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {/* ✅ Toaster adicionado aqui */}
           <Toaster position="top-right" />
           {children}
         </ThemeProvider>

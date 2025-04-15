@@ -9,7 +9,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
+import { robotoSlab } from "@/app/layout";
 import * as React from "react";
 import { ChevronRight } from "lucide-react";
 
@@ -162,7 +162,16 @@ export function SideBar() {
 
     <Sidebar>
       <SidebarHeader className="bg-zinc-800">
-        <SidebarMenu>
+        <Link href="/">
+          <Image
+            src="/logo.png"
+            alt="Logo Assignmate"
+            width={298}
+            height={196}
+            priority
+          />
+        </Link>
+        {/* <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton
               size="lg"
@@ -170,7 +179,7 @@ export function SideBar() {
               className="hover:bg-zinc-700 flex flex-row gap-3"
             >
               <Link href="/">
-                <div className="flex aspect-square size-10 items-center justify-center rounded-lg bg-gray-100 ">
+                <div className="flex aspect-square size-10 items-center justify-center rounded-lg">
                   <Image
                     src="/logo.png"
                     alt="Logo Assignmate"
@@ -186,7 +195,7 @@ export function SideBar() {
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
-        </SidebarMenu>
+        </SidebarMenu> */}
       </SidebarHeader>
 
       <SidebarContent className="bg-zinc-800 text-white gap-0 pt-3">
@@ -204,11 +213,11 @@ export function SideBar() {
             <SidebarGroup>
               <SidebarGroupLabel
                 asChild
-                className="group/label text-sm text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                className="group/label text-[16px] text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
               >
-                <CollapsibleTrigger className="text-white text-[1em] py-3 hover:bg-zinc-700 hover:text-white">
+                <CollapsibleTrigger className="text-white text-[16px] py-3 hover:bg-zinc-700 hover:text-white ">
                   {item.title}
-                  <ChevronRight className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90" />
+                  <ChevronRight className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90 " />
                 </CollapsibleTrigger>
               </SidebarGroupLabel>
               <CollapsibleContent>
@@ -236,7 +245,7 @@ export function SideBar() {
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton
-                className="hover:bg-zinc-700 hover:text-white text-lg"
+                className="hover:bg-zinc-700 hover:text-white text text-[16px]"
                 isActive={pathname.includes("turmas")}
                 asChild>
                 <Link href={"/dashboard/turmas"}>Turma</Link>
@@ -249,7 +258,7 @@ export function SideBar() {
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton
-                className="hover:bg-zinc-700 hover:text-white text-lg"
+                className="hover:bg-zinc-700 hover:text-white text-[16px]"
                 isActive={pathname.includes("cursos")}
                 asChild>
                 <Link href={"/dashboard/cursos"}>Curso</Link>
@@ -261,7 +270,7 @@ export function SideBar() {
         <SidebarGroup>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton className="hover:bg-zinc-700 hover:text-white text-lg">
+              <SidebarMenuButton className="hover:bg-zinc-700 hover:text-white text-[16px]">
                 <Link href={"/dashboard/disciplinas"}>Disciplina</Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
