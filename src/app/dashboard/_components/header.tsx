@@ -38,7 +38,7 @@ export function Header() {
   };
 
   return (
-    <header className="sticky top-0 flex h-14 shrink-0 items-center gap-2 border-b flex-row justify-between px-5 bg-[#d9d9d9] border-zinc-800">
+    <header className="sticky top-0 flex h-14 shrink-0 items-center gap-2 border-b z-10 flex-row justify-between px-5 bg-[#d9d9d9] border-zinc-800">
       <div className="text-black font-medium text-lg font-playfair tracking-[3px] gap-3 flex items-center">
         <SidebarTrigger />
         <div className="w-[1px] h-5 bg-black" />

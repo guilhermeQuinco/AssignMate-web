@@ -39,7 +39,6 @@ export default function CourseForm() {
     try {
       await addCourse(data);
       router.back();
-      router;
     } catch (error) {
       console.error(error);
     }
@@ -59,68 +58,74 @@ export default function CourseForm() {
   }, [courseName, setValue]);
 
   return (
-    <main className="min-h-screen bg-[#065D89]">
+    <main className="min-h-screen bg-[#d9d9d9]">
       <Container>
-        <div className="lex justify-center items-center rounded-2xl  mt-14 bg-black/10 p-20">
+        <h1 className="text-[2em]">Cadastro de Curso</h1>
+        <div className=" rounded-2xl  mt-14 bg-white p-14">
           <form
-            className="grid grid-cols-2 gap-14"
+            className="flex flex-col gap-10"
             onSubmit={handleSubmit(createCourse)}
           >
-            <div className="flex flex-col gap-5">
-              <div className="flex flex-col gap-3">
-                <label className="text-xl">Disciplina</label>
-                <div className="flex flex-row bg-white rounded-lg p-3 items-center gap-3">
-                  <Book color="black" />
-
-                  <Controller
-                    name="nome"
-                    control={control}
-                    render={({ field }) => (
-                      <input
-                        {...field}
-                        type="text"
-                        id="nome"
-                        className="w-full p-2 bg-white rounded outline-none text-black"
-                        placeholder="Digite o nome do curso"
-                      />
-                    )}
-                  />
+            <div className="grid grid-cols-2 gap-14">
+              <div className="flex flex-col gap-5">
+                <div className="flex flex-col gap-3">
+                  <label className="text-xl">Código</label>
+                  <div className="flex flex-row bg-gray-500 rounded-lg p-3 items-center gap-3 border border-black">
+                    <Controller
+                      name="codigo"
+                      control={control}
+                      render={({ field }) => (
+                        <input
+                          {...field}
+                          type="text"
+                          id="codigo"
+                          className="w-full p-2 bg-transparent  rounded outline-none text-black"
+                          readOnly
+                          disabled
+                          defaultValue={generateCourseCode()}
+                        />
+                      )}
+                    />
+                  </div>
+                </div>
+                <div className="flex flex-col gap-3">
+                  <label className="text-xl">Nome</label>
+                  <div className="flex flex-row bg-white border border-black rounded-lg p-3 ouline gap-3 items-center">
+                    <Controller
+                      name="nome"
+                      control={control}
+                      render={({ field }) => (
+                        <input
+                          {...field}
+                          type="text"
+                          id="codigo"
+                          className="w-full p-2 rounded bg-transparent outline-none text-black font-semibold"
+                          placeholder="Digite o nome do curso..."
+                        />
+                      )}
+                    />
+                  </div>
                 </div>
               </div>
+
               <div className="flex flex-col gap-3">
-                <label className="text-xl">Código da turma</label>
-                <div className="flex flex-row bg-gray-400 rounded-lg p-3 ouline gap-3 items-center">
-                  <Code color="black" />
-                  <Controller
-                    name="codigo"
-                    control={control}
-                    render={({ field }) => (
-                      <input
-                        {...field}
-                        type="text"
-                        id="codigo"
-                        className="w-full p-2 rounded bg-transparent outline-none text-black font-semibold"
-                        placeholder="Código será gerado automaticamente"
-                        readOnly
-                        disabled
-                      />
-                    )}
+                <label className="text-xl">Descrição</label>
+                <div className="flex flex-row bg-white border border-black rounded-lg p-3 ouline gap-3 items-center">
+                  <textarea
+                    className="bg-transparent text-black outline-none text-lg w-full min-h-[300px]"
+                    {...register("descricao")}
                   />
                 </div>
               </div>
             </div>
-
-            <div className="flex flex-col gap-3">
-              <label className="text-xl">Descrição</label>
-              <div className="flex flex-row bg-white rounded-lg p-3 ouline gap-3 items-center">
-                <textarea
-                  className="bg-transparent text-black outline-none text-lg w-full min-h-[500px]"
-                  {...register("descricao")}
-                />
-              </div>
+            <div className="w-full flex flex-row justify-center items-center">
+              <Button
+                type="submit"
+                className="w-[10%] py-6 text-lg font-semibold"
+              >
+                Salvar
+              </Button>
             </div>
-
-            <Button type="submit">Salvar</Button>
           </form>
         </div>
       </Container>

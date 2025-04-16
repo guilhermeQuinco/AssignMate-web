@@ -16,11 +16,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 
-
 const robotoSlab = Roboto_Slab({
   subsets: ["latin"],
   weight: ["400", "700"],
-  variable: "--font-roboto-slab"
+  variable: "--font-roboto-slab",
 });
 
 type StudentFormProps = {
@@ -28,7 +27,10 @@ type StudentFormProps = {
   courses: string[];
 };
 
-export default function StudentForm({ lastRegistration, courses }: StudentFormProps) {
+export default function StudentForm({
+  lastRegistration,
+  courses,
+}: StudentFormProps) {
   const router = useRouter();
 
   const {
@@ -61,7 +63,9 @@ export default function StudentForm({ lastRegistration, courses }: StudentFormPr
   }
 
   return (
-    <main className={`bg-[#d9d9d9] flex-1 min-h-screen p-10 ${robotoSlab.variable} font-serif`}>
+    <main
+      className={`bg-[#d9d9d9] flex-1 min-h-screen p-10 ${robotoSlab.variable} font-serif`}
+    >
       {/* Header */}
       <div className="flex justify-between items-center mb-10">
         <div className="text-zinc-900 text-3xl ">Cadastro de Aluno</div>
@@ -79,7 +83,9 @@ export default function StudentForm({ lastRegistration, courses }: StudentFormPr
           <CardContent className="grid md:grid-cols-2 gap-10 p-20">
             {/* Matrícula */}
             <div className="space-y-2">
-              <Label className="text-zinc-600 text-sm font-semibold">Matrícula</Label>
+              <Label className="text-zinc-600 text-sm font-semibold">
+                Matrícula
+              </Label>
               <Input
                 readOnly
                 value={matriculaGerada}
@@ -117,10 +123,11 @@ export default function StudentForm({ lastRegistration, courses }: StudentFormPr
                     {course}
                   </option>
                 ))}
-
               </select>
               {errors.curso && (
-                <p className="text-rose-500 text-sm mt-1">{errors.curso.message}</p>
+                <p className="text-rose-500 text-sm mt-1">
+                  {errors.curso.message}
+                </p>
               )}
             </div>
 
@@ -134,7 +141,9 @@ export default function StudentForm({ lastRegistration, courses }: StudentFormPr
 
             {/* Senha */}
             <div className="space-y-2">
-              <Label className="text-zinc-600 text-sm font-semibold">Senha</Label>
+              <Label className="text-zinc-600 text-sm font-semibold">
+                Senha
+              </Label>
               <Input
                 readOnly
                 value={senhaPadrao}
@@ -145,7 +154,11 @@ export default function StudentForm({ lastRegistration, courses }: StudentFormPr
           </CardContent>
 
           <div className="w-32 h-10 px-6 bg-zinc-800 rounded-2xl mx-auto mb-10 flex justify-center items-center">
-            <Button type="submit" disabled={isSubmitting} className="text-zinc-300 text-base font-medium bg-transparent hover:bg-zinc-700 ">
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              className="text-zinc-300 text-base font-medium bg-transparent hover:bg-zinc-700 "
+            >
               Salvar
             </Button>
           </div>

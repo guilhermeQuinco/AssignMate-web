@@ -22,6 +22,8 @@ import {
 import {
   ArrowUpDown,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   Edit,
   MoreHorizontal,
   Search,
@@ -67,6 +69,11 @@ export default function DataTableCourse({ data }: TableCourseProps) {
     {
       accessorKey: "nome",
       header: "Nome",
+      cell: ({ row }) => {
+        const user = row.original;
+
+        return <span className=" ">{row.original.nome}</span>;
+      },
     },
     {
       accessorKey: "descricao",
@@ -75,7 +82,27 @@ export default function DataTableCourse({ data }: TableCourseProps) {
         const user = row.original;
 
         return (
-          <span className="w-full line-clamp-1 ">{row.original.descricao}</span>
+          <span className=" w-[700px] line-clamp-3 ">
+            {row.original.descricao}
+          </span>
+        );
+      },
+    },
+    {
+      accessorKey: "action",
+      header: "Ação",
+      cell: ({ row }) => {
+        const user = row.original;
+
+        return (
+          <div className="flex flex-row gap-5">
+            <button>
+              <Trash size={20} />
+            </button>
+            <button>
+              <Edit size={20} />
+            </button>
+          </div>
         );
       },
     },
@@ -92,6 +119,7 @@ export default function DataTableCourse({ data }: TableCourseProps) {
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
+
     state: {
       sorting,
       columnFilters,
@@ -100,53 +128,114 @@ export default function DataTableCourse({ data }: TableCourseProps) {
     },
   });
 
-  return (<SidebarProvider>
-    <div className="flex h-screen w-screen overflow-hidden">
-      <div className="w-[250px] bg-[#111]">
-        <SideBar />
-      </div>
+  return (
+    <Container>
+      <div className="w-full">
+        <div className="flex items-center py-4 justify-between mb-10">
+          <h1 className="text-3xl font-bold text-black">Lista de Cursos</h1>
 
-      <div className="flex-1 flex flex-col bg-[#e0e2e3] overflow-hidden">
-        <div className="border-b border-gray-300">
-          <Header />
-        </div>
-
-        <div className="p-6 overflow-auto">
-          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
-            <h1 className="text-3xl font-bold text-black">
-              Lista de Cursos
-            </h1>
-
-            <div className="flex gap-[10rem] items-center">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 w-4 h-4" />
+          <div className="flex gap-[10rem] items-center">
+            <div className="flex items-center gap-16  ">
+              <div className="flex items-center justify-between  border-2 border-black rounded-full p-3">
                 <input
-                  type="text"
-                  placeholder="Pesquisar"
-                  className="w-80 h-10 pl-10 pr-4 py-2 bg-zinc-100 rounded-2xl border border-zinc-800 focus:outline-none focus:ring-2 focus:ring-zinc-500 text-sm"
+                  placeholder="Search..."
+                  value={
+                    (table.getColumn("nome")?.getFilterValue() as string) ?? ""
+                  }
+                  onChange={(event) =>
+                    table.getColumn("nome")?.setFilterValue(event.target.value)
+                  }
+                  className="bg-transparent placeholder:text-black outline-none w-[300px] "
                 />
+
+                <Search />
               </div>
-              <button className="bg-black text-white px-4 py-2 rounded-xl hover:bg-gray-700 transition">
-                + Adicionar
-              </button>
             </div>
-          </div>
-
-          <div className="bg-white rounded-xl shadow overflow-hidden">
-            <div className="grid grid-cols-4 bg-black text-white font-semibold px-4 py-3 text-sm uppercase">
-              <span>Código</span>
-              <span>Nome</span>
-              <span>Descripção</span>
-              <span>Ação</span>
-            </div>
-
-            <div className="p-10 text-center text-gray-500 text-sm">
-              Sem nada para mostrar
-            </div>
+            <Link
+              href={"/dashboard/cursos/novo"}
+              className="bg-black text-white px-4 py-2 rounded-xl hover:bg-gray-700 transition"
+            >
+              + Adicionar
+            </Link>
           </div>
         </div>
+
+        <div className="bg-white rounded-xl shadow overflow-hidden relative ">
+          <Table className="">
+            <TableHeader className="bg-zinc-800 ">
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow
+                  key={headerGroup.id}
+                  className="uppercase font-bold text-md"
+                >
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead
+                        key={header.id}
+                        className="text-white py-4 px-5"
+                      >
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </TableHead>
+                    );
+                  })}
+                </TableRow>
+              ))}
+            </TableHeader>
+            <TableBody className="bg-white text-black">
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row, index) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                    className="text-lg"
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id} className="px-5">
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
+                    No results.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
+        <div className="flex items-center justify-end space-x-2 py-4">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            <ChevronLeft />
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            <ChevronRight />
+          </Button>
+        </div>
       </div>
-    </div>
-  </SidebarProvider>
+    </Container>
   );
 }

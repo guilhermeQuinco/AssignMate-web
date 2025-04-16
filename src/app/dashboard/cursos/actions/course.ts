@@ -11,7 +11,7 @@ export async function getCourses() {
     headers: { Authorization: `Bearer ${token}` },
   });
 
-  return data.data;
+  return data.data.data;
 }
 
 export async function addCourse(courseData: CourseSchemaType) {

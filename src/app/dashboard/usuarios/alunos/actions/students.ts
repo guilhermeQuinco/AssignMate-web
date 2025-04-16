@@ -11,7 +11,7 @@ export async function getStudents() {
     headers: { Authorization: `Bearer ${token}` },
   });
 
-  return data.data;
+  return data.data.data;
 }
 
 export async function addNewStudent(studentData: StudentSchemaType) {
