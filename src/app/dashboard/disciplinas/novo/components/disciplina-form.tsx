@@ -5,21 +5,29 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-import { disciplinaSchema, DisciplinaSchemaType } from "@/schemas/disciplinaSchema";
+import {
+  disciplinaSchema,
+  DisciplinaSchemaType,
+} from "@/schemas/disciplinaSchema";
 import { addNewDisciplina } from "../../actions/disciplinas";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { FaArrowLeft } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
+import { Course } from "@/types";
 
 const schema = disciplinaSchema;
 
 type DisciplinaFormProps = {
   lastRegistration: string; // Exemplo: "MAT0005"
+  courses: Course[];
 };
 
-export default function DisciplinaForm({ lastRegistration }: DisciplinaFormProps) {
+export default function DisciplinaForm({
+  lastRegistration,
+  courses,
+}: DisciplinaFormProps) {
   const router = useRouter();
   const [matriculaGerada, setMatriculaGerada] = useState("");
   const senhaPadrao = "assign2025";
@@ -50,14 +58,14 @@ export default function DisciplinaForm({ lastRegistration }: DisciplinaFormProps
 
   async function onSubmit(data: DisciplinaSchemaType) {
     if (!matriculaGerada) {
-      toast.error("A matrícula não pôde ser gerada. Verifique o nome da disciplina.");
+      toast.error(
+        "A matrícula não pôde ser gerada. Verifique o nome da disciplina."
+      );
       return;
     }
 
     const dadosCompletos = {
       ...data,
-      matricula: matriculaGerada,
-      senha: senhaPadrao,
     };
 
     try {
@@ -74,7 +82,9 @@ export default function DisciplinaForm({ lastRegistration }: DisciplinaFormProps
     <main className="bg-[#d9d9d9] flex-1 min-h-screen p-10 font-['Roboto_Slab']">
       {/* Header */}
       <div className="flex justify-between items-center mb-10">
-        <div className="text-zinc-600 text-3xl font-medium">Cadastro de Turma</div>
+        <div className="text-zinc-600 text-3xl font-medium">
+          Cadastro de Disciplina
+        </div>
         <button
           type="button"
           onClick={() => router.back()}
@@ -89,7 +99,9 @@ export default function DisciplinaForm({ lastRegistration }: DisciplinaFormProps
         <CardContent className="grid md:grid-cols-2 gap-10 p-10">
           {/* Campo: Código (gerado automaticamente) */}
           <div className="space-y-2">
-            <Label className="text-zinc-600 text-sm font-semibold">Código</Label>
+            <Label className="text-zinc-600 text-sm font-semibold">
+              Código
+            </Label>
             <Input
               readOnly
               value={matriculaGerada}
@@ -100,6 +112,7 @@ export default function DisciplinaForm({ lastRegistration }: DisciplinaFormProps
           {/* Campo: Nome */}
           <FormField
             label="Nome"
+            type={"text"}
             register={register("nome")}
             error={errors.nome?.message}
           />
@@ -107,6 +120,7 @@ export default function DisciplinaForm({ lastRegistration }: DisciplinaFormProps
           {/* Campo: Período */}
           <FormField
             label="Período"
+            type={"text"}
             register={register("periodo")}
             error={errors.periodo?.message}
           />
@@ -114,26 +128,42 @@ export default function DisciplinaForm({ lastRegistration }: DisciplinaFormProps
           {/* Campo: Carga Horária */}
           <FormField
             label="Carga Horária"
+            type={"number"}
             register={register("cargaHoraria")}
             error={errors.cargaHoraria?.message}
           />
 
           {/* Campo: Descrição */}
           <FormField
-            label="Descrição"
-            register={register("descricao")}
-            error={errors.descricao?.message}
+            label="Ementa"
+            type={"text"}
+            register={register("ementa")}
+            error={errors.ementa?.message}
           />
 
           {/* Campo: Senha (fixa, somente leitura) */}
+
+          {/* Curso */}
           <div className="space-y-2">
-            <Label className="text-zinc-600 text-sm font-semibold">Senha</Label>
-            <Input
-              readOnly
-              value={senhaPadrao}
-              type="password"
-              className="p-5 opacity-40 bg-neutral-400 text-sm font-medium"
-            />
+            <Label className="text-zinc-600 text-sm font-semibold">
+              Curso <span className="text-rose-500">*</span>
+            </Label>
+            <select
+              className="bg-transparent border border-[#ABABAB] p-3 rounded-lg w-full "
+              {...register("curso")}
+            >
+              <option value="">Selecione um curso</option>
+              {courses.map((course) => (
+                <option key={course.id} value={course.nome}>
+                  {course.nome}
+                </option>
+              ))}
+            </select>
+            {errors.curso && (
+              <p className="text-rose-500 text-sm mt-1">
+                {errors.curso.message}
+              </p>
+            )}
           </div>
 
           {/* Botão de Envio */}
@@ -158,9 +188,10 @@ type FormFieldProps = {
   label: string;
   register: any;
   error?: string;
+  type: string;
 };
 
-function FormField({ label, register, error }: FormFieldProps) {
+function FormField({ label, register, error, type }: FormFieldProps) {
   return (
     <div className="space-y-2">
       <Label className="text-zinc-600 text-sm font-semibold">
@@ -169,6 +200,7 @@ function FormField({ label, register, error }: FormFieldProps) {
       <Input
         {...register}
         className={`p-5 border-[#ABABAB] ${error ? "border-red-500" : ""}`}
+        type={type}
       />
       {error && <p className="text-rose-500 text-sm mt-1">{error}</p>}
     </div>

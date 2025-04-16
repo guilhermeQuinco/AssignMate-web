@@ -98,7 +98,7 @@ export function SideBar() {
                 asChild
                 className="group/label text-sm text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
               >
-                <CollapsibleTrigger className="text-white text-[1em] py-3 hover:bg-zinc-700 hover:text-white">
+                <CollapsibleTrigger className="text-white text-[1.1em] py-3 hover:bg-zinc-700 hover:text-white">
                   {item.title}
                   <ChevronRight className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90" />
                 </CollapsibleTrigger>
