@@ -54,12 +54,10 @@ export default function StudentForm({
   async function onSubmit(data: StudentSchemaType) {
     const dadosCompletos = {
       ...data,
-      matricula: matriculaGerada,
-      senha: senhaPadrao,
     };
     console.log("Aluno a ser salvo:", dadosCompletos);
-    await addNewStudent(dadosCompletos);
-    router.back();
+    // await addNewStudent(dadosCompletos);
+    // router.back();
   }
 
   return (
@@ -90,6 +88,7 @@ export default function StudentForm({
                 readOnly
                 value={matriculaGerada}
                 className="p-5 opacity-40 bg-neutral-500"
+                {...register("matricula")}
               />
             </div>
 

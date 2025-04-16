@@ -50,6 +50,7 @@ import EditStudentModal from "./edit-student-modal";
 
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -110,32 +111,25 @@ export default function DataTableAluno({ data }: TableProfessorProps) {
             <EditStudentModal student={row.original} />
 
             <Dialog>
-              <DialogTrigger asChild>
-                <button>
-                  <Trash2 size={20} />
-                </button>
+              <DialogTrigger>
+                <Trash />
               </DialogTrigger>
-              <DialogContent className="sm:max-w-[825px] bg-white">
+              <DialogContent className="bg-white">
                 <DialogHeader>
-                  <DialogTitle>Tem Certeza que deseja remover? </DialogTitle>
+                  <DialogTitle>Tem certeza disso?</DialogTitle>
                   <DialogDescription>
-                    <span className="text-black">
+                    Essa ação não pode ser desfeita. Isso deleterá
+                    permanentemente o Aluno{" "}
+                    <span className="font-bold">
                       {row.original.nomeCompleto}
                     </span>
                   </DialogDescription>
                 </DialogHeader>
-                <div className="grid gap-4 py-4">
-                  <div className="grid grid-cols-4 items-center gap-4"></div>
-                  <div className="grid grid-cols-4 items-center gap-4"></div>
-                </div>
+
                 <DialogFooter>
-                  <Button
-                    type="submit"
-                    className="font-bold"
-                    onClick={() => removeStudent(row.original.id)}
-                  >
-                    Confirmar
-                  </Button>
+                  <DialogClose onClick={() => removeStudent(row.original.id)}>
+                    Sim
+                  </DialogClose>
                 </DialogFooter>
               </DialogContent>
             </Dialog>
