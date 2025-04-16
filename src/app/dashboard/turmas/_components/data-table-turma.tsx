@@ -22,6 +22,8 @@ import {
 import {
   ArrowUpDown,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   Edit,
   MoreHorizontal,
   Search,
@@ -131,7 +133,7 @@ export default function DataTableTurma({ data }: TableTurmaProps) {
           <h1 className="text-[2rem] font-bold">Lista de Turmas</h1>
 
           <div className="flex items-center gap-16  ">
-            <div className="flex items-center justify-between  border-2 border-white rounded-full p-3">
+            <div className="flex items-center justify-between  border-2 border-black rounded-full p-3">
               <input
                 placeholder="Search..."
                 value={
@@ -140,7 +142,7 @@ export default function DataTableTurma({ data }: TableTurmaProps) {
                 onChange={(event) =>
                   table.getColumn("nome")?.setFilterValue(event.target.value)
                 }
-                className="bg-transparent placeholder:text-white outline-none w-[300px]"
+                className="bg-transparent placeholder:text-black outline-none w-[300px]"
               />
 
               <Search />
@@ -203,12 +205,30 @@ export default function DataTableTurma({ data }: TableTurmaProps) {
                     colSpan={columns.length}
                     className="h-24 text-center"
                   >
-                    No results.
+                    Sem resultados
                   </TableCell>
                 </TableRow>
               )}
             </TableBody>
           </Table>
+        </div>
+        <div className="flex items-center justify-end space-x-2 py-4">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            <ChevronLeft />
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            <ChevronRight />
+          </Button>
         </div>
       </div>
     </Container>
