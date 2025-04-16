@@ -8,13 +8,9 @@ import { Course } from "@/types";
 const Turmas = async () => {
   const data = await getTurmas();
 
-  const courses: Course[] = (await getCourses())
-    .map((course: { nome: string }) => course.nome)
-    .sort();
-
   return (
     <main className="bg-[#d9d9d9] min-h-screen">
-      <DataTableTurma data={data} courses={courses} />
+      <DataTableTurma data={data} />
     </main>
   );
 };

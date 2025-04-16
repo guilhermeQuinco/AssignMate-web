@@ -47,10 +47,9 @@ import { Course, Turma } from "@/types";
 
 interface TableTurmaProps {
   data: Turma[];
-  courses: Course[];
 }
 
-export default function DataTableTurma({ data, courses }: TableTurmaProps) {
+export default function DataTableTurma({ data }: TableTurmaProps) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []

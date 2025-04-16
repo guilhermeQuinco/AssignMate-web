@@ -13,8 +13,9 @@ import { Label } from "@/components/ui/label";
 import { addNewTurma } from "../../actions/turmas";
 import { Container } from "@/app/dashboard/_components/container";
 import { FaArrowLeft } from "react-icons/fa";
+import { Course } from "@/types";
 
-export function TurmaForm() {
+export function TurmaForm({ courses }: { courses: Course[] }) {
   const [turma, setTurma] = useState("");
 
   const {
@@ -27,10 +28,6 @@ export function TurmaForm() {
     formState: { errors, isSubmitting },
   } = useForm<TurmaSchemaType>({
     resolver: zodResolver(turmaSchema),
-    defaultValues: {
-      nome: "",
-      codigo: "",
-    },
   });
 
   const router = useRouter();
@@ -66,7 +63,7 @@ export function TurmaForm() {
     <main className="min-h-screen bg-[#d9d9d9]">
       <Container>
         <div className="flex justify-between items-center mb-10">
-          <div className="text-zinc-900 text-3xl ">Cadastro de Aluno</div>
+          <div className="text-zinc-900 text-3xl ">Cadastro de Turma</div>
           <button
             onClick={() => router.back()}
             className="w-32 h-10 px-6 bg-zinc-800 rounded-2xl inline-flex justify-center items-center gap-2"
@@ -95,6 +92,7 @@ export function TurmaForm() {
                           {...field}
                           type="text"
                           id="codigo"
+                          defaultValue={generateTurmaCode()}
                           className="w-full rounded bg-transparent outline-none text-black font-semibold"
                           placeholder="Código será gerado automaticamente"
                           readOnly
@@ -177,8 +175,12 @@ export function TurmaForm() {
                       className="bg-white border border-[#ABABAB] p-3 rounded-lg w-full "
                       {...register("curso")}
                     >
-                      <option value="">Selecione o semestre</option>
-                      <option value="2025.1">2025.1</option>
+                      <option value="">Selecione o curso</option>
+                      {courses.map((course) => (
+                        <option value={course.id} key={course.id}>
+                          {course.nome}
+                        </option>
+                      ))}
                     </select>
                     {errors.semestre && (
                       <p className="text-rose-500 text-sm mt-1">
@@ -194,7 +196,7 @@ export function TurmaForm() {
                   <div className="flex flex-row bg-white rounded-lg  gap-3 items-center">
                     <select
                       className="bg-white border border-[#ABABAB] p-3 rounded-lg w-full "
-                      {...register("curso")}
+                      {...register("modalidade")}
                     >
                       <option value="">Selecione a Modalidade</option>
                       <option value="PRESENCIAL">Presencial</option>

@@ -5,7 +5,9 @@ import { jwtDecode } from "jwt-decode";
 export function middleware(request: NextRequest) {
   const token = request.cookies.get("token")?.value;
 
-  const protectedRoutes = ["/dashboard", "/dashboard/usuarios"];
+  const protectedRoutes = [
+    "/dashboard, /dashboard/usuarios, /dashboard/turmas, /dashboard/disciplinas",
+  ];
 
   const publicRoutes = ["/login", "/"];
 

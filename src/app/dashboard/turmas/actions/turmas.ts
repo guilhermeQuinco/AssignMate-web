@@ -25,6 +25,7 @@ export async function addNewTurma(turmaData: TurmaSchemaType) {
         nome: turmaData.nome,
         turno: turmaData.turno,
         modalidade: turmaData.modalidade,
+        cursoId: turmaData.curso,
       },
       {
         headers: {
