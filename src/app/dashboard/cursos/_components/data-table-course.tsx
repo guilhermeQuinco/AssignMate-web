@@ -46,6 +46,17 @@ import { Container } from "../../_components/container";
 
 import { Course } from "@/types";
 import { useRouter } from "next/navigation";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { deleteCourse } from "../actions/course";
 interface TableCourseProps {
   data: Course[];
 }
@@ -59,7 +70,13 @@ export default function DataTableCourse({ data }: TableCourseProps) {
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
 
-  const router = useRouter();
+  const onDeleteCourse = async (id: string) => {
+    try {
+      await deleteCourse(id);
+    } catch (error) {
+      console.error;
+    }
+  };
 
   const columns: ColumnDef<Course>[] = [
     {
@@ -92,13 +109,31 @@ export default function DataTableCourse({ data }: TableCourseProps) {
       accessorKey: "action",
       header: "Ação",
       cell: ({ row }) => {
-        const user = row.original;
+        const course = row.original;
 
         return (
           <div className="flex flex-row gap-5">
-            <button>
-              <Trash size={20} />
-            </button>
+            <Dialog>
+              <DialogTrigger>
+                <Trash />
+              </DialogTrigger>
+              <DialogContent className="bg-white">
+                <DialogHeader>
+                  <DialogTitle>Tem certeza disso?</DialogTitle>
+                  <DialogDescription>
+                    Essa ação não pode ser desfeita. Isso deleterá
+                    permanentemente o curso de{" "}
+                    <span className="font-bold">{course.nome}</span>
+                  </DialogDescription>
+                </DialogHeader>
+
+                <DialogFooter>
+                  <DialogClose onClick={() => onDeleteCourse(course.id)}>
+                    Sim
+                  </DialogClose>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
             <button>
               <Edit size={20} />
             </button>

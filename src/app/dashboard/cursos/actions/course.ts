@@ -41,3 +41,18 @@ export async function addCourse(courseData: CourseSchemaType) {
     return error;
   }
 }
+
+export async function deleteCourse(id: string) {
+  const token = (await cookies()).get("token")?.value;
+  try {
+    await api.delete(`/cursos/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    revalidatePath("/dashboard/cursos");
+  } catch (error) {
+    return error;
+  }
+}
