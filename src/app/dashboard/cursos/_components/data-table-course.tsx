@@ -113,6 +113,9 @@ export default function DataTableCourse({ data }: TableCourseProps) {
 
         return (
           <div className="flex flex-row gap-5">
+            <button>
+              <Edit size={20} />
+            </button>
             <Dialog>
               <DialogTrigger>
                 <Trash />
@@ -134,9 +137,6 @@ export default function DataTableCourse({ data }: TableCourseProps) {
                 </DialogFooter>
               </DialogContent>
             </Dialog>
-            <button>
-              <Edit size={20} />
-            </button>
           </div>
         );
       },

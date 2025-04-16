@@ -42,7 +42,7 @@ export default function StudentForm({
   });
 
   function generateNewRegistration() {
-    const numberString = lastRegistration.replace("ALUNO", "");
+    const numberString = lastRegistration.replace("ALU", "");
     const number = parseInt(numberString, 10);
     const nextNumber = number + 1;
     return generateRegistration("ALUNO", nextNumber);

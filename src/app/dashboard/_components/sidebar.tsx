@@ -124,7 +124,7 @@ export function SideBar() {
           </Collapsible>
         ))}
 
-        <SidebarGroup>
+        {/* <SidebarGroup>
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton
@@ -136,7 +136,7 @@ export function SideBar() {
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
-        </SidebarGroup>
+        </SidebarGroup> */}
 
         <SidebarGroup>
           <SidebarMenu>

@@ -30,7 +30,6 @@ export default function DisciplinaForm({
 }: DisciplinaFormProps) {
   const router = useRouter();
   const [matriculaGerada, setMatriculaGerada] = useState("");
-  const senhaPadrao = "assign2025";
 
   const {
     register,
@@ -57,12 +56,12 @@ export default function DisciplinaForm({
   }, [nomeDisciplina, lastRegistration]);
 
   async function onSubmit(data: DisciplinaSchemaType) {
-    if (!matriculaGerada) {
-      toast.error(
-        "A matrícula não pôde ser gerada. Verifique o nome da disciplina."
-      );
-      return;
-    }
+    // if (!matriculaGerada) {
+    //   toast.error(
+    //     "A matrícula não pôde ser gerada. Verifique o nome da disciplina."
+    //   );
+    //   return;
+    // }
 
     console.log(data);
 
@@ -93,10 +92,14 @@ export default function DisciplinaForm({
         </button>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Card className="bg-[#F3EDED] rounded-2xl max-w-7xl mx-auto">
-          <CardContent className="grid md:grid-cols-2 gap-10 p-10">
-            {/* Campo: Código (gerado automaticamente) */}
+      <Card className="bg-[#F3EDED] rounded-2xl max-w-7xl mx-auto">
+        <CardContent>
+          {/* Campo: Código (gerado automaticamente) */}
+
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="grid md:grid-cols-2 gap-10 p-10"
+          >
             <div className="space-y-2">
               <Label className="text-zinc-600 text-sm font-semibold">
                 Código
@@ -166,6 +169,11 @@ export default function DisciplinaForm({
                 className="p-5 opacity-40 bg-transparent text-sm font-medium border border-zinc-500"
                 {...register("cargaHoraria")}
               />
+              {errors.cargaHoraria && (
+                <p className="text-rose-500 text-sm mt-1">
+                  {errors.cargaHoraria.message}
+                </p>
+              )}
             </div>
 
             {/* Campo: Descrição */}
@@ -216,9 +224,9 @@ export default function DisciplinaForm({
                 Salvar
               </button>
             </div>
-          </CardContent>
-        </Card>
-      </form>
+          </form>
+        </CardContent>
+      </Card>
     </main>
   );
 }
