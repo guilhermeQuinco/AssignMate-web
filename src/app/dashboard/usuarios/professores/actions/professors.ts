@@ -40,7 +40,7 @@ export async function addNewProfessor(professorData: ProfessorSchemaType) {
   }
 }
 
-export async function deleteProfessor(id: string) {
+export async function deleteProfessor(id: number) {
   const token = (await cookies()).get("token")?.value;
   try {
     const response = await api.delete(`/professores/${id}`, {

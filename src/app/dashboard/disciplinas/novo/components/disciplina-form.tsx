@@ -64,18 +64,16 @@ export default function DisciplinaForm({
       return;
     }
 
-    const dadosCompletos = {
-      ...data,
-    };
+    console.log(data);
 
-    try {
-      await addNewDisciplina(dadosCompletos);
-      toast.success("Disciplina cadastrada com sucesso!");
-      router.back();
-    } catch (error) {
-      toast.error("Erro ao cadastrar disciplina.");
-      console.error(error);
-    }
+    // try {
+    //   await addNewDisciplina(data);
+    //   toast.success("Disciplina cadastrada com sucesso!");
+    //   router.back();
+    // } catch (error) {
+    //   toast.error("Erro ao cadastrar disciplina.");
+    //   console.error(error);
+    // }
   }
 
   return (
@@ -95,90 +93,132 @@ export default function DisciplinaForm({
         </button>
       </div>
 
-      <Card className="bg-[#F3EDED] rounded-2xl max-w-7xl mx-auto">
-        <CardContent className="grid md:grid-cols-2 gap-10 p-10">
-          {/* Campo: Código (gerado automaticamente) */}
-          <div className="space-y-2">
-            <Label className="text-zinc-600 text-sm font-semibold">
-              Código
-            </Label>
-            <Input
-              readOnly
-              value={matriculaGerada}
-              className="p-5 opacity-40 bg-neutral-500 text-sm font-medium"
-            />
-          </div>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Card className="bg-[#F3EDED] rounded-2xl max-w-7xl mx-auto">
+          <CardContent className="grid md:grid-cols-2 gap-10 p-10">
+            {/* Campo: Código (gerado automaticamente) */}
+            <div className="space-y-2">
+              <Label className="text-zinc-600 text-sm font-semibold">
+                Código
+              </Label>
+              <Input
+                readOnly
+                disabled
+                type="text"
+                value={matriculaGerada}
+                className="p-5 opacity-40 bg-neutral-500 text-sm font-medium"
+                {...register("codigo")}
+              />
+            </div>
 
-          {/* Campo: Nome */}
-          <FormField
-            label="Nome"
-            type={"text"}
-            register={register("nome")}
-            error={errors.nome?.message}
-          />
+            {/* Campo: Nome */}
+            <div className="space-y-2">
+              <Label className="text-zinc-600 text-sm font-semibold">
+                Nome
+              </Label>
+              <Input
+                type="text"
+                className="p-5 opacity-40 bg-transparent text-sm font-medium border border-zinc-500 text-black"
+                {...register("nome")}
+              />
+              {errors.nome && (
+                <p className="text-rose-500 text-sm mt-1">
+                  {errors.nome.message}
+                </p>
+              )}
+            </div>
 
-          {/* Campo: Período */}
-          <FormField
-            label="Período"
-            type={"text"}
-            register={register("periodo")}
-            error={errors.periodo?.message}
-          />
+            {/* Campo: Período */}
+            <div className="space-y-2">
+              <Label className="text-zinc-600 text-sm font-semibold">
+                Período <span className="text-rose-500">*</span>
+              </Label>
+              <select
+                className="bg-transparent border border-[#ABABAB] p-3 rounded-lg w-full "
+                {...register("periodo")}
+              >
+                <option value="">Selecione o período</option>
+                <option value="1°">1°</option>
+                <option value="2°">2°</option>
+                <option value="3°">3°</option>
+                <option value="4°">4°</option>
+                <option value="5°">5°</option>
+                <option value="6°">6°</option>
+                <option value="7°">7°</option>
+                <option value="8°">8°</option>
+                <option value="9°">9°</option>
+                <option value="10°">10°</option>
+              </select>
+              {errors.periodo && (
+                <p className="text-rose-500 text-sm mt-1">
+                  {errors.periodo.message}
+                </p>
+              )}
+            </div>
 
-          {/* Campo: Carga Horária */}
-          <FormField
-            label="Carga Horária"
-            type={"number"}
-            register={register("cargaHoraria")}
-            error={errors.cargaHoraria?.message}
-          />
+            {/* Campo: Carga Horária */}
+            <div className="space-y-2">
+              <Label className="text-zinc-600 text-sm font-semibold">
+                Carga horária
+              </Label>
+              <Input
+                type="number"
+                className="p-5 opacity-40 bg-transparent text-sm font-medium border border-zinc-500"
+                {...register("cargaHoraria")}
+              />
+            </div>
 
-          {/* Campo: Descrição */}
-          <FormField
-            label="Ementa"
-            type={"text"}
-            register={register("ementa")}
-            error={errors.ementa?.message}
-          />
+            {/* Campo: Descrição */}
+            <div className="space-y-2">
+              <Label className="text-zinc-600 text-sm font-semibold">
+                Ementa
+              </Label>
+              <Input
+                readOnly
+                disabled
+                type="text"
+                className="p-5 opacity-40 bg-neutral-500 text-sm font-medium placeholder:"
+                placeholder="Definido pelo professor"
+                value={"Definido pelo professor"}
+                {...register("descricao")}
+              />
+            </div>
 
-          {/* Campo: Senha (fixa, somente leitura) */}
+            {/* Curso */}
+            <div className="space-y-2">
+              <Label className="text-zinc-600 text-sm font-semibold">
+                Curso <span className="text-rose-500">*</span>
+              </Label>
+              <select
+                className="bg-transparent border border-[#ABABAB] p-3 rounded-lg w-full "
+                {...register("cursoId")}
+              >
+                <option value="">Selecione um curso</option>
+                {courses.map((course) => (
+                  <option key={course.id} value={course.id}>
+                    {course.nome}
+                  </option>
+                ))}
+              </select>
+              {errors.cursoId && (
+                <p className="text-rose-500 text-sm mt-1">
+                  {errors.cursoId.message}
+                </p>
+              )}
+            </div>
 
-          {/* Curso */}
-          <div className="space-y-2">
-            <Label className="text-zinc-600 text-sm font-semibold">
-              Curso <span className="text-rose-500">*</span>
-            </Label>
-            <select
-              className="bg-transparent border border-[#ABABAB] p-3 rounded-lg w-full "
-              {...register("curso")}
-            >
-              <option value="">Selecione um curso</option>
-              {courses.map((course) => (
-                <option key={course.id} value={course.nome}>
-                  {course.nome}
-                </option>
-              ))}
-            </select>
-            {errors.curso && (
-              <p className="text-rose-500 text-sm mt-1">
-                {errors.curso.message}
-              </p>
-            )}
-          </div>
-
-          {/* Botão de Envio */}
-          <div className="md:col-span-2 flex justify-center">
-            <button
-              type="submit"
-              className="w-32 h-10 px-6 bg-zinc-800 rounded-2xl text-zinc-300 text-base font-medium"
-              onClick={handleSubmit(onSubmit)}
-              disabled={isSubmitting}
-            >
-              Salvar
-            </button>
-          </div>
-        </CardContent>
-      </Card>
+            {/* Botão de Envio */}
+            <div className="md:col-span-2 flex justify-center">
+              <button
+                type="submit"
+                className="w-32 h-10 px-6 bg-zinc-800 rounded-2xl text-zinc-300 text-base font-medium"
+              >
+                Salvar
+              </button>
+            </div>
+          </CardContent>
+        </Card>
+      </form>
     </main>
   );
 }

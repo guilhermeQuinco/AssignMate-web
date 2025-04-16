@@ -40,6 +40,17 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Professor } from "@/types";
 import { DateFormatter } from "@/lib/date";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { deleteProfessor } from "../actions/professors";
 
 interface TableProfessorProps {
   data: Professor[];
@@ -55,6 +66,12 @@ export default function DataTableProfessor({ data }: TableProfessorProps) {
   const [rowSelection, setRowSelection] = React.useState({});
 
   const router = useRouter();
+
+  const onDeleteProfessor = async (id: number) => {
+    try {
+      await deleteProfessor(id);
+    } catch (error) {}
+  };
 
   const columns: ColumnDef<Professor>[] = [
     {
@@ -88,11 +105,33 @@ export default function DataTableProfessor({ data }: TableProfessorProps) {
 
         return (
           <div className="flex items-center gap-5">
+            <Dialog>
+              <DialogTrigger>
+                <Trash />
+              </DialogTrigger>
+              <DialogContent className="bg-white">
+                <DialogHeader>
+                  <DialogTitle>Tem certeza disso?</DialogTitle>
+                  <DialogDescription>
+                    Essa ação não pode ser desfeita. Isso deleterá
+                    permanentemente o professor{" "}
+                    <span className="font-bold">
+                      {row.original.nomeCompleto}
+                    </span>
+                  </DialogDescription>
+                </DialogHeader>
+
+                <DialogFooter>
+                  <DialogClose
+                    onClick={() => onDeleteProfessor(row.original.id)}
+                  >
+                    Sim
+                  </DialogClose>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
             <button onClick={() => handleUser()}>
               <Edit size={20} />
-            </button>
-            <button>
-              <Trash size={20} />
             </button>
           </div>
         );
@@ -147,7 +186,7 @@ export default function DataTableProfessor({ data }: TableProfessorProps) {
 
             <Button className="py-6" asChild>
               <Link href={"/dashboard/usuarios/professores/novo"}>
-                <span >+ Adicionar </span>
+                <span>+ Adicionar </span>
               </Link>
             </Button>
           </div>

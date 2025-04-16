@@ -1,6 +1,7 @@
 import { string } from "zod";
 
 export type Professor = {
+  id: number;
   matricula: string;
   nomeCompleto: string;
   dataNascimento: string;

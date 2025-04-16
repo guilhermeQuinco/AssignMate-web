@@ -6,6 +6,8 @@ import { getDisciplinas } from "./actions/disciplinas";
 const Disciplinas = async () => {
   const data = await getDisciplinas();
 
+  console.log(data);
+
   return (
     <main className="bg-[#d9d9d9] min-h-screen">
       <DataTableDisciplina data={data} />

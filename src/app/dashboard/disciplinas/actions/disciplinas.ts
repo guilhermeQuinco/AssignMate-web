@@ -11,7 +11,7 @@ export async function getDisciplinas() {
     headers: { Authorization: `Bearer ${token}` },
   });
 
-  return data.data;
+  return data.data.data;
 }
 
 export async function addNewDisciplina(disciplinaData: DisciplinaSchemaType) {
@@ -22,9 +22,10 @@ export async function addNewDisciplina(disciplinaData: DisciplinaSchemaType) {
       {
         codigo: disciplinaData.codigo,
         nome: disciplinaData.nome,
-        descricao: disciplinaData.descricao,
+        descricao: "Decrição da Disciplina ",
         cargaHoraria: disciplinaData.cargaHoraria,
         periodo: disciplinaData.periodo,
+        cursoId: disciplinaData.cursoId,
       },
       {
         headers: {
