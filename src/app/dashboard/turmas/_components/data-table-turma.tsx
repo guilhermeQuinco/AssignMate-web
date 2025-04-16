@@ -43,13 +43,14 @@ import { Container } from "../../_components/container";
 import Link from "next/link";
 
 import { useRouter } from "next/navigation";
-import { Turma } from "@/types";
+import { Course, Turma } from "@/types";
 
 interface TableTurmaProps {
   data: Turma[];
+  courses: Course[];
 }
 
-export default function DataTableTurma({ data }: TableTurmaProps) {
+export default function DataTableTurma({ data, courses }: TableTurmaProps) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -153,20 +154,26 @@ export default function DataTableTurma({ data }: TableTurmaProps) {
             </Button>
           </div>
         </div>
-        <div className="rounded-md border">
-          <Table>
-            <TableHeader className="bg-[#313056]">
+        <div className="rounded-xl shadow overflow-hidden relative ">
+          <Table className="">
+            <TableHeader className="bg-zinc-800 ">
               {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
+                <TableRow
+                  key={headerGroup.id}
+                  className="uppercase font-bold text-md"
+                >
                   {headerGroup.headers.map((header) => {
                     return (
-                      <TableHead key={header.id} className="text-white">
+                      <TableHead
+                        key={header.id}
+                        className="text-white py-4 px-5"
+                      >
                         {header.isPlaceholder
                           ? null
                           : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
                       </TableHead>
                     );
                   })}
@@ -179,9 +186,10 @@ export default function DataTableTurma({ data }: TableTurmaProps) {
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
+                    className="text-lg"
                   >
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
+                      <TableCell key={cell.id} className="px-5">
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()

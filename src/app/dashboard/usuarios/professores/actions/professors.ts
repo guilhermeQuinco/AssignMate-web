@@ -11,7 +11,7 @@ export async function getProfessors() {
     headers: { Authorization: `Bearer ${token}` },
   });
 
-  return data.data;
+  return data.data.data;
 }
 
 export async function addNewProfessor(professorData: ProfessorSchemaType) {
@@ -22,7 +22,7 @@ export async function addNewProfessor(professorData: ProfessorSchemaType) {
       {
         matricula: professorData.matricula,
         nomeCompleto: professorData.nomeCompleto,
-        dataNascimento: professorData.dataNascimento,
+        dataNascimento: new Date(professorData.dataNascimento).toISOString(),
         especialidade: professorData.especialidade,
         email: professorData.email,
       },
@@ -34,6 +34,7 @@ export async function addNewProfessor(professorData: ProfessorSchemaType) {
     );
 
     revalidatePath("/dashboard/usuarios/professores");
+    return response;
   } catch (error) {
     return error;
   }

@@ -14,6 +14,8 @@ const NewProfessor = async () => {
     .sort()
     .at(-1);
 
+  console.log(lastRegistration);
+
   return (
     <section className="bg-[#D9D9D9] min-h-screen">
       <ProfessorForm lastRegistration={lastRegistration} />

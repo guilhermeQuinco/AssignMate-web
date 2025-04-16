@@ -1,162 +1,224 @@
 "use client";
 
-import { useForm } from "react-hook-form";
+import { Book, Code } from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+
 import { useRouter } from "next/navigation";
-import { z } from "zod";
+import { useEffect, useState } from "react";
 import { turmaSchema, TurmaSchemaType } from "@/schemas/turmaSchema";
-import { generateRegistration } from "@/lib/utils";
-import { addNewTurma } from "../../actions/turmas";
-//import { Button } from "@/components/ui/button";
-
-import { Input } from "@/components/ui/input";
-import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-
+import { addNewTurma } from "../../actions/turmas";
+import { Container } from "@/app/dashboard/_components/container";
 import { FaArrowLeft } from "react-icons/fa";
 
-const schema = turmaSchema; // assume que seu schema já define os campos: nome, dataNascimento, especialidade, email
-
-type FormData = z.infer<typeof schema>;
-
-type TurmaFormProps = {
-  lastRegistration: string; // Ex: "PROFESSOR0001" ou conforme seu padrão
-};
-
-export default function TurmaForm({ lastRegistration }: TurmaFormProps) {
-  const router = useRouter();
+export function TurmaForm() {
+  const [turma, setTurma] = useState("");
 
   const {
     register,
     handleSubmit,
+    control,
+    reset,
+    watch,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<TurmaSchemaType>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(turmaSchema),
+    defaultValues: {
+      nome: "",
+      codigo: "",
+    },
   });
 
-  function generateNewRegistration() {
-    // Caso o seu lastRegistration venha com o prefixo "PROFESSOR",
-    // ajuste-o para o padrão que deseja. Exemplo:
-    const numberString = lastRegistration.replace("PROFESSOR", "");
-    const number = parseInt(numberString, 10);
-    const nextNumber = number + 1;
-    // Caso a lógica de generateRegistration já formate o número para "25P000X", utilize-a:
-    const newRegistration = generateRegistration("25P", nextNumber);
-    return newRegistration;
+  const router = useRouter();
+
+  function generateTurmaCode() {
+    return turma.slice(0, 3).toUpperCase();
   }
 
-  // Matrícula gerada e senha fixa
-  const matriculaGerada = generateNewRegistration();
-  const senhaPadrao = "assign2025";
+  const createTurma = async (data: TurmaSchemaType) => {
+    try {
+      await addNewTurma(data);
+      router.back();
+      router;
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-  async function onSubmit(data: TurmaSchemaType) {
-    const dadosCompletos = {
-      ...data,
-      matricula: matriculaGerada,
-      senha: senhaPadrao,
-    };
-    console.log("Turma a ser salva:", dadosCompletos);
-    await addNewTurma(dadosCompletos);
-    router.back();
-  }
+  const turmaName = watch("nome");
+
+  useEffect(() => {
+    if (turmaName) {
+      const generatedCode = turmaName
+        .slice(0, 3)
+        .toUpperCase()
+        .replace(/\s+/g, ""); // Remove espaços se houver
+
+      setValue("codigo", generatedCode);
+    }
+  }, [turmaName, setValue]);
 
   return (
-    <main className="bg-[#d9d9d9] flex-1  min-h-screen p-10 font-['Roboto_Slab']">
-      {/* Header */}
-      <div className="flex justify-between items-center mb-10">
-        <div className="justify-start text-zinc-600 text-3xl font-medium leading-[48px]">
-          Cadastro de Turma
+    <main className="min-h-screen bg-[#d9d9d9]">
+      <Container>
+        <div className="flex justify-between items-center mb-10">
+          <div className="text-zinc-900 text-3xl ">Cadastro de Aluno</div>
+          <button
+            onClick={() => router.back()}
+            className="w-32 h-10 px-6 bg-zinc-800 rounded-2xl inline-flex justify-center items-center gap-2"
+          >
+            <FaArrowLeft className="text-zinc-300 w-4 h-3.5" />
+            <span className="text-zinc-300 text-base font-medium">Voltar</span>
+          </button>
         </div>
-        <button
-          type="button"
-          onClick={() => router.back()}
-          className="w-32 h-10 px-6 bg-zinc-800 rounded-2xl inline-flex justify-center items-center gap-2 text-zinc-300 text-base font-medium disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          <FaArrowLeft className="w-4 h-3.5" />
-          Voltar
-        </button>
+        <div className=" rounded-xl mt-14  bg-white p-20">
+          <form
+            onSubmit={handleSubmit(createTurma)}
+            className="flex flex-col gap-10"
+          >
+            <div className="grid grid-cols-2 gap-14">
+              <div className="flex flex-col gap-10">
+                <div className="flex flex-col gap-3">
+                  <Label className="text-zinc-600 text-sm font-semibold">
+                    Código <span className="text-rose-500">*</span>
+                  </Label>
+                  <div className="flex flex-row bg-gray-400 rounded-lg p-3 gap-3 items-center">
+                    <Controller
+                      name="codigo"
+                      control={control}
+                      render={({ field }) => (
+                        <input
+                          {...field}
+                          type="text"
+                          id="codigo"
+                          className="w-full rounded bg-transparent outline-none text-black font-semibold"
+                          placeholder="Código será gerado automaticamente"
+                          readOnly
+                          disabled
+                        />
+                      )}
+                    />
+                  </div>
+                </div>
+                <div className="flex flex-col gap-5">
+                  <div className="flex flex-col gap-3">
+                    <Label className="text-zinc-600 text-sm font-semibold">
+                      Nome <span className="text-rose-500">*</span>
+                    </Label>
+                    <div className="flex flex-row bg-white rounded-lg p-3 items-center gap-3 border border-zinc-400">
+                      <Controller
+                        name="nome"
+                        control={control}
+                        render={({ field }) => (
+                          <input
+                            {...field}
+                            type="text"
+                            id="nome"
+                            className="w-full  bg-white rounded outline-none text-black"
+                            placeholder="Digite o nome do curso"
+                          />
+                        )}
+                      />
+                    </div>
+                  </div>
+                </div>
 
-      </div>
+                <div className="space-y-2">
+                  <Label className="text-zinc-600 text-sm font-semibold">
+                    Turno <span className="text-rose-500">*</span>
+                  </Label>
+                  <select
+                    className="bg-white border border-[#ABABAB] p-3 rounded-lg w-full "
+                    {...register("turno")}
+                  >
+                    <option value="">Selecione um curso</option>
+                    <option value="MANHA">Manhã</option>
+                    <option value="NOITE">Noite</option>
+                  </select>
+                  {errors.turno && (
+                    <p className="text-rose-500 text-sm mt-1">
+                      {errors.turno.message}
+                    </p>
+                  )}
+                </div>
+              </div>
 
-      <Card className="bg-[#F3EDED] rounded-2xl max-w-7xl mx-auto">
-        <CardContent className="flex justify-center grid md:grid-cols-2 gap-10 p-10">
-          {/* Matrícula (apenas leitura) */}
-          <div className="space-y-2">
-            <Label className="justify-start text-zinc-600 text-sm  font-semibold">Código</Label>
-            <Input readOnly value={matriculaGerada} className="p-5 opacity-40 justify-start text-color-slate-900 text-sm font-medium bg-neutral-500" />
-          </div>
+              <div className="flex flex-col gap-10">
+                <div className="flex flex-col gap-3">
+                  <Label className="text-zinc-600 text-sm font-semibold">
+                    Semestre <span className="text-rose-500">*</span>
+                  </Label>
+                  <div className="flex flex-row bg-white rounded-lg  gap-3 items-center">
+                    <select
+                      className="bg-white border border-[#ABABAB] p-3 rounded-lg w-full "
+                      {...register("semestre")}
+                    >
+                      <option value="">Selecione o semestre</option>
+                      <option value="2025.1">2025.1</option>
+                    </select>
+                    {errors.semestre && (
+                      <p className="text-rose-500 text-sm mt-1">
+                        {errors.semestre.message}
+                      </p>
+                    )}
+                  </div>
+                </div>
 
-          {/* Nome */}
-          <FormField
-            label="Nome"
-            register={register("nome")}
-            error={errors.nome?.message}
-          />
+                <div className="flex flex-col gap-3">
+                  <Label className="text-zinc-600 text-sm font-semibold">
+                    Curso <span className="text-rose-500">*</span>
+                  </Label>
+                  <div className="flex flex-row bg-white rounded-lg  gap-3 items-center">
+                    <select
+                      className="bg-white border border-[#ABABAB] p-3 rounded-lg w-full "
+                      {...register("curso")}
+                    >
+                      <option value="">Selecione o semestre</option>
+                      <option value="2025.1">2025.1</option>
+                    </select>
+                    {errors.semestre && (
+                      <p className="text-rose-500 text-sm mt-1">
+                        {errors.semestre.message}
+                      </p>
+                    )}
+                  </div>
+                </div>
+                <div className="flex flex-col gap-3">
+                  <Label className="text-zinc-600 text-sm font-semibold">
+                    Modalidade <span className="text-rose-500">*</span>
+                  </Label>
+                  <div className="flex flex-row bg-white rounded-lg  gap-3 items-center">
+                    <select
+                      className="bg-white border border-[#ABABAB] p-3 rounded-lg w-full "
+                      {...register("curso")}
+                    >
+                      <option value="">Selecione a Modalidade</option>
+                      <option value="PRESENCIAL">Presencial</option>
+                      <option value="EAD">EAD</option>
+                      <option value="HÍBRIDO">HÍBRIDO</option>
+                    </select>
+                    {errors.semestre && (
+                      <p className="text-rose-500 text-sm mt-1">
+                        {errors.semestre.message}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
 
-          {/* Semestre */}
-          <FormField
-            label="Semestre"
-            register={register("semestre")}
-            error={errors.semestre?.message}
-          />
-
-          {/* Turno */}
-          <FormField
-            label="Turno"
-            register={register("turno")}
-            error={errors.turno?.message}
-          />
-
-          {/* Modalidade */}
-          <FormField
-            label="Modalidade"
-            register={register("modalidade")}
-            error={errors.modalidade?.message}
-          />
-
-          {/* Senha padrão (apenas leitura) */}
-          <div className="space-y-2">
-            <Label className="justify-start text-zinc-600 text-sm font-semibold">Senha</Label>
-            <Input
-              readOnly
-              data-required="false"
-              value={senhaPadrao}
-              type="password"
-              className="opacity-40 justify-start text-color-slate-900 text-sm font-medium bg-neutral-400 p-5"
-            />
-          </div>
-          <div className="md:col-span-2 flex justify-center">
-            <button
-              type="submit"
-              className="w-32 h-10 px-6 bg-zinc-800 rounded-2xl inline-flex justify-center items-center gap-2 text-base text-zinc-300"
-              onClick={handleSubmit(onSubmit)}
-              disabled={isSubmitting}
-            >
-              Salvar
-            </button>
-          </div>
-        </CardContent>
-      </Card>
+            <div className="w-full flex justify-center flex-row">
+              <Button type="submit" className="w-[10%] py-5">
+                Salvar
+              </Button>
+            </div>
+          </form>
+        </div>
+      </Container>
     </main>
-  );
-}
-
-// Componente de campo de formulário reutilizável
-type FormFieldProps = {
-  label: string;
-  type?: string;
-  register: any;
-  error?: string;
-};
-
-function FormField({ label, type = "text", register, error }: FormFieldProps) {
-  return (
-    <div className="space-y-2">
-      <Label className="justify-start text-zinc-600 text-sm font-semibold">
-        {label} <span className="text-rose-500">*</span>
-      </Label>
-      <Input {...register} type={type} className="p-5 border-[#ABABAB]" />
-      {error && <p className="text-rose-500 text-sm mt-1">{error}</p>}
-    </div>
   );
 }

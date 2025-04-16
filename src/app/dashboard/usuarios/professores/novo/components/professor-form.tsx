@@ -4,7 +4,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
-import { professorSchema, ProfessorSchemaType } from "@/schemas/professorSchema";
+import {
+  professorSchema,
+  ProfessorSchemaType,
+} from "@/schemas/professorSchema";
 import { generateRegistration } from "@/lib/utils";
 import { addNewProfessor } from "../../actions/professors";
 //import { Button } from "@/components/ui/button";
@@ -23,7 +26,9 @@ type ProfessorFormProps = {
   lastRegistration: string; // Ex: "PROFESSOR0001" ou conforme seu padrão
 };
 
-export default function ProfessorForm({ lastRegistration }: ProfessorFormProps) {
+export default function ProfessorForm({
+  lastRegistration,
+}: ProfessorFormProps) {
   const router = useRouter();
 
   const {
@@ -37,7 +42,7 @@ export default function ProfessorForm({ lastRegistration }: ProfessorFormProps) 
   function generateNewRegistration() {
     // Caso o seu lastRegistration venha com o prefixo "PROFESSOR",
     // ajuste-o para o padrão que deseja. Exemplo:
-    const numberString = lastRegistration.replace("PROFESSOR", "");
+    const numberString = lastRegistration.replace("PROF", "");
     const number = parseInt(numberString, 10);
     const nextNumber = number + 1;
     // Caso a lógica de generateRegistration já formate o número para "25P000X", utilize-a:
@@ -50,14 +55,13 @@ export default function ProfessorForm({ lastRegistration }: ProfessorFormProps) 
   const senhaPadrao = "assign2025";
 
   async function onSubmit(data: ProfessorSchemaType) {
-    const dadosCompletos = {
-      ...data,
-      matricula: matriculaGerada,
-      senha: senhaPadrao,
-    };
-    console.log("Professor a ser salvo:", dadosCompletos);
-    await addNewProfessor(dadosCompletos);
-    router.back();
+    try {
+      console.log("Professor a ser salvo:", data);
+      await addNewProfessor(data);
+      router.back();
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
@@ -75,70 +79,112 @@ export default function ProfessorForm({ lastRegistration }: ProfessorFormProps) 
           <FaArrowLeft className="w-4 h-3.5" />
           Voltar
         </button>
-
       </div>
 
-      <Card className="bg-[#F3EDED] rounded-2xl max-w-7xl mx-auto">
-        <CardContent className="flex justify-center grid md:grid-cols-2 gap-10 p-10">
-          {/* Matrícula (apenas leitura) */}
-          <div className="space-y-2">
-            <Label className="justify-start text-zinc-600 text-sm  font-semibold">Matrícula</Label>
-            <Input readOnly value={matriculaGerada} className="p-5 opacity-40 justify-start text-color-slate-900 text-sm font-medium bg-neutral-500" />
-          </div>
-
-          {/* Data de nascimento */}
-          <FormField
-            label="Data de Nascimento"
-            type="date"
-            register={register("dataNascimento")}
-            error={errors.dataNascimento?.message}
-          />
-
-          {/* Nome */}
-          <FormField
-            label="Nome"
-            register={register("nomeCompleto")}
-            error={errors.nomeCompleto?.message}
-          />
-
-          {/* Especialidade */}
-          <FormField
-            label="Especialidade"
-            register={register("especialidade")}
-            error={errors.especialidade?.message}
-          />
-
-          {/* E-mail */}
-          <FormField
-            label="E-mail"
-            type="email"
-            register={register("email")}
-            error={errors.email?.message}
-          />
-
-          {/* Senha padrão (apenas leitura) */}
-          <div className="space-y-2">
-            <Label className="justify-start text-zinc-600 text-sm font-semibold">Senha</Label>
-            <Input
-              readOnly
-              data-required="false"
-              value={senhaPadrao}
-              type="password"
-              className="opacity-40 justify-start text-color-slate-900 text-sm font-medium bg-neutral-400 p-5"
-            />
-          </div>
-          <div className="md:col-span-2 flex justify-center">
-            <button
-              type="submit"
-              className="w-32 h-10 px-6 bg-zinc-800 rounded-2xl inline-flex justify-center items-center gap-2 text-base text-zinc-300"
-              onClick={handleSubmit(onSubmit)}
-              disabled={isSubmitting}
-            >
-              Salvar
-            </button>
-          </div>
-        </CardContent>
-      </Card>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Card className="bg-[#F3EDED] rounded-2xl max-w-7xl mx-auto">
+          <CardContent className=" justify-center grid md:grid-cols-2 gap-10 p-10">
+            {/* Matrícula (apenas leitura) */}
+            <div className="space-y-2">
+              <Label className="justify-start text-zinc-600 text-sm  font-semibold">
+                Matrícula
+              </Label>
+              <Input
+                readOnly
+                defaultValue={generateNewRegistration()}
+                className="p-5 opacity-40 justify-start text-color-slate-900 text-sm font-medium bg-neutral-500"
+                {...register("matricula")}
+              />
+            </div>
+            {/* Data de nascimento */}
+            <div className="space-y-2">
+              <Label className="justify-start text-zinc-600 text-sm font-semibold">
+                Data nascimento<span className="text-rose-500">*</span>
+              </Label>
+              <Input
+                {...register("dataNascimento")}
+                type="date"
+                className="p-5 border-[#ABABAB]"
+              />
+              {errors.dataNascimento && (
+                <p className="text-rose-500 text-sm mt-1">
+                  {errors.dataNascimento.message}
+                </p>
+              )}
+            </div>
+            {/* Nome */}
+            <div className="space-y-2">
+              <Label className="justify-start text-zinc-600 text-sm font-semibold">
+                Nome<span className="text-rose-500">*</span>
+              </Label>
+              <Input
+                {...register("nomeCompleto")}
+                type="text"
+                className="p-5 border-[#ABABAB]"
+              />
+              {errors.nomeCompleto && (
+                <p className="text-rose-500 text-sm mt-1">
+                  {errors.nomeCompleto.message}
+                </p>
+              )}
+            </div>
+            {/* Especialidade */}
+            <div className="space-y-2">
+              <Label className="justify-start text-zinc-600 text-sm font-semibold">
+                Especialidade<span className="text-rose-500">*</span>
+              </Label>
+              <Input
+                {...register("especialidade")}
+                type="text"
+                className="p-5 border-[#ABABAB]"
+              />
+              {errors.especialidade && (
+                <p className="text-rose-500 text-sm mt-1">
+                  {errors.especialidade.message}
+                </p>
+              )}
+            </div>
+            {/* E-mail */}
+            <div className="space-y-2">
+              <Label className="justify-start text-zinc-600 text-sm font-semibold">
+                E-mail<span className="text-rose-500">*</span>
+              </Label>
+              <Input
+                {...register("email")}
+                type="e-mail"
+                className="p-5 border-[#ABABAB]"
+              />
+              {errors.email && (
+                <p className="text-rose-500 text-sm mt-1">
+                  {errors.email.message}
+                </p>
+              )}
+            </div>
+            {/* Senha padrão (apenas leitura) */}
+            <div className="space-y-2">
+              <Label className="justify-start text-zinc-600 text-sm font-semibold">
+                Senha
+              </Label>
+              <Input
+                readOnly
+                data-required="false"
+                value={senhaPadrao}
+                type="password"
+                className="opacity-40 justify-start text-color-slate-900 text-sm font-medium bg-neutral-400 p-5"
+              />
+            </div>
+            <div className="md:col-span-2 flex justify-center">
+              <button
+                type="submit"
+                className="w-32 h-10 px-6 bg-zinc-800 rounded-2xl inline-flex justify-center items-center gap-2 text-base text-zinc-300"
+                disabled={isSubmitting}
+              >
+                Salvar
+              </button>
+            </div>
+          </CardContent>
+        </Card>
+      </form>
     </main>
   );
 }
