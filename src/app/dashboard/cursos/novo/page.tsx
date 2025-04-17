@@ -90,7 +90,11 @@ export default function CourseForm() {
                 </div>
                 <div className="flex flex-col gap-3">
                   <label className="text-xl">Nome</label>
-                  <div className="flex flex-row bg-white border border-black rounded-lg p-3 ouline gap-3 items-center">
+                  <div
+                    className={`flex flex-row bg-white border ${
+                      errors.nome && "border-red-500"
+                    } border-black rounded-lg p-3 ouline gap-3 items-center`}
+                  >
                     <Controller
                       name="nome"
                       control={control}
@@ -98,24 +102,38 @@ export default function CourseForm() {
                         <input
                           {...field}
                           type="text"
-                          id="codigo"
+                          id="nome"
                           className="w-full p-2 rounded bg-transparent outline-none text-black font-semibold"
                           placeholder="Digite o nome do curso..."
                         />
                       )}
                     />
                   </div>
+                  {errors.nome && (
+                    <p className="text-rose-500 text-sm mt-1">
+                      {errors.nome.message}
+                    </p>
+                  )}
                 </div>
               </div>
 
               <div className="flex flex-col gap-3">
                 <label className="text-xl">Descrição</label>
-                <div className="flex flex-row bg-white border border-black rounded-lg p-3 ouline gap-3 items-center">
+                <div
+                  className={`flex flex-row bg-white border border-black rounded-lg p-3 ouline gap-3 items-center ${
+                    errors.descricao && "border-red-500"
+                  }`}
+                >
                   <textarea
                     className="bg-transparent text-black outline-none text-lg w-full min-h-[300px]"
                     {...register("descricao")}
                   />
                 </div>
+                {errors.descricao && (
+                  <p className="text-rose-500 text-sm mt-1">
+                    {errors.descricao.message}
+                  </p>
+                )}
               </div>
             </div>
             <div className="w-full flex flex-row justify-center items-center">
