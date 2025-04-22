@@ -132,7 +132,7 @@ export function SideBar() {
                 isActive={pathname.includes("turmas")}
                 asChild
               >
-                <Link href={"/dashboard/"}>Turma</Link>
+                <Link href={"/dashboard/turmas"}>Turma</Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
