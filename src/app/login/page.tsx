@@ -34,7 +34,9 @@ const login = () => {
   };
 
   const onSubmit = async (formData: LoginUserSchema) => {
-    await signIn(formData);
+    const response = await signIn(formData);
+
+    console.log(response);
     redirect("/dashboard");
   };
 
