@@ -39,6 +39,9 @@ export default function ProfessorForm({ lastRegistration }: ProfessorFormProps) 
     formState: { errors, isSubmitting },
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      matricula: lastRegistration || "",
+    }
   });
 
   useEffect(() => {
@@ -175,7 +178,7 @@ export default function ProfessorForm({ lastRegistration }: ProfessorFormProps) 
                 readOnly
                 type="password"
                 value={senhaPadrao}
-                className="p-5 bg-neutral-400 opacity-40"
+                className="p-5 bg-neutral-500 opacity-40"
               />
             </div>
 

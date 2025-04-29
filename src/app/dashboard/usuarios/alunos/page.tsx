@@ -1,10 +1,7 @@
-import React from "react";
 import DataTableAluno from "./_components/data-table-aluno";
-
-import { cookies } from "next/headers";
 import { getStudents } from "./actions/students";
 
-const Students = async () => {
+export default async function Students() {
   const data = await getStudents();
 
   return (
@@ -12,6 +9,4 @@ const Students = async () => {
       <DataTableAluno data={data} />
     </main>
   );
-};
-
-export default Students;
+}
