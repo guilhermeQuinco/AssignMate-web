@@ -1,5 +1,6 @@
 import DataTableProfessor from "./_components/data-table-professor";
 import { getProfessors } from "./actions/professors";
+import { cookies } from "next/headers";
 
 export default async function Professors() {
   const data = await getProfessors();

@@ -1,5 +1,6 @@
 import DataTableAluno from "./_components/data-table-aluno";
 import { getStudents } from "./actions/students";
+import { cookies } from "next/headers";
 
 export default async function Students() {
   const data = await getStudents();
