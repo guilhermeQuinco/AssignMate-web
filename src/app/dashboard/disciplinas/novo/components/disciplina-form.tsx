@@ -20,7 +20,7 @@ import { Course } from "@/types";
 const schema = disciplinaSchema;
 
 type DisciplinaFormProps = {
-  lastRegistration: string; // Exemplo: "MAT0005"
+  lastRegistration: string;
   courses: Course[];
 };
 
@@ -35,6 +35,7 @@ export default function DisciplinaForm({
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<DisciplinaSchemaType>({
     resolver: zodResolver(schema),
@@ -45,15 +46,24 @@ export default function DisciplinaForm({
   // Gera a matrícula com base nas três primeiras letras do nome e incrementa de acordo com o último registro.
   useEffect(() => {
     if (nomeDisciplina && nomeDisciplina.length >= 3) {
-      const prefixo = nomeDisciplina.substring(0, 3).toUpperCase();
-      // Se o último código registrado começa com esse prefixo, extrai o número; senão, começa em 0.
+      // normaliza (remove acentos)
+
+      const prefixo = nomeDisciplina
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .substring(0, 3)
+        .toUpperCase();
       const lastCode = lastRegistration.startsWith(prefixo)
         ? parseInt(lastRegistration.replace(prefixo, ""), 10)
         : 0;
-      const nextNumber = (lastCode + 1).toString().padStart(4, "0");
-      setMatriculaGerada(`${prefixo}${nextNumber}`);
+
+      const nextNumber = (lastCode + 1).toString().padStart(3, "0");
+      const newCode = `${prefixo}${nextNumber}`;
+
+      setMatriculaGerada(newCode);
+      setValue("codigo", newCode);       // joga no RHF
     }
-  }, [nomeDisciplina, lastRegistration]);
+  }, [nomeDisciplina, lastRegistration, setValue]);
 
   async function onSubmit(data: DisciplinaSchemaType) {
     // if (!matriculaGerada) {
@@ -64,7 +74,15 @@ export default function DisciplinaForm({
     // }
 
     console.log(data);
-
+    try {
+            await addNewDisciplina(data);
+            toast.success("Disciplina cadastrada com sucesso!");
+            router.refresh();
+            router.back();
+          } catch (error) {
+            toast.error("Erro ao cadastrar disciplina.");
+            console.error(error);
+          }
     // try {
     //   await addNewDisciplina(data);
     //   toast.success("Disciplina cadastrada com sucesso!");
@@ -141,16 +159,16 @@ export default function DisciplinaForm({
                 {...register("periodo")}
               >
                 <option value="">Selecione o período</option>
-                <option value="1°">1°</option>
-                <option value="2°">2°</option>
-                <option value="3°">3°</option>
-                <option value="4°">4°</option>
-                <option value="5°">5°</option>
-                <option value="6°">6°</option>
-                <option value="7°">7°</option>
-                <option value="8°">8°</option>
-                <option value="9°">9°</option>
-                <option value="10°">10°</option>
+                <option value="1">1°</option>
+                <option value="2">2°</option>
+                <option value="3">3°</option>
+                <option value="4">4°</option>
+                <option value="5">5°</option>
+                <option value="6">6°</option>
+                <option value="7">7°</option>
+                <option value="8">8°</option>
+                <option value="9">9°</option>
+                <option value="10">10°</option>
               </select>
               {errors.periodo && (
                 <p className="text-rose-500 text-sm mt-1">
@@ -190,6 +208,8 @@ export default function DisciplinaForm({
                 value={"Definido pelo professor"}
                 {...register("descricao")}
               />
+              {/* escondido, mas precisa registrar um valor vazio 
+             <input type="hidden" {...register("descricao")} value="" />*/}
             </div>
 
             {/* Curso */}

@@ -19,6 +19,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import { Label } from "@radix-ui/react-label";
 
 export function Header() {
   const [currentDate, setCurrentDate] = useState("");
@@ -45,6 +46,7 @@ export function Header() {
         {currentDate}
       </div>
       <div className="flex items-center space-x-2">
+      <Label className="">Admin</Label>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button className="p-2 hover:bg-gray-100 rounded-full">
