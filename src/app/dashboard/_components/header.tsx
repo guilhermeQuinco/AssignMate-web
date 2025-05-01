@@ -39,21 +39,22 @@ export function Header() {
   };
 
   return (
-    <header className="sticky top-0 flex h-14 shrink-0 items-center gap-2 border-b z-10 flex-row justify-between px-5 bg-[#d9d9d9] border-zinc-800">
-      <div className="text-black font-medium text-lg font-playfair tracking-[3px] gap-3 flex items-center">
+    <header className="sticky top-0 flex h-14 shrink-0 items-center gap-2 border-b z-10 flex-row justify-between px-5 bg-[#d9d9d9] border-zinc-800 ">
+      <div className="text-zinc-800 font-medium text-lg tracking-[1px] gap-3 flex items-center font-robotoSlab">
         <SidebarTrigger />
         <div className="w-[1px] h-5 bg-black" />
         {currentDate}
       </div>
       <div className="flex items-center space-x-2">
-      <Label className="">Admin</Label>
+      
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <button className="p-2 hover:bg-gray-100 rounded-full">
+            <button className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-full font-robotoSlab">
               <User className="w-6 h-6 text-zinc-800" />
+              <span className="text-zinc-800 font-medium ">Administrador</span>
             </button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56">
+          <DropdownMenuContent className="w-56 font-robotoSlab">
             <DropdownMenuLabel>Minha Conta</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
