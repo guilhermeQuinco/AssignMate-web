@@ -1,152 +1,137 @@
 "use client";
 
-import { Book, Code } from "lucide-react";
-import { Container } from "../../_components/container";
-import { Button } from "@/components/ui/button";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { courseSchema, CourseSchemaType } from "@/schemas/courseSchema";
-import { addCourse } from "../actions/course";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
+import { courseSchema, CourseSchemaType } from "@/schemas/courseSchema";
+import { addCourse } from "../actions/course";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { FaArrowLeft } from "react-icons/fa";
+import { Button } from "@/components/ui/button";
 
 export default function CourseForm() {
-  const [course, setCourse] = useState("");
+  const router = useRouter();
+  const [codigoGerado, setCodigoGerado] = useState("");
 
   const {
     register,
     handleSubmit,
-    control,
-    reset,
     watch,
     setValue,
     formState: { errors, isSubmitting },
   } = useForm<CourseSchemaType>({
     resolver: zodResolver(courseSchema),
-    defaultValues: {
-      nome: "",
-      codigo: "",
-    },
   });
 
-  const router = useRouter();
+  const nomeCurso = watch("nome");
 
-  function generateCourseCode() {
-    return course.slice(0, 3).toUpperCase();
-  }
+  // Gera o código com base nas 3 primeiras letras do nome do curso
+  useEffect(() => {
+    if (nomeCurso && nomeCurso.length >= 3) {
+      const prefixo = nomeCurso.slice(0, 3).toUpperCase().replace(/\s+/g, "");
+      setCodigoGerado(prefixo);
+      setValue("codigo", prefixo);
+    }
+  }, [nomeCurso, setValue]);
 
-  const createCourse = async (data: CourseSchemaType) => {
+  const onSubmit = async (data: CourseSchemaType) => {
     try {
       await addCourse(data);
-      router.back();
+      router.back();  // Redireciona após o cadastro
     } catch (error) {
+      toast.error("Erro ao cadastrar curso.");
       console.error(error);
     }
   };
 
-  const courseName = watch("nome");
-
-  useEffect(() => {
-    if (courseName) {
-      const generatedCode = courseName
-        .slice(0, 3)
-        .toUpperCase()
-        .replace(/\s+/g, ""); // Remove espaços se houver
-
-      setValue("codigo", generatedCode);
-    }
-  }, [courseName, setValue]);
-
   return (
-    <main className="min-h-screen bg-[#d9d9d9]">
-      <Container>
-        <h1 className="text-[2em]">Cadastro de Curso</h1>
-        <div className=" rounded-2xl  mt-14 bg-white p-14">
-          <form
-            className="flex flex-col gap-10"
-            onSubmit={handleSubmit(createCourse)}
-          >
-            <div className="grid grid-cols-2 gap-14">
-              <div className="flex flex-col gap-5">
-                <div className="flex flex-col gap-3">
-                  <label className="text-xl">Código</label>
-                  <div className="flex flex-row bg-gray-500 rounded-lg p-3 items-center gap-3 border border-black">
-                    <Controller
-                      name="codigo"
-                      control={control}
-                      render={({ field }) => (
-                        <input
-                          {...field}
-                          type="text"
-                          id="codigo"
-                          className="w-full p-2 bg-transparent  rounded outline-none text-black"
-                          readOnly
-                          disabled
-                          defaultValue={generateCourseCode()}
-                        />
-                      )}
-                    />
-                  </div>
-                </div>
-                <div className="flex flex-col gap-3">
-                  <label className="text-xl">Nome</label>
-                  <div
-                    className={`flex flex-row bg-white border ${
-                      errors.nome && "border-red-500"
-                    } border-black rounded-lg p-3 ouline gap-3 items-center`}
-                  >
-                    <Controller
-                      name="nome"
-                      control={control}
-                      render={({ field }) => (
-                        <input
-                          {...field}
-                          type="text"
-                          id="nome"
-                          className="w-full p-2 rounded bg-transparent outline-none text-black font-semibold"
-                          placeholder="Digite o nome do curso..."
-                        />
-                      )}
-                    />
-                  </div>
-                  {errors.nome && (
-                    <p className="text-rose-500 text-sm mt-1">
-                      {errors.nome.message}
-                    </p>
-                  )}
-                </div>
-              </div>
+    <main className="bg-[#d9d9d9] flex-1 min-h-screen p-10 font-['Roboto_Slab']">
+      {/* Header */}
+      <div className="flex justify-between items-center mb-10">
+        <div className="text-zinc-800 text-3xl font-medium">
+          Cadastro de Curso
+        </div>
+        <button
+          type="button"
+          onClick={() => router.back()}
+          className="w-32 h-10 px-6 bg-zinc-800 rounded-2xl text-zinc-300 text-base font-medium flex items-center gap-2"
+        >
+          <FaArrowLeft className="w-4 h-3.5" />
+          Voltar
+        </button>
+      </div>
 
-              <div className="flex flex-col gap-3">
-                <label className="text-xl">Descrição</label>
-                <div
-                  className={`flex flex-row bg-white border border-black rounded-lg p-3 ouline gap-3 items-center ${
-                    errors.descricao && "border-red-500"
-                  }`}
-                >
-                  <textarea
-                    className="bg-transparent text-black outline-none text-lg w-full min-h-[300px]"
-                    {...register("descricao")}
-                  />
-                </div>
-                {errors.descricao && (
+      <Card className="bg-[#F3EDED] rounded-2xl max-w-7xl mx-auto">
+        <CardContent>
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="grid md:grid-cols-2 gap-10 p-10"
+          >
+            {/* Lado esquerdo (Código e Nome) */}
+            <div className="space-y-12">
+              <div className="space-y-2">
+                <Label className="text-zinc-600 text-sm font-semibold">
+                  Código
+                </Label>
+                <Input
+                  readOnly
+                  disabled
+                  type="text"
+                  value={codigoGerado}
+                  className="p-5 opacity-40 bg-neutral-500 text-sm font-medium rounded-md"
+                  {...register("codigo")}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label className="text-zinc-600 text-sm font-semibold">
+                  Nome <span className="text-rose-500">*</span>
+                </Label>
+                <Input
+                  type="text"
+                  className="p-5 bg-transparent text-sm font-medium border border-zinc-500 text-black opacity-40"
+                  {...register("nome")}
+                />
+                {errors.nome && (
                   <p className="text-rose-500 text-sm mt-1">
-                    {errors.descricao.message}
+                    {errors.nome.message}
                   </p>
                 )}
               </div>
             </div>
-            <div className="w-full flex flex-row justify-center items-center">
+
+            {/* Lado direito (Descrição) */}
+            <div className="space-y-2">
+              <Label className="text-zinc-600 text-sm font-semibold">
+                Descrição
+              </Label>
+              <textarea
+                className="outline-none w-full min-h-[185px] border border-zinc-500 bg-transparent p-5 resize-none text-sm text-zinc-600 rounded-md opacity-40"
+                {...register("descricao")}
+              />
+              {errors.descricao && (
+                <p className="text-rose-500 text-sm mt-1">
+                  {errors.descricao.message}
+                </p>
+              )}
+            </div>
+
+            {/* Botão de envio */}
+            <div className="md:col-span-2 flex justify-center pt-4">
               <Button
                 type="submit"
-                className="w-[10%] py-6 text-lg font-semibold"
+                className="w-32 h-10 bg-zinc-800 rounded-2xl text-white text-base font-medium"
+                disabled={isSubmitting}
               >
                 Salvar
               </Button>
             </div>
           </form>
-        </div>
-      </Container>
+        </CardContent>
+      </Card>
     </main>
   );
 }

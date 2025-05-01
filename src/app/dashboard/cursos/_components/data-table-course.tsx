@@ -118,7 +118,7 @@ export default function DataTableCourse({ data }: TableCourseProps) {
             </button>
             <Dialog>
               <DialogTrigger>
-                <Trash />
+                <Trash size={20}/>
               </DialogTrigger>
               <DialogContent className="bg-white">
                 <DialogHeader>
