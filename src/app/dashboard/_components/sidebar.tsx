@@ -57,8 +57,9 @@ export function SideBar() {
       },
     ],
   };
+
   return (
-    <Sidebar>
+    <Sidebar className="font-robotoSlab">
       <SidebarHeader className="bg-zinc-800">
         <SidebarMenu>
           <SidebarMenuItem>
@@ -98,7 +99,7 @@ export function SideBar() {
                 asChild
                 className="group/label text-sm text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
               >
-                <CollapsibleTrigger className="text-white text-[1.2em] py-3 hover:bg-zinc-700 hover:text-white">
+                <CollapsibleTrigger className="text-white text-[1.130rem] py-3 hover:bg-zinc-700 hover:text-white">
                   {item.title}
                   <ChevronRight className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90" />
                 </CollapsibleTrigger>
