@@ -128,9 +128,9 @@ export default function DataTableTurma({ data }: TableTurmaProps) {
 
   return (
     <Container>
-      <div className="w-full">
+      <div className="w-full font-robotoSlab text-[#242729]">
         <div className="flex items-center py-4 justify-between mb-10">
-          <h1 className="text-[2rem] font-bold">Lista de Turmas</h1>
+          <h1 className="text-3xl font-medium">Lista de Turmas</h1>
 
           <div className="flex items-center gap-16  ">
             <div className="flex items-center justify-between  border-2 border-black rounded-full p-3">

@@ -38,9 +38,9 @@ export default function CadastroCurso() {
   }
 
   return (
-    <main className="bg-[#d9d9d9] flex-1 min-h-screen p-10 font-['Roboto_Slab']">
+    <main className="bg-[#d9d9d9] min-h-screen p-10 font-['Roboto_Slab']">
       <div className="flex justify-between items-center mb-10">
-        <h1 className="text-zinc-600 text-3xl font-medium leading-[48px]">
+        <h1 className="text-zinc-800 text-3xl font-medium">
           Cadastro de Curso
         </h1>
         <button

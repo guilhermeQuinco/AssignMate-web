@@ -165,9 +165,9 @@ export default function DataTableCourse({ data }: TableCourseProps) {
 
   return (
     <Container>
-      <div className="w-full">
+      <div className="w-full font-robotoSlab text-[#242729]">
         <div className="flex items-center py-4 justify-between mb-10">
-          <h1 className="text-3xl font-bold text-black">Lista de Cursos</h1>
+          <h1 className="text-3xl font-medium">Lista de Cursos</h1>
 
           <div className="flex gap-[10rem] items-center">
             <div className="flex items-center gap-16  ">

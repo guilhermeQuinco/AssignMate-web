@@ -60,16 +60,16 @@ export function TurmaForm({ courses }: { courses: Course[] }) {
   }, [turmaName, setValue]);
 
   return (
-    <main className="min-h-screen bg-[#d9d9d9]">
+    <main className="bg-[#d9d9d9] flex-1 min-h-screen p-10 font-['Roboto_Slab']">
       <Container>
         <div className="flex justify-between items-center mb-10">
-          <div className="text-zinc-900 text-3xl ">Cadastro de Turma</div>
+          <div className="text-zinc-800 text-3xl font-medium">Cadastro de Turma</div>
           <button
             onClick={() => router.back()}
-            className="w-32 h-10 px-6 bg-zinc-800 rounded-2xl inline-flex justify-center items-center gap-2"
+            className="w-32 h-10 px-6 bg-zinc-800 rounded-2xl text-zinc-300 text-base font-medium flex items-center gap-2"
           >
-            <FaArrowLeft className="text-zinc-300 w-4 h-3.5" />
-            <span className="text-zinc-300 text-base font-medium">Voltar</span>
+            <FaArrowLeft className="w-4 h-3.5" />
+            Voltar
           </button>
         </div>
         <div className=" rounded-xl mt-14  bg-white p-20">

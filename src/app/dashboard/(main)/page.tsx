@@ -7,7 +7,7 @@ const Administrador = async () => {
   return (
     <div className=" flex justify-center bg-[#d9d9d9] h-screen relative">
       <Container>
-        <h1 className="text-center text-[2rem] sm:text-[3rem] md:text-[4rem] lg:text-[5rem] font-playfair ">
+        <h1 className="text-center text-[2rem] sm:text-[3rem] md:text-[4rem] lg:text-[5rem] font-robotoSlab text-zinc-800">
           Bem-vindo
         </h1>
 

@@ -97,7 +97,7 @@ export default function DisciplinaForm({
     <main className="bg-[#d9d9d9] flex-1 min-h-screen p-10 font-['Roboto_Slab']">
       {/* Header */}
       <div className="flex justify-between items-center mb-10">
-        <div className="text-zinc-600 text-3xl font-medium">
+        <div className="text-zinc-800 text-3xl font-medium">
           Cadastro de Disciplina
         </div>
         <button

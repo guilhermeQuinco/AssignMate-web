@@ -78,7 +78,7 @@ export default function ProfessorForm({ lastRegistration }: ProfessorFormProps) 
   return (
     <main className="bg-[#d9d9d9] min-h-screen p-10 font-['Roboto_Slab']">
       <div className="flex justify-between items-center mb-10">
-        <h1 className="text-zinc-600 text-3xl font-medium">
+        <h1 className="text-zinc-800 text-3xl font-medium">
           Cadastro de Professor
         </h1>
         <button
