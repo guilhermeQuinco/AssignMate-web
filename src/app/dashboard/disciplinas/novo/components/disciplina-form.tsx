@@ -12,6 +12,7 @@ import {
 import { addNewDisciplina } from "../../actions/disciplinas";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { FaArrowLeft } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
@@ -19,17 +20,22 @@ import { Course } from "@/types";
 
 const schema = disciplinaSchema;
 
+function generateRegistration(prefix: string, number: number): string {
+  return prefix + number.toString().padStart(4, "0");
+}
+
 type DisciplinaFormProps = {
   lastRegistration: string;
   courses: Course[];
 };
 
 export default function DisciplinaForm({
-  lastRegistration,
+  lastRegistration = "",
   courses,
 }: DisciplinaFormProps) {
+
   const router = useRouter();
-  const [matriculaGerada, setMatriculaGerada] = useState("");
+  const [codigoGerado, setCodigoGerado] = useState("");
 
   const {
     register,
@@ -39,58 +45,41 @@ export default function DisciplinaForm({
     formState: { errors, isSubmitting },
   } = useForm<DisciplinaSchemaType>({
     resolver: zodResolver(schema),
+    defaultValues: { codigo: lastRegistration },
   });
 
-  const nomeDisciplina = watch("nome");
+  const cursoId = watch("cursoId");
 
-  // Gera a matrícula com base nas três primeiras letras do nome e incrementa de acordo com o último registro.
   useEffect(() => {
-    if (nomeDisciplina && nomeDisciplina.length >= 3) {
-      // normaliza (remove acentos)
+    if (!cursoId) return;
+    // Pega nome do curso pelo id
+    const curso = courses.find((c) => String(c.id) === cursoId);
+    if (!curso) return;
 
-      const prefixo = nomeDisciplina
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .substring(0, 3)
-        .toUpperCase();
-      const lastCode = lastRegistration.startsWith(prefixo)
-        ? parseInt(lastRegistration.replace(prefixo, ""), 10)
-        : 0;
+    // Pegamos as 3 primeiras letras do nome do curso
+    const prefixo = curso.nome.substring(0, 3).toUpperCase();
+    // Se a última matrícula começa com esse prefixo, extrai o número; senão, 0
+    const lastNumber = lastRegistration.startsWith(prefixo)
+      ? parseInt(lastRegistration.replace(prefixo, ""), 10)
+      : 0;
+    const next = lastNumber + 1;
 
-      const nextNumber = (lastCode + 1).toString().padStart(3, "0");
-      const newCode = `${prefixo}${nextNumber}`;
-
-      setMatriculaGerada(newCode);
-      setValue("codigo", newCode);       // joga no RHF
-    }
-  }, [nomeDisciplina, lastRegistration, setValue]);
+    const novoCodigo = generateRegistration(prefixo, next);
+    setCodigoGerado(novoCodigo);
+    setValue("codigo", novoCodigo);
+  }, [cursoId, lastRegistration, courses, setValue]);
 
   async function onSubmit(data: DisciplinaSchemaType) {
-    // if (!matriculaGerada) {
-    //   toast.error(
-    //     "A matrícula não pôde ser gerada. Verifique o nome da disciplina."
-    //   );
-    //   return;
-    // }
-
     console.log(data);
     try {
-            await addNewDisciplina(data);
-            toast.success("Disciplina cadastrada com sucesso!");
-            router.refresh();
-            router.back();
-          } catch (error) {
-            toast.error("Erro ao cadastrar disciplina.");
-            console.error(error);
-          }
-    // try {
-    //   await addNewDisciplina(data);
-    //   toast.success("Disciplina cadastrada com sucesso!");
-    //   router.back();
-    // } catch (error) {
-    //   toast.error("Erro ao cadastrar disciplina.");
-    //   console.error(error);
-    // }
+      await addNewDisciplina(data);
+      toast.success("Disciplina cadastrada com sucesso!");
+      router.refresh();
+      router.back();
+    } catch (error) {
+      toast.error("Erro ao cadastrar disciplina.");
+      console.error(error);
+    }
   }
 
   return (
@@ -100,19 +89,18 @@ export default function DisciplinaForm({
         <div className="text-zinc-800 text-3xl font-medium">
           Cadastro de Disciplina
         </div>
-        <button
+        <Button
           type="button"
           onClick={() => router.back()}
           className="w-32 h-10 px-6 bg-zinc-800 rounded-2xl text-zinc-300 text-base font-medium flex items-center gap-2"
         >
           <FaArrowLeft className="w-4 h-3.5" />
           Voltar
-        </button>
+        </Button>
       </div>
 
       <Card className="bg-[#F3EDED] rounded-2xl max-w-7xl mx-auto">
         <CardContent>
-          {/* Campo: Código (gerado automaticamente) */}
 
           <form
             onSubmit={handleSubmit(onSubmit)}
@@ -125,11 +113,31 @@ export default function DisciplinaForm({
               <Input
                 readOnly
                 disabled
+                value={codigoGerado}
                 type="text"
-                value={matriculaGerada}
                 className="p-5 opacity-40 bg-neutral-500 text-sm font-medium"
                 {...register("codigo")}
               />
+            </div>
+
+            {/* Curso */}
+            <div className="space-y-2">
+              <Label className="text-zinc-600 text-sm font-semibold">Curso</Label>
+              <Select
+                onValueChange={(v) => {
+                  setValue("cursoId", v);
+                }}
+              >
+                <SelectTrigger className="p-5 border-[#ABABAB]">
+                  <SelectValue placeholder="Selecione o curso" />
+                </SelectTrigger>
+                <SelectContent>
+                {courses.map((curso) => (
+                    <SelectItem key={curso.id} value={String(curso.id)}>{curso.nome}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {errors.cursoId && <p className="text-rose-500 text-sm mt-1">{errors.cursoId.message}</p>}
             </div>
 
             {/* Campo: Nome */}
@@ -154,27 +162,22 @@ export default function DisciplinaForm({
               <Label className="text-zinc-600 text-sm font-semibold">
                 Período <span className="text-rose-500">*</span>
               </Label>
-              <select
-                className="bg-transparent border border-[#ABABAB] p-3 rounded-lg w-full "
-                {...register("periodo")}
-              >
-                <option value="">Selecione o período</option>
-                <option value="1">1°</option>
-                <option value="2">2°</option>
-                <option value="3">3°</option>
-                <option value="4">4°</option>
-                <option value="5">5°</option>
-                <option value="6">6°</option>
-                <option value="7">7°</option>
-                <option value="8">8°</option>
-                <option value="9">9°</option>
-                <option value="10">10°</option>
-              </select>
-              {errors.periodo && (
-                <p className="text-rose-500 text-sm mt-1">
-                  {errors.periodo.message}
-                </p>
-              )}
+              <Select onValueChange={(value) => setValue("periodo", value)}>
+                <SelectTrigger className="bg-transparent border border-[#ABABAB] p-5 rounded-lg w-full">
+                  <SelectValue placeholder="Selecione o período" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="1">1º</SelectItem>
+                  <SelectItem value="2">2º</SelectItem>
+                  <SelectItem value="3">3º</SelectItem>
+                  <SelectItem value="4">4º</SelectItem>
+                  <SelectItem value="5">5º</SelectItem>
+                  <SelectItem value="6">6º</SelectItem>
+                  <SelectItem value="7">7º</SelectItem>
+                  <SelectItem value="8">8º</SelectItem>
+                </SelectContent>
+              </Select>
+              {errors.periodo && <span>{errors.periodo.message}</span>}
             </div>
 
             {/* Campo: Carga Horária */}
@@ -208,41 +211,16 @@ export default function DisciplinaForm({
                 value={"Definido pelo professor"}
                 {...register("descricao")}
               />
-              {/* escondido, mas precisa registrar um valor vazio 
-             <input type="hidden" {...register("descricao")} value="" />*/}
-            </div>
-
-            {/* Curso */}
-            <div className="space-y-2">
-              <Label className="text-zinc-600 text-sm font-semibold">
-                Curso <span className="text-rose-500">*</span>
-              </Label>
-              <select
-                className="bg-transparent border border-[#ABABAB] p-3 rounded-lg w-full "
-                {...register("cursoId")}
-              >
-                <option value="">Selecione um curso</option>
-                {courses.map((course) => (
-                  <option key={course.id} value={course.id}>
-                    {course.nome}
-                  </option>
-                ))}
-              </select>
-              {errors.cursoId && (
-                <p className="text-rose-500 text-sm mt-1">
-                  {errors.cursoId.message}
-                </p>
-              )}
             </div>
 
             {/* Botão de Envio */}
             <div className="md:col-span-2 flex justify-center">
-              <button
+              <Button
                 type="submit"
                 className="w-32 h-10 px-6 bg-zinc-800 rounded-2xl text-zinc-300 text-base font-medium"
               >
                 Salvar
-              </button>
+              </Button>
             </div>
           </form>
         </CardContent>
