@@ -24,6 +24,7 @@ import {
   Search,
   Trash,
   Trash2,
+  LockOpen,
 } from "lucide-react";
 
 import {
@@ -77,7 +78,7 @@ export default function DataTableAluno({ data }: TableProfessorProps) {
 
   const router = useRouter();
 
-  const handleEdit = async (data: StudentSchemaType) => {};
+  const handleEdit = async (data: StudentSchemaType) => { };
 
   const removeStudent = async (id: string) => {
     await deleteStudent(id);
@@ -110,11 +111,14 @@ export default function DataTableAluno({ data }: TableProfessorProps) {
       cell: ({ row }) => {
         return (
           <div className="flex items-center gap-5">
+            <button>
+              <LockOpen size={20} />
+            </button>
             <EditStudentModal student={row.original} />
 
             <Dialog>
               <DialogTrigger>
-                <Trash />
+                <Trash size={20} />
               </DialogTrigger>
               <DialogContent className="bg-white">
                 <DialogHeader>
@@ -184,7 +188,7 @@ export default function DataTableAluno({ data }: TableProfessorProps) {
 
             <Button className="py-6" asChild>
               <Link href={"/dashboard/usuarios/alunos/novo"}>
-                <span>+ Adicionar Aluno</span>
+                <span>+ Adicionar</span>
               </Link>
             </Button>
           </div>
@@ -206,9 +210,9 @@ export default function DataTableAluno({ data }: TableProfessorProps) {
                         {header.isPlaceholder
                           ? null
                           : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                       </TableHead>
                     );
                   })}

@@ -21,6 +21,7 @@ import {
   MoreHorizontal,
   Search,
   Trash,
+  LockOpen,
 } from "lucide-react";
 
 import {
@@ -51,6 +52,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { deleteProfessor } from "../actions/professors";
+import EditProfessor from "../edit/page";
 
 interface TableProfessorProps {
   data: Professor[];
@@ -105,9 +107,15 @@ export default function DataTableProfessor({ data }: TableProfessorProps) {
 
         return (
           <div className="flex items-center gap-5">
+            <button>
+              <LockOpen size={20} />
+            </button>
+            <button onClick={() => handleUser()}>
+              <Edit size={20} />
+            </button>
             <Dialog>
               <DialogTrigger>
-                <Trash />
+                <Trash size={20} />
               </DialogTrigger>
               <DialogContent className="bg-white">
                 <DialogHeader>
@@ -130,9 +138,7 @@ export default function DataTableProfessor({ data }: TableProfessorProps) {
                 </DialogFooter>
               </DialogContent>
             </Dialog>
-            <button onClick={() => handleUser()}>
-              <Edit size={20} />
-            </button>
+            
           </div>
         );
       },
@@ -191,11 +197,11 @@ export default function DataTableProfessor({ data }: TableProfessorProps) {
             </Button>
           </div>
         </div>
-        <div className="rounded-md border">
-          <Table className="overflow-hidden rounded-xl">
-            <TableHeader className="bg-zinc-800 uppercase">
+        <div className="rounded-2xl border overflow-hidden">
+          <Table className="">
+            <TableHeader className="bg-zinc-800 ">
               {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
+                <TableRow key={headerGroup.id} className="uppercase font-bold text-md">
                   {headerGroup.headers.map((header) => {
                     return (
                       <TableHead
@@ -220,9 +226,10 @@ export default function DataTableProfessor({ data }: TableProfessorProps) {
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
+                    className="text-lg"
                   >
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id} className="px-4 text-lg">
+                      <TableCell key={cell.id} className="px-5">
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
