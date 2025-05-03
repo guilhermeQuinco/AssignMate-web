@@ -4,8 +4,8 @@ import * as React from "react";
 
 import { Header } from "../../_components/header";
 import { SideBar } from "../../_components/sidebar";
-
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { SectionHeaderLista } from "../../_components/sectionHeaderLista";
 
 import {
   ColumnDef,
@@ -26,7 +26,6 @@ import {
   ChevronRight,
   Edit,
   MoreHorizontal,
-  Search,
   Trash,
 } from "lucide-react";
 
@@ -78,28 +77,27 @@ export default function DataTableCourse({ data }: TableCourseProps) {
     }
   };
 
-  const columns: ColumnDef<Course>[] = [
+  const columns: ColumnDef<Course, any>[] = [
     {
       accessorKey: "codigo",
       header: "Código",
+      meta: { className: "w-[6.25rem]" },
     },
     {
       accessorKey: "nome",
       header: "Nome",
-      cell: ({ row }) => {
-        const user = row.original;
-
-        return <span className=" ">{row.original.nome}</span>;
-      },
+      meta: { className: "w-[15rem]" },
+      cell: ({ row }) => <span className="line-clamp-2">{row.original.nome}</span>,
     },
     {
       accessorKey: "descricao",
       header: "Descrição",
+      meta: { className: "w-[37rem]" },
       cell: ({ row }) => {
         const user = row.original;
 
         return (
-          <span className=" w-[700px] line-clamp-3 ">
+          <span className="line-clamp-5">
             {row.original.descricao}
           </span>
         );
@@ -108,17 +106,18 @@ export default function DataTableCourse({ data }: TableCourseProps) {
     {
       accessorKey: "action",
       header: "Ação",
+      meta: { className: "w-[6.25rem]" },
       cell: ({ row }) => {
         const course = row.original;
 
         return (
-          <div className="flex flex-row gap-5">
+          <div className="flex flex-row gap-4">
             <button>
-              <Edit size={20} />
+              <Edit size={18} />
             </button>
             <Dialog>
               <DialogTrigger>
-                <Trash size={20}/>
+                <Trash size={18} />
               </DialogTrigger>
               <DialogContent className="bg-white">
                 <DialogHeader>
@@ -154,7 +153,11 @@ export default function DataTableCourse({ data }: TableCourseProps) {
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
-
+    initialState: {
+      pagination: {
+        pageSize: 8, // Ajuste esse valor conforme o tamanho do seu header e layout
+      },
+    },
     state: {
       sorting,
       columnFilters,
@@ -165,112 +168,93 @@ export default function DataTableCourse({ data }: TableCourseProps) {
 
   return (
     <Container>
-      <div className="w-full font-robotoSlab text-[#242729]">
-        <div className="flex items-center py-4 justify-between mb-10">
-          <h1 className="text-3xl font-medium">Lista de Cursos</h1>
+      <SectionHeaderLista
+        title="Lista de Curso"
+        searchValue={(table.getColumn("nome")?.getFilterValue() as string) ?? ""}
+        onSearchChange={(value) =>
+          table.getColumn("nome")?.setFilterValue(value)
+        }
+        addLink="/dashboard/cursos/novo"
+      />
 
-          <div className="flex gap-[10rem] items-center">
-            <div className="flex items-center gap-16  ">
-              <div className="flex items-center justify-between  border-2 border-black rounded-full p-3">
-                <input
-                  placeholder="Search..."
-                  value={
-                    (table.getColumn("nome")?.getFilterValue() as string) ?? ""
-                  }
-                  onChange={(event) =>
-                    table.getColumn("nome")?.setFilterValue(event.target.value)
-                  }
-                  className="bg-transparent placeholder:text-black outline-none w-[300px] "
-                />
-
-                <Search />
-              </div>
-            </div>
-            <Link
-              href={"/dashboard/cursos/novo"}
-              className="bg-black text-white px-4 py-2 rounded-xl hover:bg-gray-700 transition"
-            >
-              + Adicionar
-            </Link>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-xl shadow overflow-hidden relative ">
-          <Table className="">
-            <TableHeader className="bg-zinc-800 ">
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow
-                  key={headerGroup.id}
-                  className="uppercase font-bold text-md"
-                >
-                  {headerGroup.headers.map((header) => {
-                    return (
-                      <TableHead
-                        key={header.id}
-                        className="text-white py-4 px-5"
-                      >
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                      </TableHead>
-                    );
-                  })}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody className="bg-white text-black">
-              {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row, index) => (
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
-                    className="text-lg"
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id} className="px-5">
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
+      <div className="bg-white rounded-xl shadow overflow-hidden w-full">
+        <Table className="min-w-[700px]">
+          <TableHeader className="bg-zinc-800 ">
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow
+                key={headerGroup.id}
+                className="uppercase font-medium">
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead
+                      key={header.id}
+                      className={`text-white py-2 px-5 ${(header.column.columnDef.meta as any)?.className ?? ""}`}
+                    >
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
                         )}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-24 text-center"
-                  >
-                    No results.
-                  </TableCell>
+                    </TableHead>
+
+                  );
+                })}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody className="bg-white text-black text-md">
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row, index) => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                  className="text-md"
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell
+                      key={cell.id}
+                      className={`px-5 ${(cell.column.columnDef.meta as any)?.className ?? ""}`}
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
                 </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </div>
-        <div className="flex items-center justify-end space-x-2 py-4">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            <ChevronLeft />
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            <ChevronRight />
-          </Button>
-        </div>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  No results.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
       </div>
-    </Container>
+      <div className="flex items-center justify-end space-x-2 py-4">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+        >
+          <ChevronLeft />
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+        >
+          <ChevronRight />
+        </Button>
+      </div>
+    </Container >
   );
 }

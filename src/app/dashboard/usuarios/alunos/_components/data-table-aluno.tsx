@@ -2,6 +2,12 @@
 
 import * as React from "react";
 
+import { Header } from "@/app/dashboard/_components/header";
+import { SideBar } from "@/app/dashboard/_components/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
+
+import { SectionHeaderLista } from "@/app/dashboard/_components/sectionHeaderLista";
+
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -42,13 +48,11 @@ import { Container } from "../../../_components/container";
 import Link from "next/link";
 
 import { useRouter } from "next/navigation";
-import { Aluno, Professor } from "@/types";
+import { Aluno } from "@/types";
 import { DateFormatter } from "@/lib/date";
 
-import { Input } from "postcss";
 import { StudentSchemaType } from "@/schemas/studentSchema";
 
-import { Label } from "@radix-ui/react-select";
 import EditStudentModal from "./edit-student-modal";
 
 import {
@@ -63,11 +67,11 @@ import {
 } from "@/components/ui/dialog";
 import { deleteStudent } from "../actions/students";
 
-interface TableProfessorProps {
+interface TableAlunoProps {
   data: Aluno[];
 }
 
-export default function DataTableAluno({ data }: TableProfessorProps) {
+export default function DataTableAluno({ data }: TableAlunoProps) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -80,22 +84,26 @@ export default function DataTableAluno({ data }: TableProfessorProps) {
 
   const handleEdit = async (data: StudentSchemaType) => { };
 
-  const removeStudent = async (id: string) => {
+  const removeStudent = async (id: number) => {
     await deleteStudent(id);
   };
 
-  const columns: ColumnDef<Aluno>[] = [
+  const columns: ColumnDef<Aluno, any>[] = [
     {
       accessorKey: "matricula",
       header: "Matrícula",
+      meta: { className: "w-[6.25rem]" },
     },
     {
       accessorKey: "nomeCompleto",
       header: "Nome",
+      meta: { className: "w-[14rem]" },
+      cell: ({ row }) => <span className="line-clamp-2">{row.original.nomeCompleto}</span>,
     },
     {
       accessorKey: "dataNascimento",
       header: "Data de nascimento",
+      meta: { className: "w-[10.2rem]" },
       cell: ({ row }) => {
         return <span>{DateFormatter(row.original.dataNascimento)}</span>;
       },
@@ -103,22 +111,24 @@ export default function DataTableAluno({ data }: TableProfessorProps) {
     {
       accessorKey: "email",
       header: "E-mail",
+      meta: { className: "w-[14rem]" },
     },
 
     {
       accessorKey: "actions",
       header: "Ação",
+      meta: { className: "w-[6.25rem]" },
       cell: ({ row }) => {
         return (
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-4">
             <button>
-              <LockOpen size={20} />
+              <LockOpen size={18} />
             </button>
             <EditStudentModal student={row.original} />
 
             <Dialog>
               <DialogTrigger>
-                <Trash size={20} />
+                <Trash size={18} />
               </DialogTrigger>
               <DialogContent className="bg-white">
                 <DialogHeader>
@@ -156,6 +166,11 @@ export default function DataTableAluno({ data }: TableProfessorProps) {
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
+    initialState: {
+      pagination: {
+        pageSize: 10, // Ajuste esse valor conforme o tamanho do seu header e layout
+      },
+    },
     state: {
       sorting,
       columnFilters,
@@ -166,69 +181,45 @@ export default function DataTableAluno({ data }: TableProfessorProps) {
 
   return (
     <Container>
-      <div className="w-full font-robotoSlab text-[#242729]">
-        <div className="flex items-center py-4 justify-between mb-10">
-          <h1 className="text-3xl font-medium">Lista de Alunos</h1>
+      <SectionHeaderLista
+        title="Lista de Alunos"
+        searchValue={(table.getColumn("nomeCompleto")?.getFilterValue() as string) ?? ""}
+        onSearchChange={(value) =>
+          table.getColumn("nomeCompleto")?.setFilterValue(value)
+        }
+        addLink="/dashboard/usuarios/alunos/novo" />
 
-          <div className="flex items-center gap-16  ">
-            <div className="flex items-center justify-between  border-2 border-black rounded-full p-3">
-              <input
-                placeholder="Search..."
-                value={
-                  (table.getColumn("email")?.getFilterValue() as string) ?? ""
-                }
-                onChange={(event) =>
-                  table.getColumn("email")?.setFilterValue(event.target.value)
-                }
-                className="bg-transparent placeholder:text-black outline-none w-[300px] "
-              />
-
-              <Search />
-            </div>
-
-            <Button className="py-6" asChild>
-              <Link href={"/dashboard/usuarios/alunos/novo"}>
-                <span>+ Adicionar</span>
-              </Link>
-            </Button>
-          </div>
-        </div>
-        <div className="rounded-2xl border overflow-hidden">
-          <Table className="">
-            <TableHeader className="bg-zinc-800 ">
+      {/* Wrapper responsivo com rolagem horizontal se necessário */}
+      <div className="bg-white rounded-xl shadow overflow-hidden w-full">
+          <Table className="min-w-[700px]">
+            <TableHeader className="bg-zinc-800">
               {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow
-                  key={headerGroup.id}
-                  className="uppercase font-bold text-md"
-                >
-                  {headerGroup.headers.map((header) => {
-                    return (
-                      <TableHead
-                        key={header.id}
-                        className="text-white py-4 px-5"
-                      >
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                      </TableHead>
-                    );
-                  })}
+                <TableRow key={headerGroup.id} className="uppercase font-medium">
+                  {headerGroup.headers.map((header) => (
+                    <TableHead
+                      key={header.id}
+                      className={`text-white py-2 px-5 ${(header.column.columnDef.meta as any)?.className ?? ""}`}
+                    >
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                    </TableHead>
+                  ))}
                 </TableRow>
               ))}
             </TableHeader>
-            <TableBody className="bg-white text-black">
+            <TableBody className="bg-white text-md text-black">
               {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row, index) => (
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
-                    className="text-lg"
-                  >
+                table.getRowModel().rows.map((row) => (
+                  <TableRow key={row.id} data-state={row.getIsSelected() && "selected"} className="text-md">
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id} className="px-5">
+                      <TableCell
+                        key={cell.id}
+                        className={`px-5 ${(cell.column.columnDef.meta as any)?.className ?? ""}`}
+                      >
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext()
@@ -239,35 +230,33 @@ export default function DataTableAluno({ data }: TableProfessorProps) {
                 ))
               ) : (
                 <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-24 text-center"
-                  >
-                    No results.
+                  <TableCell colSpan={columns.length} className="h-24 text-center">
+                  Sem resultados
                   </TableCell>
                 </TableRow>
               )}
             </TableBody>
           </Table>
-        </div>
-        <div className="flex items-center justify-end space-x-2 py-4">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            <ChevronLeft />
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            <ChevronRight />
-          </Button>
-        </div>
+      </div>
+
+      {/* Paginação */}
+      <div className="flex items-center justify-end space-x-2 py-4">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+        >
+          <ChevronLeft />
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+        >
+          <ChevronRight />
+        </Button>
       </div>
     </Container>
   );

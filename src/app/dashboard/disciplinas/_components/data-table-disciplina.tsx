@@ -5,6 +5,9 @@ import { useRouter } from "next/navigation";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { SideBar } from "../../_components/sidebar";
 import { Header } from "../../_components/header";
+import { SectionHeaderLista } from "../../_components/sectionHeaderLista";
+import { Container } from "../../_components/container";
+
 import Link from "next/link";
 import {
   ColumnDef,
@@ -18,9 +21,8 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { Search, Edit, Trash } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Container } from "../../_components/container";
+import { Search, Edit, Trash, ChevronLeft, ChevronRight } from "lucide-react";
+
 import {
   Table,
   TableBody,
@@ -30,6 +32,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Disciplina } from "@/types";
+import { Button } from "@/components/ui/button";
 
 interface TableDisciplinaProps {
   data: Disciplina[];
@@ -42,47 +45,55 @@ export default function DataTableDisciplina({ data }: TableDisciplinaProps) {
   const [rowSelection, setRowSelection] = React.useState({});
   const router = useRouter();
 
-  const columns: ColumnDef<Disciplina>[] = [
+  const columns: ColumnDef<Disciplina, any>[] = [
     {
       accessorKey: "codigo",
       header: "Código",
+      meta: { className: "w-[6.25rem]" },
     },
     {
       accessorKey: "nome",
       header: "Nome",
+      meta: { className: "w-[15rem]" },
     },
     {
       accessorKey: "descricao",
       header: "Descrição",
+      meta: { className: "w-[37rem]" },
+      cell: ({ row }) => <span className="line-clamp-5">{row.original.descricao}</span>,
     },
     {
       accessorKey: "cargaHoraria",
       header: "Carga Horária",
+      meta: { className: "w-[12.8rem]" },
     },
     {
       accessorKey: "periodo",
       header: "Período",
+      meta: { className: "w-[6.25rem]" },
     },
     {
-      accessorKey: "curso.nome",
+      accessorKey: "curso",
       header: "Curso",
-      cell: ({ row }) => row.original.curso?.nome ?? "—",
+      meta: { className: "w-[15rem]" },
+      cell: ({ row }) => <span className="line-clamp-2">{row.original.curso}</span>,
     },
     {
       accessorKey: "actions",
       header: "Ação",
+      meta: { className: "w-[6.25rem]" },
       cell: ({ row }) => {
         return (
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-4">
             <button
               onClick={() =>
                 router.push(`/dashboard/disciplinas/${row.original.id}/edit`)
               }
             >
-              <Edit size={20} />
+              <Edit size={18} />
             </button>
             <button>
-              <Trash size={20} />
+              <Trash size={18} />
             </button>
           </div>
         );
@@ -101,6 +112,11 @@ export default function DataTableDisciplina({ data }: TableDisciplinaProps) {
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
+    initialState: {
+      pagination: {
+        pageSize: 8, // Ajuste esse valor conforme o tamanho do seu header e layout
+      },
+    },
     state: {
       sorting,
       columnFilters,
@@ -111,72 +127,87 @@ export default function DataTableDisciplina({ data }: TableDisciplinaProps) {
 
   return (
     <Container>
-      <div className="w-full font-robotoSlab text-[#242729]">
-        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
-          <h1 className="text-3xl font-medium">Lista de Disciplinas</h1>
+      <SectionHeaderLista
+        title="Lista de Disciplinas"
+        searchValue={(table.getColumn("nome")?.getFilterValue() as string) ?? ""}
+        onSearchChange={(value) =>
+          table.getColumn("nome")?.setFilterValue(value)
+        }
+        addLink="/dashboard/disciplinas/novo"
+      />
 
-          <div className="flex items-center gap-16">
-            <div className="flex items-center justify-between border-2 border-black rounded-full p-3">
-              <input
-                placeholder="Search..."
-                value={(table.getColumn("nome")?.getFilterValue() as string) ?? ""}
-                onChange={(event) =>
-                  table.getColumn("nome")?.setFilterValue(event.target.value)
-                }
-                className="bg-transparent placeholder:text-black outline-none w-[300px]"
-              />
-              <Search />
-            </div>
-
-            <Link
-              href={"/dashboard/disciplinas/novo"}
-              className="bg-black text-white px-4 py-2 rounded-xl hover:bg-gray-700 transition"
-            >
-              + Adicionar
-            </Link>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-xl mt-10 shadow overflow-hidden">
-          <Table>
-            <TableHeader className="bg-zinc-800">
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id} className="uppercase font-bold text-md">
-                  {headerGroup.headers.map((header) => (
-                    <TableHead key={header.id} className="text-white py-4 px-5">
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(header.column.columnDef.header, header.getContext())}
-                    </TableHead>
+      <div className="bg-white rounded-xl shadow overflow-hidden w-full">
+        <Table className="min-w-[700px]">
+          <TableHeader className="bg-zinc-800">
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id} className="uppercase font-medium">
+                {headerGroup.headers.map((header) => (
+                  <TableHead
+                    key={header.id}
+                    className={`text-white py-2 px-5 ${(header.column.columnDef.meta as any)?.className ?? ""
+                      }`}
+                  >
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                  </TableHead>
+                ))}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody className="bg-white text-md text-black">
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row, index) => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                  className="text-md"
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell
+                      key={cell.id}
+                      className={`px-5 ${(cell.column.columnDef.meta as any)?.className ?? ""
+                        }`}
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
                   ))}
                 </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody className="bg-white text-black">
-              {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
-                    className="text-lg"
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id} className="px-5">
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={columns.length} className="h-24 text-center">
-                    Sem resultados
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </div>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={columns.length} className="h-24 text-center">
+                  Sem resultados
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+      {/* Paginação */}
+      <div className="flex items-center justify-end space-x-2 py-4">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+        >
+          <ChevronLeft />
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+        >
+          <ChevronRight />
+        </Button>
       </div>
     </Container>
   );

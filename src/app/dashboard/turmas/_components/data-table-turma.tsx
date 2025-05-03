@@ -4,9 +4,9 @@ import * as React from "react";
 
 import { Header } from "../../_components/header";
 import { SideBar } from "../../_components/sidebar";
-import { SectionHeader } from "../../_components/sectionHeader";
-
 import { SidebarProvider } from "@/components/ui/sidebar";
+
+import { SectionHeaderLista } from "../../_components/sectionHeaderLista";
 
 import {
   ColumnDef,
@@ -92,12 +92,12 @@ export default function DataTableTurma({ data }: TableTurmaProps) {
         const user = row.original;
 
         return (
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-4">
             <button onClick={() => handleUser()}>
-              <Edit size={20} />
+              <Edit size={18} />
             </button>
             <button>
-              <Trash size={20} />
+              <Trash size={18} />
             </button>
           </div>
         );
@@ -116,6 +116,11 @@ export default function DataTableTurma({ data }: TableTurmaProps) {
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
+    initialState: {
+      pagination: {
+        pageSize: 8, // Ajuste esse valor conforme o tamanho do seu header e layout
+      },
+    },
     state: {
       sorting,
       columnFilters,
@@ -130,7 +135,7 @@ export default function DataTableTurma({ data }: TableTurmaProps) {
 
   return (
     <Container>
-      <SectionHeader
+      <SectionHeaderLista
         title="Lista de Turmas"
         searchValue={(table.getColumn("curso")?.getFilterValue() as string) ?? ""}
         onSearchChange={(value) =>
@@ -139,19 +144,18 @@ export default function DataTableTurma({ data }: TableTurmaProps) {
         addLink="/dashboard/turmas/novo"
       />
 
-      <div className="rounded-xl shadow overflow-hidden relative ">
-        <Table className="">
-          <TableHeader className="bg-zinc-800 ">
+      <div className="bg-white rounded-xl shadow overflow-hidden w-full">
+        <Table className="min-w-[700px]">
+          <TableHeader className="bg-zinc-800">
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow
                 key={headerGroup.id}
-                className="uppercase font-bold text-md"
-              >
+                className="uppercase font-medium">
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead
                       key={header.id}
-                      className="text-white py-4 px-5"
+                      className="text-white py-2 px-5"
                     >
                       {header.isPlaceholder
                         ? null
@@ -165,13 +169,13 @@ export default function DataTableTurma({ data }: TableTurmaProps) {
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody className="bg-white text-black">
+          <TableBody className="bg-white text-md text-black">
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row, index) => (
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  className="text-lg"
+                  className="text-md"
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className="px-5">

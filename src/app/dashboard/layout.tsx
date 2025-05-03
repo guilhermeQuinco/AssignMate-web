@@ -5,11 +5,17 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
 const LayoutDashboard = ({ children }: PropsWithChildren) => {
   return (
-    <SidebarProvider>
+    <SidebarProvider className="flex h-screen w-screen overflow-hidden">
       <SideBar />
       <SidebarInset>
-        <Header />
-        <main className="w-full ">{children}</main>
+        <div className="flex flex-col flex-1 overflow-hidden">
+          <Header />
+          <div >
+          <main className="flex-1 overflow-y-auto overflow-x-hidden">
+            {children}
+          </main>
+        </div>
+        </div>
       </SidebarInset>
     </SidebarProvider>
   );
