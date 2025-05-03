@@ -1,13 +1,30 @@
-import { Course } from "@/types";
-import { getCourses } from "../../cursos/actions/course";
-import { TurmaForm } from "./components/turma-form";
+"use client";
 
-export default async function NovaTurma() {
-  const courses: Course[] = (await getCourses()).sort();
+import { useEffect, useState } from "react";
+import { TurmaForm } from "./components/turma-form";
+import { getCourses } from "../../cursos/actions/course";
+
+const NovaTurmaPage = () => {
+  const [courses, setCourses] = useState<[]>([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const cursos = await getCourses();
+        setCourses(Array.isArray(cursos) ? cursos : cursos.data || []);
+      } catch (error) {
+        console.error("Erro ao carregar os cursos:", error);
+      }
+    }
+
+    fetchData();
+  }, []);
 
   return (
-    <div className="min-h-screen bg-[#d9d9d9]">
+    <section className="bg-[#d9d9d9] min-h-screen">
       <TurmaForm courses={courses} />
-    </div>
+    </section>
   );
-}
+};
+
+export default NovaTurmaPage;

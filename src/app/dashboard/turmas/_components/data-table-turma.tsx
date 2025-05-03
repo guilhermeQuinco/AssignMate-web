@@ -4,6 +4,7 @@ import * as React from "react";
 
 import { Header } from "../../_components/header";
 import { SideBar } from "../../_components/sidebar";
+import { SectionHeader } from "../../_components/sectionHeader";
 
 import { SidebarProvider } from "@/components/ui/sidebar";
 
@@ -40,6 +41,7 @@ import {
 } from "@/components/ui/table";
 
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 import { Container } from "../../_components/container";
 import Link from "next/link";
@@ -68,8 +70,8 @@ export default function DataTableTurma({ data }: TableTurmaProps) {
       header: "Código",
     },
     {
-      accessorKey: "nome",
-      header: "Nome",
+      accessorKey: "curso",
+      header: "Curso",
     },
     {
       accessorKey: "semestre",
@@ -128,109 +130,90 @@ export default function DataTableTurma({ data }: TableTurmaProps) {
 
   return (
     <Container>
-      <div className="w-full font-robotoSlab text-[#242729]">
-        <div className="flex items-center py-4 justify-between mb-10">
-          <h1 className="text-3xl font-medium">Lista de Turmas</h1>
+      <SectionHeader
+        title="Lista de Turmas"
+        searchValue={(table.getColumn("curso")?.getFilterValue() as string) ?? ""}
+        onSearchChange={(value) =>
+          table.getColumn("curso")?.setFilterValue(value)
+        }
+        addLink="/dashboard/turmas/novo"
+      />
 
-          <div className="flex items-center gap-16  ">
-            <div className="flex items-center justify-between  border-2 border-black rounded-full p-3">
-              <input
-                placeholder="Search..."
-                value={
-                  (table.getColumn("nome")?.getFilterValue() as string) ?? ""
-                }
-                onChange={(event) =>
-                  table.getColumn("nome")?.setFilterValue(event.target.value)
-                }
-                className="bg-transparent placeholder:text-black outline-none w-[300px]"
-              />
-
-              <Search />
-            </div>
-
-            <Button className="py-6" asChild>
-              <Link href={"/dashboard/turmas/novo"}>
-                <span>+ Adicionar</span>
-              </Link>
-            </Button>
-          </div>
-        </div>
-        <div className="rounded-xl shadow overflow-hidden relative ">
-          <Table className="">
-            <TableHeader className="bg-zinc-800 ">
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow
-                  key={headerGroup.id}
-                  className="uppercase font-bold text-md"
-                >
-                  {headerGroup.headers.map((header) => {
-                    return (
-                      <TableHead
-                        key={header.id}
-                        className="text-white py-4 px-5"
-                      >
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                      </TableHead>
-                    );
-                  })}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody className="bg-white text-black">
-              {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row, index) => (
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
-                    className="text-lg"
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id} className="px-5">
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
+      <div className="rounded-xl shadow overflow-hidden relative ">
+        <Table className="">
+          <TableHeader className="bg-zinc-800 ">
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow
+                key={headerGroup.id}
+                className="uppercase font-bold text-md"
+              >
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead
+                      key={header.id}
+                      className="text-white py-4 px-5"
+                    >
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
                         )}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-24 text-center"
-                  >
-                    Sem resultados
-                  </TableCell>
+                    </TableHead>
+                  );
+                })}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody className="bg-white text-black">
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row, index) => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                  className="text-lg"
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id} className="px-5">
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
                 </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </div>
-        <div className="flex items-center justify-end space-x-2 py-4">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            <ChevronLeft />
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            <ChevronRight />
-          </Button>
-        </div>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  Sem resultados
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
       </div>
-    </Container>
+      <div className="flex items-center justify-end space-x-2 py-4">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+        >
+          <ChevronLeft />
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+        >
+          <ChevronRight />
+        </Button>
+      </div>
+    </Container >
   );
 }

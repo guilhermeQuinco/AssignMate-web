@@ -22,7 +22,7 @@ export async function addNewTurma(turmaData: TurmaSchemaType) {
       {
         codigo: turmaData.codigo,
         semestre: turmaData.semestre,
-        nome: turmaData.nome,
+        //nome: turmaData.nome,
         turno: turmaData.turno,
         modalidade: turmaData.modalidade,
         cursoId: turmaData.curso,
