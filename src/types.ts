@@ -1,4 +1,4 @@
-import { string } from "zod";
+import { EnumValues, string } from "zod";
 
 export type Professor = {
   id: number;
@@ -10,7 +10,7 @@ export type Professor = {
 };
 
 export type Aluno = {
-  id: string;
+  id: number;
   matricula: string;
   nomeCompleto: string;
   dataNascimento: string;
@@ -30,13 +30,14 @@ export type Disciplina = {
   nome: string;
   descricao: string;
   cargaHoraria: string;
-  periodo: String;
+  periodo: string;
+  cursoId: string;
+  curso: string;
 };
 
 export type Turma = {
   id: string;
   codigo: string;
-  nome: string;
   semestre: string;
   turno: string;
   modalidade: string;
