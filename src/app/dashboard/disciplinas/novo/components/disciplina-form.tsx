@@ -122,7 +122,7 @@ export default function DisciplinaForm({
 
             {/* Curso */}
             <div className="space-y-2">
-              <Label className="text-zinc-600 text-sm font-semibold">Curso</Label>
+              <Label className="text-zinc-600 text-sm font-semibold">Curso  <span className="text-rose-500">*</span></Label>
               <Select
                 onValueChange={(v) => {
                   setValue("cursoId", v);
@@ -143,7 +143,7 @@ export default function DisciplinaForm({
             {/* Campo: Nome */}
             <div className="space-y-2">
               <Label className="text-zinc-600 text-sm font-semibold">
-                Nome
+                Nome <span className="text-rose-500">*</span>
               </Label>
               <Input
                 type="text"
@@ -183,7 +183,7 @@ export default function DisciplinaForm({
             {/* Campo: Carga Horária */}
             <div className="space-y-2">
               <Label className="text-zinc-600 text-sm font-semibold">
-                Carga horária
+                Carga horária  <span className="text-rose-500">*</span>
               </Label>
               <Input
                 type="number"

@@ -7,7 +7,7 @@ export const disciplinaSchema = z.object({
   cargaHoraria: z.coerce.number().min(30, "Mín. 30h").max(200, "Máx. 200h"),
   periodo: z.string().min(1, "Insira o período"),
   cursoId: z.string().min(1, "Curso é obrigatório"),
-  //curso: z.string().min(1, "Insira o curso que a disciplina está incluída"),
+  curso: z.string().min(1, "Insira o curso que a disciplina está incluída"),
 });
 export type DisciplinaSchemaType = z.infer<typeof disciplinaSchema>;
 
