@@ -1,128 +1,139 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
-import { Card, CardContent } from "@/components/ui/card";
+import { courseSchema, CourseSchemaType } from "@/schemas/courseSchema";
+import { addCourse } from "../../actions/course";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { FaArrowLeft } from "react-icons/fa";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Container } from "@/app/dashboard/_components/container";
+import { SectionHeaderCadastro } from "@/app/dashboard/_components/sectionHeaderCadastro";
+import { Header } from "@/app/dashboard/_components/header";
+import { SideBar } from "@/app/dashboard/_components/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 
-const cursoSchema = z.object({
-  nome: z.string().min(1, "Nome é obrigatório"),
-  descricao: z.string().optional(),
-});
+type CursoFormProps = {
+  initialCode?: string;
+  codigoGerado?: string; // Adicionando 'codigoGerado' para aceitar como prop
+};
 
-type CursoSchemaType = z.infer<typeof cursoSchema>;
-
-export default function CadastroCurso() {
+export default function CursoForm({ initialCode = "" }: CursoFormProps) {
   const router = useRouter();
+  const [codigoGerado, setCodigoGerado] = useState(initialCode);
 
   const {
     register,
     handleSubmit,
+    watch,
+    setValue,
     formState: { errors, isSubmitting },
-  } = useForm<CursoSchemaType>({
-    resolver: zodResolver(cursoSchema),
+  } = useForm<CourseSchemaType>({
+    resolver: zodResolver(courseSchema),
+    defaultValues: {
+      codigo: initialCode,
+    },
   });
 
-  const handleBack = () => {
-    router.push("/curso");
-  };
+  const nomeCurso = watch("nome");
 
-  async function onSubmit(data: CursoSchemaType) {
-    console.log("Curso a ser salvo:", data);
-    router.back();
+  useEffect(() => {
+    if (!nomeCurso) return;
+    const prefixo = nomeCurso.slice(0, 3).toUpperCase();
+    setCodigoGerado(prefixo);
+    setValue("codigo", prefixo);
+  }, [nomeCurso, setValue]);
+
+  async function onSubmit(data: CourseSchemaType) {
+    try {
+      await addCourse(data);
+      toast.success("Curso cadastrado com sucesso!");
+      router.refresh();
+      router.back();
+    } catch (error) {
+      console.error(error);
+      toast.error("Erro ao cadastrar curso.");
+    }
   }
 
   return (
-    <main className="bg-[#d9d9d9] min-h-screen p-10 font-['Roboto_Slab']">
-      <div className="flex justify-between items-center mb-10">
-        <h1 className="text-zinc-800 text-3xl font-medium">
-          Cadastro de Curso
-        </h1>
-        <button
-          type="button"
-          onClick={handleBack}
-          className="w-32 h-10 px-6 bg-zinc-800 rounded-2xl inline-flex justify-center items-center gap-2 text-zinc-300 text-base font-medium"
-        >
-          <FaArrowLeft className="w-4 h-3.5" />
-          Voltar
-        </button>
-      </div>
+    <Container>
+      <SectionHeaderCadastro title="Cadastro de Curso" />
 
-      <Card className="bg-[#F3EDED] rounded-2xl max-w-7xl mx-auto">
-        <CardContent className="flex justify-center grid md:grid-cols-2 gap-10 p-10">
-          <div className="space-y-2">
-            <Label className="text-zinc-600 text-sm font-semibold">Código</Label>
-            <Input
-              readOnly
-              value={"CURS0001"}
-              className="p-5 opacity-40 text-sm font-medium bg-neutral-400"
-            />
-          </div>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Card className="bg-[#F3EDED] rounded-2xl max-w-7xl mx-auto">
+          <CardContent className="flex justify-center grid md:grid-cols-2 gap-10 p-10">
+            
+            {/* Contêiner para os campos de Código e Nome */}
+            <div className="space-y-10 flex flex-col w-full">
+              {/* Código */}
+              <div className="space-y-2">
+                <Label className="text-zinc-600 text-sm font-semibold">
+                  Código
+                </Label>
+                <Input
+                  readOnly
+                  value={codigoGerado}
+                  className="p-5 opacity-40 bg-neutral-500 text-sm font-medium"
+                  {...register("codigo")}
+                />
+              </div>
 
-          <FormField
-            label="Descrição"
-            register={register("descricao")}
-            error={errors.descricao?.message}
-            isTextArea
-          />
+              {/* Nome */}
+              <div className="space-y-2">
+                <Label className="text-zinc-600 text-sm font-semibold">
+                  Nome <span className="text-rose-500">*</span>
+                </Label>
+                <Input
+                  type="text"
+                  className="p-5 border-[#ABABAB] text-sm font-medium"
+                  {...register("nome")}
+                />
+                {errors.nome && (
+                  <p className="text-rose-500 text-sm mt-1">
+                    {errors.nome.message}
+                  </p>
+                )}
+              </div>
+            </div>
 
-          <FormField
-            label="Nome"
-            register={register("nome")}
-            error={errors.nome?.message}
-          />
+            {/* Contêiner para o campo Descrição */}
+            <div className="space-y-2 flex flex-col">
+              <Label className="text-zinc-600 text-sm font-semibold">
+                Descrição <span className="text-rose-500">*</span>
+              </Label>
+              <textarea
+                rows={6}
+                className="w-full bg-transparent p-5 border border-[#ABABAB] rounded-md text-sm resize-none"
+                {...register("descricao")}
+              />
+              {errors.descricao && (
+                <p className="text-rose-500 text-sm mt-1">
+                  {errors.descricao.message}
+                </p>
+              )}
+            </div>
 
-          <div className="md:col-span-2 flex justify-center">
-            <button
+          </CardContent>
+
+          {/* Botão de envio */}
+          <div className="flex justify-center p-4">
+            <Button
               type="submit"
-              className="w-32 h-10 px-6 bg-zinc-800 rounded-2xl inline-flex justify-center items-center gap-2 text-base text-zinc-300"
-              onClick={handleSubmit(onSubmit)}
               disabled={isSubmitting}
+              className="w-32 h-10 px-6 bg-zinc-800 rounded-2xl text-zinc-300 text-base font-medium"
             >
               Salvar
-            </button>
+            </Button>
           </div>
-        </CardContent>
-      </Card>
-    </main>
-  );
-}
 
-type FormFieldProps = {
-  label: string;
-  type?: string;
-  register: any;
-  error?: string;
-  isTextArea?: boolean;
-};
-
-function FormField({
-  label,
-  type = "text",
-  register,
-  error,
-  isTextArea = false,
-}: FormFieldProps) {
-  return (
-    <div className="space-y-2 w-full">
-      <Label className="text-zinc-600 text-sm font-semibold">
-        {label} <span className="text-rose-500">*</span>
-      </Label>
-      {isTextArea ? (
-        <textarea
-          {...register}
-          rows={3}
-          className="w-full p-5 border border-[#ABABAB] rounded-md"
-        />
-      ) : (
-        <Input {...register} type={type} className="p-5 border-[#ABABAB]" />
-      )}
-      {error && <p className="text-rose-500 text-sm mt-1">{error}</p>}
-    </div>
+        </Card>
+      </form>
+    </Container>
   );
 }
