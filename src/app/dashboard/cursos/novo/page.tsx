@@ -12,7 +12,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { FaArrowLeft } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
-
+import { SectionHeaderCadastro } from "../../_components/sectionHeaderCadastro";
 export default function CourseForm() {
   const router = useRouter();
   const [codigoGerado, setCodigoGerado] = useState("");
@@ -41,7 +41,7 @@ export default function CourseForm() {
   const onSubmit = async (data: CourseSchemaType) => {
     try {
       await addCourse(data);
-      router.back();  // Redireciona após o cadastro
+      router.back(); // Redireciona após o cadastro
     } catch (error) {
       toast.error("Erro ao cadastrar curso.");
       console.error(error);
@@ -50,20 +50,11 @@ export default function CourseForm() {
 
   return (
     <main className="bg-[#d9d9d9] flex-1 min-h-screen p-10 font-['Roboto_Slab']">
+      <SectionHeaderCadastro
+        title="Cadastro de Curso"
+      />
       {/* Header */}
-      <div className="flex justify-between items-center mb-10">
-        <div className="text-zinc-800 text-3xl font-medium">
-          Cadastro de Curso
-        </div>
-        <button
-          type="button"
-          onClick={() => router.back()}
-          className="w-32 h-10 px-6 bg-zinc-800 rounded-2xl text-zinc-300 text-base font-medium flex items-center gap-2"
-        >
-          <FaArrowLeft className="w-4 h-3.5" />
-          Voltar
-        </button>
-      </div>
+    
 
       <Card className="bg-[#F3EDED] rounded-2xl max-w-7xl mx-auto">
         <CardContent>
@@ -82,7 +73,7 @@ export default function CourseForm() {
                   disabled
                   type="text"
                   value={codigoGerado}
-                  className="p-5 opacity-40 bg-neutral-500 text-sm font-medium rounded-md"
+                  className="p-5 bg-neutral-500 text-white text-sm font-medium rounded-md"
                   {...register("codigo")}
                 />
               </div>
@@ -92,7 +83,7 @@ export default function CourseForm() {
                 </Label>
                 <Input
                   type="text"
-                  className="p-5 bg-transparent text-sm font-medium border border-zinc-500 text-black opacity-40"
+                  className="p-5 bg-white text-sm font-medium border border-zinc-500 text-black"
                   {...register("nome")}
                 />
                 {errors.nome && (
@@ -109,7 +100,7 @@ export default function CourseForm() {
                 Descrição
               </Label>
               <textarea
-                className="outline-none w-full min-h-[185px] border border-zinc-500 bg-transparent p-5 resize-none text-sm text-zinc-600 rounded-md opacity-40"
+                className="outline-none w-full min-h-[185px] border border-zinc-500 bg-white p-5 resize-none text-sm text-zinc-600 rounded-md"
                 {...register("descricao")}
               />
               {errors.descricao && (
