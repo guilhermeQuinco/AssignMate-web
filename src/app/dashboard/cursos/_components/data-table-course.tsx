@@ -57,7 +57,7 @@ import {
 } from "@/components/ui/dialog";
 import { deleteCourse } from "../actions/course";
 interface TableCourseProps {
-  data: Course[];
+  data: { courses: Course[]; initialIndex: number; finalIndex: number };
 }
 
 export default function DataTableCourse({ data }: TableCourseProps) {
@@ -87,7 +87,9 @@ export default function DataTableCourse({ data }: TableCourseProps) {
       accessorKey: "nome",
       header: "Nome",
       meta: { className: "w-[15rem]" },
-      cell: ({ row }) => <span className="line-clamp-2">{row.original.nome}</span>,
+      cell: ({ row }) => (
+        <span className="line-clamp-2">{row.original.nome}</span>
+      ),
     },
     {
       accessorKey: "descricao",
@@ -96,11 +98,7 @@ export default function DataTableCourse({ data }: TableCourseProps) {
       cell: ({ row }) => {
         const user = row.original;
 
-        return (
-          <span className="line-clamp-5">
-            {row.original.descricao}
-          </span>
-        );
+        return <span className="line-clamp-5">{row.original.descricao}</span>;
       },
     },
     {
@@ -143,7 +141,7 @@ export default function DataTableCourse({ data }: TableCourseProps) {
   ];
 
   const table = useReactTable({
-    data,
+    data: data.courses.slice(data.initialIndex, data.finalIndex),
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -170,7 +168,9 @@ export default function DataTableCourse({ data }: TableCourseProps) {
     <Container>
       <SectionHeaderLista
         title="Lista de Curso"
-        searchValue={(table.getColumn("nome")?.getFilterValue() as string) ?? ""}
+        searchValue={
+          (table.getColumn("nome")?.getFilterValue() as string) ?? ""
+        }
         onSearchChange={(value) =>
           table.getColumn("nome")?.setFilterValue(value)
         }
@@ -181,23 +181,22 @@ export default function DataTableCourse({ data }: TableCourseProps) {
         <Table className="min-w-[700px]">
           <TableHeader className="bg-zinc-800 ">
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow
-                key={headerGroup.id}
-                className="uppercase font-medium">
+              <TableRow key={headerGroup.id} className="uppercase font-medium">
                 {headerGroup.headers.map((header) => {
                   return (
                     <TableHead
                       key={header.id}
-                      className={`text-white py-2 px-5 ${(header.column.columnDef.meta as any)?.className ?? ""}`}
+                      className={`text-white py-2 px-5 ${
+                        (header.column.columnDef.meta as any)?.className ?? ""
+                      }`}
                     >
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                     </TableHead>
-
                   );
                 })}
               </TableRow>
@@ -214,7 +213,9 @@ export default function DataTableCourse({ data }: TableCourseProps) {
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
                       key={cell.id}
-                      className={`px-5 ${(cell.column.columnDef.meta as any)?.className ?? ""}`}
+                      className={`px-5 ${
+                        (cell.column.columnDef.meta as any)?.className ?? ""
+                      }`}
                     >
                       {flexRender(
                         cell.column.columnDef.cell,
@@ -237,24 +238,6 @@ export default function DataTableCourse({ data }: TableCourseProps) {
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          <ChevronLeft />
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          <ChevronRight />
-        </Button>
-      </div>
-    </Container >
+    </Container>
   );
 }

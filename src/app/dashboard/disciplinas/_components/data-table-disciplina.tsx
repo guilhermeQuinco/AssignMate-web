@@ -35,13 +35,16 @@ import { Disciplina } from "@/types";
 import { Button } from "@/components/ui/button";
 
 interface TableDisciplinaProps {
-  data: Disciplina[];
+  data: { disciplinas: Disciplina[]; initialIndex: number; finalIndex: number };
 }
 
 export default function DataTableDisciplina({ data }: TableDisciplinaProps) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    []
+  );
+  const [columnVisibility, setColumnVisibility] =
+    React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
   const router = useRouter();
 
@@ -60,7 +63,9 @@ export default function DataTableDisciplina({ data }: TableDisciplinaProps) {
       accessorKey: "descricao",
       header: "Descrição",
       meta: { className: "w-[37rem]" },
-      cell: ({ row }) => <span className="line-clamp-5">{row.original.descricao}</span>,
+      cell: ({ row }) => (
+        <span className="line-clamp-5">{row.original.descricao}</span>
+      ),
     },
     {
       accessorKey: "cargaHoraria",
@@ -76,7 +81,9 @@ export default function DataTableDisciplina({ data }: TableDisciplinaProps) {
       accessorKey: "curso",
       header: "Curso",
       meta: { className: "w-[15rem]" },
-      cell: ({ row }) => <span className="line-clamp-2">{row.original.curso}</span>,
+      cell: ({ row }) => (
+        <span className="line-clamp-2">{row.original.curso}</span>
+      ),
     },
     {
       accessorKey: "actions",
@@ -102,7 +109,7 @@ export default function DataTableDisciplina({ data }: TableDisciplinaProps) {
   ];
 
   const table = useReactTable({
-    data,
+    data: data.disciplinas.slice(data.initialIndex, data.finalIndex),
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -129,7 +136,9 @@ export default function DataTableDisciplina({ data }: TableDisciplinaProps) {
     <Container>
       <SectionHeaderLista
         title="Lista de Disciplinas"
-        searchValue={(table.getColumn("nome")?.getFilterValue() as string) ?? ""}
+        searchValue={
+          (table.getColumn("nome")?.getFilterValue() as string) ?? ""
+        }
         onSearchChange={(value) =>
           table.getColumn("nome")?.setFilterValue(value)
         }
@@ -144,15 +153,16 @@ export default function DataTableDisciplina({ data }: TableDisciplinaProps) {
                 {headerGroup.headers.map((header) => (
                   <TableHead
                     key={header.id}
-                    className={`text-white py-2 px-5 ${(header.column.columnDef.meta as any)?.className ?? ""
-                      }`}
+                    className={`text-white py-2 px-5 ${
+                      (header.column.columnDef.meta as any)?.className ?? ""
+                    }`}
                   >
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                   </TableHead>
                 ))}
               </TableRow>
@@ -169,8 +179,9 @@ export default function DataTableDisciplina({ data }: TableDisciplinaProps) {
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
                       key={cell.id}
-                      className={`px-5 ${(cell.column.columnDef.meta as any)?.className ?? ""
-                        }`}
+                      className={`px-5 ${
+                        (cell.column.columnDef.meta as any)?.className ?? ""
+                      }`}
                     >
                       {flexRender(
                         cell.column.columnDef.cell,
@@ -182,7 +193,10 @@ export default function DataTableDisciplina({ data }: TableDisciplinaProps) {
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
                   Sem resultados
                 </TableCell>
               </TableRow>

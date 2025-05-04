@@ -50,7 +50,7 @@ import { useRouter } from "next/navigation";
 import { Course, Turma } from "@/types";
 
 interface TableTurmaProps {
-  data: Turma[];
+  data: { turmas: Turma[]; initialIndex: number; finalIndex: number };
 }
 
 export default function DataTableTurma({ data }: TableTurmaProps) {
@@ -106,7 +106,7 @@ export default function DataTableTurma({ data }: TableTurmaProps) {
   ];
 
   const table = useReactTable({
-    data,
+    data: data.turmas.slice(data.initialIndex, data.finalIndex),
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -137,7 +137,9 @@ export default function DataTableTurma({ data }: TableTurmaProps) {
     <Container>
       <SectionHeaderLista
         title="Lista de Turmas"
-        searchValue={(table.getColumn("curso")?.getFilterValue() as string) ?? ""}
+        searchValue={
+          (table.getColumn("curso")?.getFilterValue() as string) ?? ""
+        }
         onSearchChange={(value) =>
           table.getColumn("curso")?.setFilterValue(value)
         }
@@ -148,21 +150,16 @@ export default function DataTableTurma({ data }: TableTurmaProps) {
         <Table className="min-w-[700px]">
           <TableHeader className="bg-zinc-800">
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow
-                key={headerGroup.id}
-                className="uppercase font-medium">
+              <TableRow key={headerGroup.id} className="uppercase font-medium">
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead
-                      key={header.id}
-                      className="text-white py-2 px-5"
-                    >
+                    <TableHead key={header.id} className="text-white py-2 px-5">
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                     </TableHead>
                   );
                 })}
@@ -200,24 +197,6 @@ export default function DataTableTurma({ data }: TableTurmaProps) {
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          <ChevronLeft />
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          <ChevronRight />
-        </Button>
-      </div>
-    </Container >
+    </Container>
   );
 }

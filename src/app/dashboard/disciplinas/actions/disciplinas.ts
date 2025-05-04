@@ -12,7 +12,7 @@ export async function getDisciplinas() {
     headers: { Authorization: `Bearer ${token}` },
   });
 
-  return data.data.data;
+  return data.data;
 }
 
 export async function addNewDisciplina(disciplinaData: DisciplinaSchemaType) {

@@ -59,9 +59,10 @@ import {
 import { deleteProfessor } from "../actions/professors";
 import EditProfessor from "../edit/page";
 import { Button } from "@/components/ui/button";
+import { PaginationComponent } from "@/components/pagination-component";
 
 interface TableProfessorProps {
-  data: Professor[];
+  data: { professors: Professor[]; initialIndex: number; finalIndex: number };
 }
 
 export default function DataTableProfessor({ data }: TableProfessorProps) {
@@ -78,7 +79,7 @@ export default function DataTableProfessor({ data }: TableProfessorProps) {
   const onDeleteProfessor = async (id: number) => {
     try {
       await deleteProfessor(id);
-    } catch (error) { }
+    } catch (error) {}
   };
 
   const columns: ColumnDef<Professor, any>[] = [
@@ -91,7 +92,9 @@ export default function DataTableProfessor({ data }: TableProfessorProps) {
       accessorKey: "nomeCompleto",
       header: "Nome",
       meta: { className: "w-[11.8rem]" },
-      cell: ({ row }) => <span className="line-clamp-2">{row.original.nomeCompleto}</span>,
+      cell: ({ row }) => (
+        <span className="line-clamp-2">{row.original.nomeCompleto}</span>
+      ),
     },
     {
       accessorKey: "dataNascimento",
@@ -110,7 +113,9 @@ export default function DataTableProfessor({ data }: TableProfessorProps) {
       accessorKey: "especialidade",
       header: "Especialidade",
       meta: { className: "w-[11.8rem]" },
-      cell: ({ row }) => <span className="line-clamp-2">{row.original.especialidade}</span>,
+      cell: ({ row }) => (
+        <span className="line-clamp-2">{row.original.especialidade}</span>
+      ),
     },
 
     {
@@ -153,7 +158,6 @@ export default function DataTableProfessor({ data }: TableProfessorProps) {
                 </DialogFooter>
               </DialogContent>
             </Dialog>
-
           </div>
         );
       },
@@ -161,19 +165,18 @@ export default function DataTableProfessor({ data }: TableProfessorProps) {
   ];
 
   const table = useReactTable({
-    data,
+    data: data.professors.slice(data.initialIndex, data.finalIndex),
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
     initialState: {
       pagination: {
-        pageSize: 10, // Ajuste esse valor conforme o tamanho do seu header e layout
+        pageSize: 5, // Ajuste esse valor conforme o tamanho do seu header e layout
       },
     },
     state: {
@@ -192,7 +195,9 @@ export default function DataTableProfessor({ data }: TableProfessorProps) {
     <Container>
       <SectionHeaderLista
         title="Lista de Professores"
-        searchValue={(table.getColumn("nomeCompleto")?.getFilterValue() as string) ?? ""}
+        searchValue={
+          (table.getColumn("nomeCompleto")?.getFilterValue() as string) ?? ""
+        }
         onSearchChange={(value) =>
           table.getColumn("nomeCompleto")?.setFilterValue(value)
         }
@@ -208,14 +213,16 @@ export default function DataTableProfessor({ data }: TableProfessorProps) {
                   return (
                     <TableHead
                       key={header.id}
-                      className={`text-white py-2 px-5 ${(header.column.columnDef.meta as any)?.className ?? ""}`}
+                      className={`text-white py-2 px-5 ${
+                        (header.column.columnDef.meta as any)?.className ?? ""
+                      }`}
                     >
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                     </TableHead>
                   );
                 })}
@@ -233,8 +240,9 @@ export default function DataTableProfessor({ data }: TableProfessorProps) {
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
                       key={cell.id}
-                      className={`px-5 ${(cell.column.columnDef.meta as any)?.className ?? ""
-                        }`}
+                      className={`px-5 ${
+                        (cell.column.columnDef.meta as any)?.className ?? ""
+                      }`}
                     >
                       {flexRender(
                         cell.column.columnDef.cell,
@@ -257,25 +265,6 @@ export default function DataTableProfessor({ data }: TableProfessorProps) {
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          <ChevronLeft />
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          <ChevronRight />
-        </Button>
-
-      </div>
-    </Container >
+    </Container>
   );
 }

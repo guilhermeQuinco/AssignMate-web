@@ -13,7 +13,7 @@ export async function getStudents() {
     headers: { Authorization: `Bearer ${token}` },
   });
 
-  return response.data.data;
+  return response.data;
 }
 
 export async function addNewStudent(studentData: StudentSchemaType) {
@@ -23,13 +23,13 @@ export async function addNewStudent(studentData: StudentSchemaType) {
     const response = await api.post(
       "/alunos",
       {
-          matricula: studentData.matricula,
-          nomeCompleto: studentData.nomeCompleto,
-          dataNascimento: studentData.dataNascimento,
-          curso: studentData.curso,
-          email: studentData.email,
-          password: studentData.password,
-        },
+        matricula: studentData.matricula,
+        nomeCompleto: studentData.nomeCompleto,
+        dataNascimento: studentData.dataNascimento,
+        curso: studentData.curso,
+        email: studentData.email,
+        password: studentData.password,
+      },
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -39,7 +39,6 @@ export async function addNewStudent(studentData: StudentSchemaType) {
 
     revalidatePath("/dashboard/usuarios/alunos");
     return response.data;
-
   } catch (error) {
     if (axios.isAxiosError(error)) {
       console.error("Erro na API ao adicionar aluno:", error.response?.data);

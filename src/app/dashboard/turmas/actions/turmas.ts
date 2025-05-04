@@ -11,7 +11,7 @@ export async function getTurmas() {
     headers: { Authorization: `Bearer ${token}` },
   });
 
-  return data.data.data;
+  return data.data;
 }
 
 export async function addNewTurma(turmaData: TurmaSchemaType) {

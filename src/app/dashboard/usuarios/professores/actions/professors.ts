@@ -16,7 +16,7 @@ export async function getProfessors() {
     headers: { Authorization: `Bearer ${token}` },
   });
 
-  return response.data.data;
+  return response.data;
 }
 
 /**
@@ -51,7 +51,10 @@ export async function addNewProfessor(professorData: ProfessorSchemaType) {
   } catch (error) {
     // Log detalhado para erros de API
     if (axios.isAxiosError(error)) {
-      console.error("Erro na API ao adicionar professor:", error.response?.data);
+      console.error(
+        "Erro na API ao adicionar professor:",
+        error.response?.data
+      );
       throw new Error(
         error.response?.data?.message || "Erro ao adicionar professor"
       );

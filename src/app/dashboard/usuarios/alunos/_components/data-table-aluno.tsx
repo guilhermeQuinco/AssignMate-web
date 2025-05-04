@@ -68,7 +68,7 @@ import {
 import { deleteStudent } from "../actions/students";
 
 interface TableAlunoProps {
-  data: Aluno[];
+  data: { students: Aluno[]; initialIndex: number; finalIndex: number };
 }
 
 export default function DataTableAluno({ data }: TableAlunoProps) {
@@ -82,7 +82,7 @@ export default function DataTableAluno({ data }: TableAlunoProps) {
 
   const router = useRouter();
 
-  const handleEdit = async (data: StudentSchemaType) => { };
+  const handleEdit = async (data: StudentSchemaType) => {};
 
   const removeStudent = async (id: number) => {
     await deleteStudent(id);
@@ -98,7 +98,9 @@ export default function DataTableAluno({ data }: TableAlunoProps) {
       accessorKey: "nomeCompleto",
       header: "Nome",
       meta: { className: "w-[14rem]" },
-      cell: ({ row }) => <span className="line-clamp-2">{row.original.nomeCompleto}</span>,
+      cell: ({ row }) => (
+        <span className="line-clamp-2">{row.original.nomeCompleto}</span>
+      ),
     },
     {
       accessorKey: "dataNascimento",
@@ -156,7 +158,7 @@ export default function DataTableAluno({ data }: TableAlunoProps) {
   ];
 
   const table = useReactTable({
-    data,
+    data: data.students.slice(data.initialIndex, data.finalIndex),
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -183,80 +185,74 @@ export default function DataTableAluno({ data }: TableAlunoProps) {
     <Container>
       <SectionHeaderLista
         title="Lista de Alunos"
-        searchValue={(table.getColumn("nomeCompleto")?.getFilterValue() as string) ?? ""}
+        searchValue={
+          (table.getColumn("nomeCompleto")?.getFilterValue() as string) ?? ""
+        }
         onSearchChange={(value) =>
           table.getColumn("nomeCompleto")?.setFilterValue(value)
         }
-        addLink="/dashboard/usuarios/alunos/novo" />
+        addLink="/dashboard/usuarios/alunos/novo"
+      />
 
       {/* Wrapper responsivo com rolagem horizontal se necessário */}
       <div className="bg-white rounded-xl shadow overflow-hidden w-full">
-          <Table className="min-w-[700px]">
-            <TableHeader className="bg-zinc-800">
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id} className="uppercase font-medium">
-                  {headerGroup.headers.map((header) => (
-                    <TableHead
-                      key={header.id}
-                      className={`text-white py-2 px-5 ${(header.column.columnDef.meta as any)?.className ?? ""}`}
-                    >
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
+        <Table className="min-w-[700px]">
+          <TableHeader className="bg-zinc-800">
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id} className="uppercase font-medium">
+                {headerGroup.headers.map((header) => (
+                  <TableHead
+                    key={header.id}
+                    className={`text-white py-2 px-5 ${
+                      (header.column.columnDef.meta as any)?.className ?? ""
+                    }`}
+                  >
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
                           header.column.columnDef.header,
                           header.getContext()
                         )}
-                    </TableHead>
+                  </TableHead>
+                ))}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody className="bg-white text-md text-black">
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                  className="text-md"
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell
+                      key={cell.id}
+                      className={`px-5 ${
+                        (cell.column.columnDef.meta as any)?.className ?? ""
+                      }`}
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
                   ))}
                 </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody className="bg-white text-md text-black">
-              {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow key={row.id} data-state={row.getIsSelected() && "selected"} className="text-md">
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell
-                        key={cell.id}
-                        className={`px-5 ${(cell.column.columnDef.meta as any)?.className ?? ""}`}
-                      >
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={columns.length} className="h-24 text-center">
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
                   Sem resultados
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-      </div>
-
-      {/* Paginação */}
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          <ChevronLeft />
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          <ChevronRight />
-        </Button>
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
       </div>
     </Container>
   );
