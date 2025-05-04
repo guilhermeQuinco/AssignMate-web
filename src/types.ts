@@ -41,4 +41,6 @@ export type Turma = {
   semestre: string;
   turno: string;
   modalidade: string;
+  cursoId: string;
+  curso?: Course;
 };

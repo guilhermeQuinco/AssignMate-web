@@ -1,11 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Course } from "@/types";
 import { TurmaForm } from "./components/turma-form";
 import { getCourses } from "../../cursos/actions/course";
 
 const NovaTurmaPage = () => {
-  const [courses, setCourses] = useState<[]>([]);
+  const [courses, setCourses] = useState<Course[]>([]);
 
   useEffect(() => {
     async function fetchData() {

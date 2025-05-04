@@ -39,30 +39,32 @@ export function TurmaForm({
     resolver: zodResolver(turmaSchema),
   });
 
-  const nomeCurso = watch("curso");
+  const nomeCurso = watch("cursoId");
   const turno = watch("turno");
   const semestre = watch("semestre");
 
   useEffect(() => {
-    if (!nomeCurso) return;  // Verifica se nomeCurso está definido
-
-    const cursoSelecionado = courses?.find((c) => removeAccents(c.nome).toLowerCase() === removeAccents(nomeCurso).toLowerCase());
+    if (!nomeCurso) return;
+  
+    const cursoSelecionado = courses?.find((c) => String(c.id) === nomeCurso);
     if (!cursoSelecionado) return;
-
+  
     if (turno && semestre) {
       const ano = new Date().getFullYear();
       const anoFinal = String(ano).slice(-2);
       const turnoInicial = turno.charAt(0).toUpperCase();
-      const semestreNumero = semestre.endsWith(".1") ? "01" : "02";
+      const semestreNumero = semestre === "01" ? "01" : "02";
+  
       const iniciaisCurso = removeAccents(cursoSelecionado.nome)
         .slice(0, 3)
         .toUpperCase();
-
+  
       const codigo = `${iniciaisCurso}${anoFinal}${turnoInicial}${semestreNumero}`;
       setCodigoGerado(codigo);
       setValue("codigo", codigo);
     }
   }, [nomeCurso, turno, semestre, courses, setValue]);
+  
 
 
   const onSubmit = async (data: TurmaSchemaType) => {
@@ -112,7 +114,7 @@ export function TurmaForm({
               </Label>
               <Select
                 onValueChange={(v) => {
-                  setValue("curso", v);
+                  setValue("cursoId", v);
                 }}
               >
                 <SelectTrigger className="p-5 border-[#ABABAB]">
@@ -124,7 +126,7 @@ export function TurmaForm({
                   ))}
                 </SelectContent>
               </Select>
-              {errors.curso && <p className="text-rose-500 text-sm mt-1">{errors.curso.message}</p>}
+              {errors.cursoId && <p className="text-rose-500 text-sm mt-1">{errors.cursoId.message}</p>}
             </div>
 
             {/* Turno */}
@@ -137,9 +139,9 @@ export function TurmaForm({
                   <SelectValue placeholder="Selecione o turno" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="MANHA">MANHÃ</SelectItem>
-                  <SelectItem value="TARDE">TARDE</SelectItem>
-                  <SelectItem value="NOITE">NOITE</SelectItem>
+                  <SelectItem value="MATUTINO">MATUTINO</SelectItem>
+                  <SelectItem value="VESPERTINO">VESPERTINO</SelectItem>
+                  <SelectItem value="NOTURNO">NOTURNO</SelectItem>
                 </SelectContent>
               </Select>
               {errors.turno && (
