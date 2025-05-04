@@ -15,6 +15,8 @@ import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@
 import { studentSchema, StudentSchemaType } from "@/schemas/studentSchema";
 import { addNewStudent } from "../../actions/students";
 import { getCourses } from "@/app/dashboard/cursos/actions/course";
+import { SectionHeaderCadastro } from "@/app/dashboard/_components/sectionHeaderCadastro";
+import { Container } from "@/app/dashboard/_components/container";
 //import { Select } from "@radix-ui/react-select";
 
 // Gera matrícula com prefixo e número com 4 dígitos
@@ -100,21 +102,10 @@ export default function StudentForm({ lastRegistration }: StudentFormProps) {
   }
 
   return (
-    <main className="bg-[#d9d9d9] min-h-screen p-10 font-['Roboto_Slab']">
-      <div className="flex justify-between items-center mb-10">
-        <h1 className="text-zinc-800 text-3xl font-medium">
-          Cadastro de Aluno
-        </h1>
-        <button
-          type="button"
-          onClick={() => router.back()}
-          className="w-32 h-10 px-6 bg-zinc-800 rounded-2xl flex items-center justify-center gap-2 text-zinc-300"
-        >
-          <FaArrowLeft className="w-4 h-3.5" />
-          Voltar
-        </button>
-      </div>
-
+    <Container>
+      <SectionHeaderCadastro
+        title="Cadastro de Aluno"
+      />
       <form onSubmit={handleSubmit(onSubmit)}>
         <Card className="bg-[#F3EDED] rounded-2xl max-w-7xl mx-auto">
           <CardContent className="grid md:grid-cols-2 gap-10 p-10">
@@ -237,6 +228,6 @@ export default function StudentForm({ lastRegistration }: StudentFormProps) {
           </CardContent>
         </Card>
       </form>
-    </main>
+    </Container>
   );
 }

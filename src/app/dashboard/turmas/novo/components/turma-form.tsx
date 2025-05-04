@@ -15,6 +15,8 @@ import { FaArrowLeft } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { Course } from "@/types";
 import removeAccents from "remove-accents";
+import { Container } from "@/app/dashboard/_components/container";
+import { SectionHeaderCadastro } from "@/app/dashboard/_components/sectionHeaderCadastro";
 
 type TurmaFormProps = {
   courses: Course[];
@@ -76,21 +78,11 @@ export function TurmaForm({
   };
 
   return (
-    <main className="bg-[#d9d9d9] flex-1 min-h-screen p-10 font-['Roboto_Slab']">
+    <Container>
+      <SectionHeaderCadastro
+        title="Cadastro de Turma"
+      />
       {/* Header */}
-      <div className="flex justify-between items-center mb-10">
-        <div className="text-zinc-800 text-3xl font-medium">
-          Cadastro de Turma
-        </div>
-        <Button
-          type="button"
-          onClick={() => router.back()}
-          className="w-32 h-10 px-6 bg-zinc-800 rounded-2xl text-zinc-300 text-base font-medium flex items-center gap-2"
-        >
-          <FaArrowLeft className="w-4 h-3.5" />
-          Voltar
-        </Button>
-      </div>
 
       <Card className="bg-[#F3EDED] rounded-2xl max-w-7xl mx-auto">
         <CardContent>
@@ -213,6 +205,6 @@ export function TurmaForm({
           </form>
         </CardContent>
       </Card>
-    </main>
+    </Container>
   );
 }

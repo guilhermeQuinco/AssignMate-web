@@ -17,6 +17,8 @@ import { Label } from "@/components/ui/label";
 import { FaArrowLeft } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { Course } from "@/types";
+import { SectionHeaderCadastro } from "@/app/dashboard/_components/sectionHeaderCadastro";
+import { Container } from "@/app/dashboard/_components/container";
 
 const schema = disciplinaSchema;
 
@@ -83,21 +85,11 @@ export default function DisciplinaForm({
   }
 
   return (
-    <main className="bg-[#d9d9d9] flex-1 min-h-screen p-10 font-['Roboto_Slab']">
+    <Container>
       {/* Header */}
-      <div className="flex justify-between items-center mb-10">
-        <div className="text-zinc-800 text-3xl font-medium">
-          Cadastro de Disciplina
-        </div>
-        <Button
-          type="button"
-          onClick={() => router.back()}
-          className="w-32 h-10 px-6 bg-zinc-800 rounded-2xl text-zinc-300 text-base font-medium flex items-center gap-2"
-        >
-          <FaArrowLeft className="w-4 h-3.5" />
-          Voltar
-        </Button>
-      </div>
+      <SectionHeaderCadastro
+        title="Cadastro de Disciplina"
+      />
 
       <Card className="bg-[#F3EDED] rounded-2xl max-w-7xl mx-auto">
         <CardContent>
@@ -132,7 +124,7 @@ export default function DisciplinaForm({
                   <SelectValue placeholder="Selecione o curso" />
                 </SelectTrigger>
                 <SelectContent>
-                {courses.map((curso) => (
+                  {courses.map((curso) => (
                     <SelectItem key={curso.id} value={String(curso.id)}>{curso.nome}</SelectItem>
                   ))}
                 </SelectContent>
@@ -225,7 +217,7 @@ export default function DisciplinaForm({
           </form>
         </CardContent>
       </Card>
-    </main>
+    </Container>
   );
 }
 
