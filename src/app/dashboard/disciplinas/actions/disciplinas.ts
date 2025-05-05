@@ -38,7 +38,6 @@ export async function addNewDisciplina(disciplinaData: DisciplinaSchemaType) {
         cargaHoraria: Number(disciplinaData.cargaHoraria),
         periodo: disciplinaData.periodo,
         cursoId: disciplinaData.cursoId,
-        curso: disciplinaData.curso,
       },
       { headers: { Authorization: `Bearer ${token}` } }
     );

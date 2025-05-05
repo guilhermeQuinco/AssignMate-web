@@ -23,7 +23,7 @@ import { Container } from "@/app/dashboard/_components/container";
 const schema = disciplinaSchema;
 
 function generateRegistration(prefix: string, number: number): string {
-  return prefix + number.toString().padStart(4, "0");
+  return prefix + number.toString().padStart(3, "0");
 }
 
 type DisciplinaFormProps = {
@@ -71,7 +71,7 @@ export default function DisciplinaForm({
     setValue("codigo", novoCodigo);
   }, [cursoId, lastRegistration, courses, setValue]);
 
-  async function onSubmit(data: DisciplinaSchemaType) {
+  const onSubmit = async (data: DisciplinaSchemaType) => {
     console.log(data);
     try {
       await addNewDisciplina(data);
@@ -98,7 +98,7 @@ export default function DisciplinaForm({
             onSubmit={handleSubmit(onSubmit)}
             className="grid md:grid-cols-2 gap-10 p-10"
           >
-            <div className="space-y-2">
+          <div className="space-y-2">
               <Label className="text-zinc-600 text-sm font-semibold">
                 Código
               </Label>
@@ -116,8 +116,9 @@ export default function DisciplinaForm({
             <div className="space-y-2">
               <Label className="text-zinc-600 text-sm font-semibold">Curso  <span className="text-rose-500">*</span></Label>
               <Select
+              value={cursoId}
                 onValueChange={(v) => {
-                  setValue("cursoId", v);
+                  setValue("cursoId", v, { shouldValidate: true });
                 }}
               >
                 <SelectTrigger className="p-5 border-[#ABABAB]">
@@ -200,15 +201,15 @@ export default function DisciplinaForm({
                 type="text"
                 className="p-5 opacity-40 bg-neutral-500 text-sm font-medium placeholder:"
                 placeholder="Definido pelo professor"
-                value={"Definido pelo professor"}
+                value="Definido pelo professor"
                 {...register("descricao")}
               />
             </div>
 
-            {/* Botão de Envio */}
             <div className="md:col-span-2 flex justify-center">
               <Button
                 type="submit"
+                onClick={() => console.log("Botão clicado")}
                 className="w-32 h-10 px-6 bg-zinc-800 rounded-2xl text-zinc-300 text-base font-medium"
               >
                 Salvar

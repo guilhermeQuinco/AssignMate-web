@@ -78,11 +78,11 @@ export default function DataTableDisciplina({ data }: TableDisciplinaProps) {
       meta: { className: "w-[6.25rem]" },
     },
     {
-      accessorKey: "curso",
+      accessorKey: "cursoId",
       header: "Curso",
       meta: { className: "w-[15rem]" },
       cell: ({ row }) => (
-        <span className="line-clamp-2">{row.original.curso}</span>
+        <span className="line-clamp-2">{row.original.curso?.nome}</span>
       ),
     },
     {

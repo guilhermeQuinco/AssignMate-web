@@ -29,7 +29,7 @@ const NovaDisciplinaPage = () => {
           .filter((n: number) => !isNaN(n));
 
         const maxNumber = codigosFiltrados.length ? Math.max(...codigosFiltrados) : 0;
-        const lastCodigo = `${prefixoMaisRecente}${String(maxNumber).padStart(4, "0")}`;
+        const lastCodigo = `${prefixoMaisRecente}${String(maxNumber).padStart(3, "0")}`;
         setLastRegistration(lastCodigo);
       } catch (error) {
         console.error("Erro ao carregar dados iniciais:", error);

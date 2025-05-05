@@ -29,10 +29,10 @@ export type Disciplina = {
   codigo: string;
   nome: string;
   descricao: string;
-  cargaHoraria: string;
+  cargaHoraria: number;
   periodo: string;
   cursoId: string;
-  curso: string;
+  curso?: Course;
 };
 
 export type Turma = {
