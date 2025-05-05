@@ -20,7 +20,7 @@ const Turmas = async (props: {
   const searchParams = await props.searchParams;
 
   const page = Number(searchParams.page) || 1;
-  const limit = Number(searchParams.limit) || 5;
+  const limit = Number(searchParams.limit) || 10;
 
   const lastPage = Math.ceil(turmas.total / limit);
 
