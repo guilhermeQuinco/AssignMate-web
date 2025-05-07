@@ -43,4 +43,5 @@ export type Turma = {
   modalidade: string;
   cursoId: string;
   curso?: Course;
+  disciplinas?: Disciplina;
 };
