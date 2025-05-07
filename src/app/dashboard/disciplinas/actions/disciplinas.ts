@@ -4,7 +4,6 @@ import { api } from "@/lib/axios";
 import { DisciplinaSchemaType } from "@/schemas/disciplinaSchema";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
-import axios from "axios";
 
 export async function getDisciplinas() {
   const token = (await cookies()).get("token")?.value;

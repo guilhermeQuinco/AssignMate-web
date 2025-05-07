@@ -10,6 +10,7 @@ export function middleware(request: NextRequest) {
     "/dashboard/usuarios",
     "/dashboard/turmas",
     "/dashboard/cursos",
+    "/dashboard/disciplinas",
   ];
 
   const publicRoutes = ["/login", "/"];

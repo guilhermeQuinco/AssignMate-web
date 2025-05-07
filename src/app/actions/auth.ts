@@ -24,7 +24,7 @@ export async function signIn(formData: LoginUserSchema) {
       path: "/",
     });
 
-    redirect("/dashboard");
+    return response.data;
   } catch (error) {
     return error;
   }

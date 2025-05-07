@@ -36,8 +36,13 @@ const login = () => {
   const onSubmit = async (formData: LoginUserSchema) => {
     const response = await signIn(formData);
 
-    console.log(response);
-    redirect("/dashboard");
+    if (response.email === "prof@escola.com") {
+      redirect("/portal-professor/turmas");
+    } else {
+      if (response.email === "admin@escola.com") {
+        redirect("dashboard");
+      }
+    }
   };
 
   return (

@@ -20,9 +20,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Label } from "@radix-ui/react-label";
+import { usePathname } from "next/navigation";
 
 export function Header() {
   const [currentDate, setCurrentDate] = useState("");
+
+  const pathname = usePathname();
 
   useEffect(() => {
     const date = new Date();
@@ -46,12 +49,16 @@ export function Header() {
         {currentDate}
       </div>
       <div className="flex items-center space-x-2">
-      
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-full font-robotoSlab">
               <User className="w-6 h-6 text-zinc-800" />
-              <span className="text-zinc-800 font-medium ">Administrador</span>
+              <span className="text-zinc-800 font-medium ">
+                {" "}
+                {pathname.includes("/portal-professor")
+                  ? "Professor"
+                  : "Administrador"}
+              </span>
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56 font-robotoSlab">
