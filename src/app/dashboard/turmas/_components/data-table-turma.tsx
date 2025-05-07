@@ -72,6 +72,10 @@ export default function DataTableTurma({ data }: TableTurmaProps) {
     {
       accessorKey: "curso",
       header: "Curso",
+
+      cell: ({ row }) => {
+        return <span>{row.original.curso?.nome}</span>;
+      },
     },
     {
       accessorKey: "semestre",
