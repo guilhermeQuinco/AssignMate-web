@@ -47,8 +47,10 @@ export async function addNewDisciplina(disciplinaData: DisciplinaSchemaType) {
     // 2) Log do corpo de resposta de erro
     if (error.response) {
       console.error("Erro do servidor (body):", error.response.data);
+      console.error("Erro do servidor (status):", error.response.status);
+      console.error("Erro do servidor (data):", error.response.data);
     }
     console.error("Erro em addNewDisciplina:", error);
-    throw error;
+    throw error;    
   }
 }
