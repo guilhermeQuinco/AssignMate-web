@@ -37,7 +37,7 @@ const login = () => {
     const response = await signIn(formData);
 
     if (response.email === "prof@escola.com") {
-      redirect("/portal-professor/turmas");
+      redirect("/portal-professor");
     } else {
       if (response.email === "admin@escola.com") {
         redirect("dashboard");

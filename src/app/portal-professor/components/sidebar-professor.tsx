@@ -66,9 +66,9 @@ export function SideBarProfessor() {
             <SidebarMenuButton
               size="lg"
               asChild
-              className="hover:bg-zinc-700 flex flex-row gap-3 py-20"
+              className="hover:bg-zinc-2700 flex flex-row gap-3 py-20"
             >
-              <Link href="/">
+              <Link href="/portal-professor">
                 <Image
                   src="/logo.png"
                   alt="Logo Assignmate"
@@ -77,7 +77,7 @@ export function SideBarProfessor() {
                   priority
                 />
               </Link>
-            </SidebarMenuButton>
+            </SidebarMenuButton>""
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
@@ -87,11 +87,12 @@ export function SideBarProfessor() {
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton
-                className="hover:bg-[#244e7c] hover:text-white text-lg"
-                isActive={pathname.includes("turmas")}
+                className={`text-lg hover:bg-[#244e7c] hover:text-white ${
+                  pathname.includes("turmas") ? "bg-[#244e7c] text-white" : ""
+                }`}
                 asChild
               >
-                <Link href={"/dashboard/turmas"}>Turma</Link>
+                <Link href={"/portal-professor/turmas"}>Turma</Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>

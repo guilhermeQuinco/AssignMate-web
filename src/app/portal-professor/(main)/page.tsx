@@ -1,10 +1,24 @@
-import { Container } from "@/app/dashboard/_components/container";
 import React from "react";
+import Image from "next/image";
+import bemvindo from "../../../../public/bg_bemvindo.png";
+import { Container } from "../../dashboard/_components/container";
 
-const PortalProfessorMain = () => {
+const PortalProfessorMain = async () => {
   return (
-    <div className="w-full overflow-hidden">
-      <Container>Portal Porfessor</Container>
+    <div className=" flex justify-center bg-[#d9d9d9] h-screen relative">
+      <Container>
+        <h1 className="text-center text-[2rem] sm:text-[3rem] md:text-[4rem] lg:text-[5rem] font-robotoSlab  text-[#1D3E62]">
+          Bem-vindo
+        </h1>
+
+        <Image
+          src={bemvindo}
+          alt="bemvindo"
+          fill
+          priority
+          className="absolute bottom-0"
+        />
+      </Container>
     </div>
   );
 };
