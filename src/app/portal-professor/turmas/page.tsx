@@ -20,7 +20,7 @@ const TurmasProfessor = async () => {
   }, {});
 
   return (
-    <main className="bg-[#d9d9d9] min-h-screen py-10">
+    <main className="bg-[#d9d9d9] min-h-screen">
       <Container>
         <SectionHeaderProfessor title="Turmas" />
 

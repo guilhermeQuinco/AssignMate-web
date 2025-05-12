@@ -22,7 +22,7 @@ export function SectionHeaderProfessor({
       <Button
         type="button"
         onClick={() => router.back()}
-        className="w-32 h-10 px-6 bg-[#1D3E62] rounded-2xl text-zinc-300 text-base font-medium flex items-center gap-2"
+        className="w-32 h-10 px-6 bg-[#1D3E62] rounded-2xl text-zinc-300 text-base font-medium flex items-center gap-2 hover:bg-[#1D3E62]"
       >
         <FaArrowLeft className="w-4 h-3.5" />
         {addLabel}

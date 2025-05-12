@@ -107,7 +107,7 @@ export function SideBarProfessor() {
                 }`}
                 asChild
               >
-                <Link href={"/portal-professor/turmas"}>Quadro de Horários</Link>
+                <Link href={"/portal-professor/quadro"}>Quadro de Horários</Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
