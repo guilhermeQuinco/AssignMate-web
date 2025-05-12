@@ -77,7 +77,7 @@ export function SideBarProfessor() {
                   priority
                 />
               </Link>
-            </SidebarMenuButton>""
+            </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
@@ -93,6 +93,21 @@ export function SideBarProfessor() {
                 asChild
               >
                 <Link href={"/portal-professor/turmas"}>Turma</Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                className={`text-lg hover:bg-[#244e7c] hover:text-white ${
+                  pathname.includes("quadro-de-horarios") ? "bg-[#244e7c] text-white" : ""
+                }`}
+                asChild
+              >
+                <Link href={"/portal-professor/turmas"}>Quadro de Horários</Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
