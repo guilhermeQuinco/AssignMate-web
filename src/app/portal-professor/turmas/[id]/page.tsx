@@ -3,6 +3,7 @@ import { Container } from "@/app/dashboard/_components/container";
 import { SectionHeaderProfessor } from "@/app/portal-professor/components/sectionHeaderProfessor";
 import { ListChecks, CalendarDays } from "lucide-react";
 import Link from "next/link";
+import { ChevronDown } from "lucide-react";
 
 type Params = Promise<{
   id: string;
@@ -26,7 +27,7 @@ const DetalhesTurma = async (props: { params: Params }) => {
             </p>
             <p>
               <strong>TURMA:</strong>{" "}
-              <span className="text-gray-600">2</span>
+              <span className="text-gray-600">02</span>
             </p>
             <p>
               <strong>CURSO:</strong>{" "}
@@ -49,7 +50,7 @@ const DetalhesTurma = async (props: { params: Params }) => {
             </p>
             <p>
               <strong>PERÍODO:</strong>{" "}
-              <span className="text-gray-600">4°</span>
+              <span className="text-gray-600">1°</span>
             </p>
           </div>
         </div>
@@ -57,14 +58,32 @@ const DetalhesTurma = async (props: { params: Params }) => {
         {/* Bloco 2: Status e Conteúdo da Aula */}
         <div className="w-3/4 mx-auto mt-10 border border-[#1d3e62] rounded-md px-8 py-6  bg-[#d9d9d9] text-[#0f172a] flex flex-wrap justify-between gap-y-4">
           <div className="space-y-2 w-full sm:w-[45%]">
-            <p><strong>STATUS:</strong></p>
+            <p><strong>STATUS:</strong>{" "}
+              <select
+                id="status"
+                name="status"
+                className="px-1 py-1 rounded-xl bg-[#d9d9d9] border border-[#ABABAB] text-[#0f172a] text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[#a3a3a3] transition"
+                defaultValue=""
+              >
+                <option value="" disabled>Aula pendente</option>
+                <option value="realizada">Aula realizada</option>
+                <option value="cancelada">Aula cancelada</option>
+              </select>
+            </p>
+
             <p>
               <strong>DATA:</strong>{" "}
-              <span className="text-gray-600">01/01/2025</span>
+              <input
+                type="date"
+                id="data"
+                name="data"
+                className="px-1 py-1 rounded-xl bg-[#d9d9d9] border border-[#ABABAB] text-[#0f172a] text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[#a3a3a3] transition"
+                defaultValue="2025-01-01"
+              />
             </p>
             <p>
               <strong>CARGA HORÁRIA:</strong>{" "}
-              <span className="text-gray-600">4</span>
+              <span className="text-gray-600">66</span>
             </p>
           </div>
 
@@ -78,6 +97,7 @@ const DetalhesTurma = async (props: { params: Params }) => {
 
         {/* Botões */}
         <div className="flex justify-center gap-10 mt-10">
+          <Link href="./gerenciamento">
           <button className="bg-green-400 hover:bg-green-500 text-black font-semibold p-4 rounded-xl shadow-md transition-colors duration-200 border-2 border-transparent hover:border-black">
 
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -88,6 +108,7 @@ const DetalhesTurma = async (props: { params: Params }) => {
               <path d="M13 16L18 16" stroke="black" strokeWidth="1.5" strokeLinecap="round" />
             </svg>
           </button>
+          </Link>
 
 
 
