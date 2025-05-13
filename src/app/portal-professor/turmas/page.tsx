@@ -41,9 +41,9 @@ const TurmasProfessor = async () => {
                     <div className="w-[250px] bg-[#1D3E624D] hover:bg-[#1D3E6270] transition-colors p-5 rounded-2xl shadow-sm flex flex-col gap-3">
                       <h1 className="font-semibold text-sm text-[#0f172a]">{item.codigo}</h1>
                       <p className="text-[#0f172a] text-sm">{item.disciplinas?.nome}</p>
-                      
+                      <p className="text-[#0f172a] text-sm">Lógica de Programação</p>
                       <p className="text-sm text-[#64748B]">
-                        {item.semestre}° Período - 2025
+                        {/* {item.semestre}° Período - 2025 */} 1° Período - 2025
                       </p>
                     </div>
                   </Link>
