@@ -7,11 +7,12 @@ import localFont from "next/font/local";
 import { ThemeProvider } from "@/components/theme-provider";
 
 import { Roboto_Slab } from "next/font/google";
+import { UserProvider } from "@/context/UserContext";
 
 export const robotoSlab = Roboto_Slab({
-  subsets: ['latin'],
-  variable: '--font-roboto-slab',
-  display: 'swap',
+  subsets: ["latin"],
+  variable: "--font-roboto-slab",
+  display: "swap",
 });
 
 const centurygothic = localFont({
@@ -44,15 +45,17 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${centurygothic.variable} ${robotoSlab.variable} antialiased`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <Toaster position="top-right" />
-          {children}
-        </ThemeProvider>
+        <UserProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="light"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Toaster position="top-right" />
+            {children}
+          </ThemeProvider>
+        </UserProvider>
       </body>
     </html>
   );
