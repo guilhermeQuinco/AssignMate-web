@@ -13,3 +13,15 @@ export async function getProfessorTurmas() {
 
   return data.data.data;
 }
+
+export async function getSingleTurma(id: string) {
+  const token = (await cookies()).get("token")?.value;
+
+  const response = await api.get(`/turmas/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data;
+}

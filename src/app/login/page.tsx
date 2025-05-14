@@ -16,6 +16,7 @@ import { z } from "zod";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 import { signIn } from "../actions/auth";
 import { redirect } from "next/navigation";
+import { useUserContext } from "@/context/UserContext";
 
 export type LoginUserSchema = z.infer<typeof loginSchema>;
 
@@ -33,8 +34,12 @@ const login = () => {
     setOnVisible((prev) => !prev);
   };
 
+  const { setUser } = useUserContext();
+
   const onSubmit = async (formData: LoginUserSchema) => {
     const response = await signIn(formData);
+
+    setUser({ id: response.id, name: response.name, email: response.email });
 
     if (response.email === "prof@escola.com") {
       redirect("/portal-professor");
