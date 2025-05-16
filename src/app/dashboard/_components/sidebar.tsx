@@ -162,6 +162,16 @@ export function SideBar() {
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton className="hover:bg-zinc-700 hover:text-white text-lg">
+                <Link href={"/dashboard/periodos-letivos"}>Período Letivo</Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </SidebarGroup>
       </SidebarContent>
       <SidebarRail />
     </Sidebar>
