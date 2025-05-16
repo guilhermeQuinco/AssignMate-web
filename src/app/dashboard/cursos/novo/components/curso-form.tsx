@@ -66,8 +66,8 @@ export default function CursoForm({ initialCode = "" }: CursoFormProps) {
       <SectionHeaderCadastro title="Cadastro de Curso" />
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Card className="bg-[#F3EDED] rounded-2xl max-w-7xl mx-auto">
-          <CardContent className="flex justify-center grid md:grid-cols-2 gap-10 p-10">
+        <Card className="bg-[#F3EDED] rounded-2xl max-w-7xl mx-auto p-10">
+          <CardContent className="flex justify-center grid md:grid-cols-2 gap-10">
             
             {/* Contêiner para os campos de Código e Nome */}
             <div className="space-y-10 flex flex-col w-full">
@@ -122,7 +122,7 @@ export default function CursoForm({ initialCode = "" }: CursoFormProps) {
           </CardContent>
 
           {/* Botão de envio */}
-          <div className="flex justify-center p-4">
+          <div className="flex justify-center pt-10">
             <Button
               type="submit"
               disabled={isSubmitting}

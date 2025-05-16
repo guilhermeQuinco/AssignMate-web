@@ -91,28 +91,28 @@ export default function PeriodoLetivoForm({
     <Container>
       <SectionHeaderCadastro title="Cadastro de Período Letivo" />
 
-      <Card className="bg-[#F3EDED] rounded-2xl max-w-7xl mx-auto">
+      <Card className="bg-[#F3EDED] rounded-2xl max-w-7x1 mx-auto p-10">
         <CardContent>
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="grid gap-10 p-10"
+            className=""
           >
-            <div className="space-y-20">
-              <div className="grid grid-cols-1 md:grid-cols-7 gap-6">
+            <div className="space-y-8">
+              <div className="grid md:grid-cols-7 gap-7">
                 {/* Período Letivo */}
-                <div className="col-span-1">
+                <div className="space-y-2">
                   <Label className="text-zinc-600 text-sm font-semibold">Período Letivo</Label>
                   <Input 
                   readOnly
                   disabled
                   type="text" 
                   value="2025/01"
-                  className="p-5 opacity-40 bg-neutral-500 text-sm font-medium"
+                  className="opacity-40 bg-neutral-500 text-sm font-medium"
                   />
                 </div>
                 
                 {/* Curso */}
-                <div className="col-span-2">
+                <div className="col-span-2 space-y-2">
                   <Label className="text-zinc-600 text-sm font-semibold">Curso <span className="text-rose-500">*</span></Label>
                   <Select onValueChange={(value) => setValue("cursoId", value)}>
                     <SelectTrigger>
@@ -132,7 +132,7 @@ export default function PeriodoLetivoForm({
                 </div>
 
                 {/* Turma */}
-                <div className="col-span-1">
+                <div className="space-y-2">
                   <Label className="text-zinc-600 text-sm font-semibold">Turma <span className="text-rose-500">*</span></Label>
                   <Select onValueChange={(value) => setValue("turma", value)}>
                     <SelectTrigger>
@@ -152,7 +152,7 @@ export default function PeriodoLetivoForm({
                 </div>
 
                 {/* Período */}
-                <div className="col-span-1">
+                <div className="space-y-2">
                   <Label className="text-zinc-600 text-sm font-semibold">Período <span className="text-rose-500">*</span></Label>
                   <Select onValueChange={(value) => setValue("periodo", value)}>
                     <SelectTrigger>
@@ -172,26 +172,26 @@ export default function PeriodoLetivoForm({
                 </div>
 
                 {/* Modalidade */}
-                <div className="col-span-1">
+                <div className="space-y-2">
                   <Label className="text-zinc-600 text-sm font-semibold">Modalidade</Label>
                   <Input 
                   readOnly
                   disabled
                   type="text" 
                   value="Presencial"
-                  className="p-5 opacity-40 bg-neutral-500 text-sm font-medium"
+                  className="opacity-40 bg-neutral-500 text-sm font-medium"
                   />
                 </div>
 
                 {/* Turno */}
-                <div className="col-span-1">
+                <div className="col-span-1 space-y-2">
                   <Label className="text-zinc-600 text-sm font-semibold">Turno</Label>
                   <Input 
                   readOnly
                   disabled
                   type="text"
                   value="Noturno"
-                  className="p-5 opacity-40 bg-neutral-500 text-sm font-medium"
+                  className="opacity-40 bg-neutral-500 text-sm font-medium"
                   />
                 </div>
               </div>

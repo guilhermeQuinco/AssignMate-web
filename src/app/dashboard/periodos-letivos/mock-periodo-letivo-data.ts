@@ -13,6 +13,8 @@ export const mockDisciplinas = [
   { codigo: "SIS001", nome: "Auditoria e Qualidade de Processo" },
   { codigo: "SIS002", nome: "Engenharia de Software I" },
   { codigo: "SIS003", nome: "Legislação e Ética Profissional" },
+  { codigo: "SIS004", nome: "Legislação e Ética Profissional" },
+  { codigo: "SIS005", nome: "Legislação e Ética Profissional" },
 ];
 
 export const mockProfessores = [
