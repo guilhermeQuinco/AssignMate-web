@@ -1,53 +1,44 @@
-/* import React from "react";
-import { cookies } from "next/headers";
+"use client";
+
+import { useSearchParams, useRouter } from "next/navigation";
+import { useMemo, useState } from "react";
+import { mockPeriodoLetivo } from "./mock-periodo-letivo-data";
 import DataTablePeriodoLetivo from "./_components/data-table-periodo-letivo";
-import { getPeriodosLetivos } from "./actions/periodos-letivos";
 import { PaginationComponent } from "@/components/pagination-component";
 
-type Params = Promise<{
-  slug: string;
-}>;
-type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
+export default function PeriodosLetivosPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [search, setSearch] = useState("");
 
-const PeriodosLetivos = async (props: {
-  params: Params;
-  searchParams: SearchParams;
-}) => {
-  const periodosLetivos = await getPeriodosLetivos();
+  const page = Number(searchParams.get("page") ?? 1);
+  const limit = Number(searchParams.get("limit") ?? 8);
 
-  const searchParams = await props.searchParams;
+  const filteredData = useMemo(() => {
+    return mockPeriodoLetivo.filter((item) =>
+      item.curso.nome.toLowerCase().includes(search.toLowerCase())
+    );
+  }, [search]);
 
-  const page = Number(searchParams.page) || 1;
-  const limit = Number(searchParams.limit) || 10;
+  const total = filteredData.length;
+  const lastPage = Math.ceil(total / limit);
+  const currentPage = Math.min(Math.max(page, 1), lastPage);
+  const startIndex = (currentPage - 1) * limit;
+  const endIndex = startIndex + limit;
+  const paginatedData = filteredData.slice(startIndex, endIndex);
 
-  const lastPage = Math.ceil(periodosLetivos.total / limit);
-
-  let currentPage = +page || 1;
-
-  if (currentPage < 1) currentPage = 1;
-  if (currentPage > lastPage) currentPage = lastPage;
-
-  const initialIndex = limit * (currentPage - 1);
-  const finalIndex = limit * currentPage + 1;
-
-  const data = {
-    periodosLetivos: periodosLetivos.data,
-    initialIndex,
-    finalIndex,
+  const handleSearchChange = (value: string) => {
+    setSearch(value);
   };
-
   return (
     <main className="bg-[#d9d9d9] min-h-screen">
-      <DataTablePeriodosLetivos data={data} />
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <PaginationComponent
-          totalItems={periodosLetivos.total}
-          page={page}
-          limit={limit}
-        />
-      </div>
-    </main>
-  );
-};
-
-export default PeriodosLetivos;*/
+      <DataTablePeriodoLetivo
+        data={paginatedData}
+        searchValue={search}
+        onSearchChange={handleSearchChange} />
+              <div className="flex items-center justify-end space-x-2 py-4 pr-10">
+        <PaginationComponent totalItems={total} page={currentPage} limit={limit} />
+        </div>
+        </main>
+  )
+}
