@@ -1,7 +1,10 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
+
+
 
 interface SectionHeaderProps {
     title: string;
@@ -15,6 +18,8 @@ export function SectionHeaderDetalhes({
     onSave,
 }: SectionHeaderProps) {
     const router = useRouter();
+    const pathname = usePathname();
+
 
     return (
         <div className="w-3/4 mx-auto mt-10 border border-[#1d3e62] rounded-md px-6 py-6 bg-[#d9d9d9] text-[#0f172a] flex flex-col sm:flex-row justify-between">
@@ -53,12 +58,26 @@ export function SectionHeaderDetalhes({
             </div>
 
             {/* space-y-1 w-full sm:w-[48%] flex justify-cente items-center */}
-            <div className="w-full sm:w-[20%] flex items-center justify-center">
+            <div className="w-full sm:w-[20%] flex items-center justify-center flex-col gap-5">
+                { pathname.includes("/portal-professor/turmas/frequencia") ? 
+                        <p>
+                            <strong>DATA:</strong>{" "}
+                            <input
+                                type="date"
+                                id="data"
+                                name="data"
+                                className="px-1 py-1 rounded-xl bg-[#d9d9d9] border border-[#ABABAB] text-[#0f172a] text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[#a3a3a3] transition"
+                                defaultValue="2025-01-01"
+                            />
+                        </p> : 
+                        null
+                }
                 <p>
                     <Button onClick={onSave} className="bg-[#20AB51] hover:bg-green-700  text-white px-4 py-1 rounded-full font-semibold text-sm ">
                         Concluido
                     </Button>
                 </p>
+
             </div>
         </div>
     );
