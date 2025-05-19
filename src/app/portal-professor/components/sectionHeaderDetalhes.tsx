@@ -1,17 +1,18 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { FaArrowLeft } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 
 interface SectionHeaderProps {
     title: string;
     addLabel?: string;
+    onSave?: () => void; // nova prop opcional
 }
 
 export function SectionHeaderDetalhes({
     title,
     addLabel = "Voltar",
+    onSave,
 }: SectionHeaderProps) {
     const router = useRouter();
 
@@ -35,7 +36,8 @@ export function SectionHeaderDetalhes({
                     <span className="text-gray-600">Israel</span>
                 </p>
             </div>
-            <div className="space-y-2 w-full sm:w-[48%]">
+
+            <div className="space-y-2 w-full sm:w-[24%]">
                 <p>
                     <strong>CH LANÇADAS:</strong>{" "}
                     <span className="text-red-600 font-semibold">0%</span>
@@ -48,17 +50,16 @@ export function SectionHeaderDetalhes({
                     <strong>PERÍODO:</strong>{" "}
                     <span className="text-gray-600">1°</span>
                 </p>
-
             </div>
-            <div className="space-y-1 w-full sm:w-[48%] flex justify-cente items-center">
+
+            {/* space-y-1 w-full sm:w-[48%] flex justify-cente items-center */}
+            <div className="w-full sm:w-[20%] flex items-center justify-center">
                 <p>
-                    <span className="bg-green-600 text-white px-4 py-1 rounded-full font-semibold text-sm ">
-                        Concluído
-                    </span>
+                    <Button onClick={onSave} className="bg-[#20AB51] hover:bg-green-700  text-white px-4 py-1 rounded-full font-semibold text-sm ">
+                        Concluido
+                    </Button>
                 </p>
             </div>
-
-
         </div>
     );
 }
