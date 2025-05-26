@@ -17,7 +17,7 @@ export default async function Students(props: {
   const searchParams = await props.searchParams;
 
   const page = Number(searchParams.page) || 1;
-  const limit = Number(searchParams.limit) || 10;
+  const limit = Number(searchParams.limit) || 2;
 
   const lastPage = Math.ceil(students.total / limit);
 
@@ -29,15 +29,15 @@ export default async function Students(props: {
   const initialIndex = limit * (currentPage - 1);
   const finalIndex = limit * currentPage + 1;
 
+  const paginatedStudents = students.data.slice(initialIndex, finalIndex);
+
   const data = {
-    students: students.data,
-    initialIndex,
-    finalIndex,
+    students: paginatedStudents,
   };
 
   return (
     <main className="bg-[#d9d9d9] min-h-screen">
-      <DataTableAluno data={data} />
+      <DataTableAluno data={data.students} />
       <div className="flex items-center justify-end space-x-2 py-4">
         <PaginationComponent
           totalItems={students.total}

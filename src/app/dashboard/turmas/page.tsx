@@ -32,15 +32,17 @@ const Turmas = async (props: {
   const initialIndex = limit * (currentPage - 1);
   const finalIndex = limit * currentPage + 1;
 
+  const paginatedTurmas = turmas.data.slice(initialIndex, finalIndex);
+
   const data = {
-    turmas: turmas.data,
-    initialIndex,
-    finalIndex,
+    turmas: paginatedTurmas,
   };
+
+  console.log(paginatedTurmas);
 
   return (
     <main className="bg-[#d9d9d9] min-h-screen">
-      <DataTableTurma data={data} />
+      <DataTableTurma data={data.turmas} />
       <div className="flex items-center justify-end space-x-2 py-4">
         <PaginationComponent
           totalItems={turmas.total}

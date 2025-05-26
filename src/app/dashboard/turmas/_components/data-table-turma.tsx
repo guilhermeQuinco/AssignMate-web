@@ -50,7 +50,7 @@ import { useRouter } from "next/navigation";
 import { Course, Turma } from "@/types";
 
 interface TableTurmaProps {
-  data: { turmas: Turma[]; initialIndex: number; finalIndex: number };
+  data: Turma[];
 }
 
 export default function DataTableTurma({ data }: TableTurmaProps) {
@@ -110,7 +110,7 @@ export default function DataTableTurma({ data }: TableTurmaProps) {
   ];
 
   const table = useReactTable({
-    data: data.turmas.slice(data.initialIndex, data.finalIndex),
+    data: data,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -142,10 +142,10 @@ export default function DataTableTurma({ data }: TableTurmaProps) {
       <SectionHeaderLista
         title="Lista de Turmas"
         searchValue={
-          (table.getColumn("curso")?.getFilterValue() as string) ?? ""
+          (table.getColumn("codigo")?.getFilterValue() as string) ?? ""
         }
         onSearchChange={(value) =>
-          table.getColumn("curso")?.setFilterValue(value)
+          table.getColumn("codigo")?.setFilterValue(value)
         }
         addLink="/dashboard/turmas/novo"
       />

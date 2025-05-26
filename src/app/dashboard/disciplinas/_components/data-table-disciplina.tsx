@@ -35,7 +35,7 @@ import { Disciplina } from "@/types";
 import { Button } from "@/components/ui/button";
 
 interface TableDisciplinaProps {
-  data: { disciplinas: Disciplina[]; initialIndex: number; finalIndex: number };
+  data: Disciplina[];
 }
 
 export default function DataTableDisciplina({ data }: TableDisciplinaProps) {
@@ -109,7 +109,7 @@ export default function DataTableDisciplina({ data }: TableDisciplinaProps) {
   ];
 
   const table = useReactTable({
-    data: data.disciplinas.slice(data.initialIndex, data.finalIndex),
+    data: data,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -203,25 +203,6 @@ export default function DataTableDisciplina({ data }: TableDisciplinaProps) {
             )}
           </TableBody>
         </Table>
-      </div>
-      {/* Paginação */}
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          <ChevronLeft />
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          <ChevronRight />
-        </Button>
       </div>
     </Container>
   );

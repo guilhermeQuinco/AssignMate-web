@@ -30,15 +30,15 @@ const Disciplinas = async (props: {
   const initialIndex = limit * (currentPage - 1);
   const finalIndex = limit * currentPage + 1;
 
+  const paginateDisciplinas = disciplinas.data.slice(initialIndex, finalIndex);
+
   const data = {
-    disciplinas: disciplinas.data,
-    initialIndex,
-    finalIndex,
+    disciplinas: paginateDisciplinas,
   };
 
   return (
     <main className="bg-[#d9d9d9] min-h-screen">
-      <DataTableDisciplina data={data} />
+      <DataTableDisciplina data={data.disciplinas} />
       <div className="flex items-center justify-end space-x-2 py-4">
         <PaginationComponent
           totalItems={disciplinas.total}

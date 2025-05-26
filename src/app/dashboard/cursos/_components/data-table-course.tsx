@@ -57,7 +57,7 @@ import {
 } from "@/components/ui/dialog";
 import { deleteCourse } from "../actions/course";
 interface TableCourseProps {
-  data: { courses: Course[]; initialIndex: number; finalIndex: number };
+  data: Course[];
 }
 
 export default function DataTableCourse({ data }: TableCourseProps) {
@@ -141,7 +141,7 @@ export default function DataTableCourse({ data }: TableCourseProps) {
   ];
 
   const table = useReactTable({
-    data: data.courses.slice(data.initialIndex, data.finalIndex),
+    data: data,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,

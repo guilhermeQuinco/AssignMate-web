@@ -62,7 +62,7 @@ import { Button } from "@/components/ui/button";
 import { PaginationComponent } from "@/components/pagination-component";
 
 interface TableProfessorProps {
-  data: { professors: Professor[]; initialIndex: number; finalIndex: number };
+  data: Professor[];
 }
 
 export default function DataTableProfessor({ data }: TableProfessorProps) {
@@ -165,7 +165,7 @@ export default function DataTableProfessor({ data }: TableProfessorProps) {
   ];
 
   const table = useReactTable({
-    data: data.professors.slice(data.initialIndex, data.finalIndex),
+    data: data,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,

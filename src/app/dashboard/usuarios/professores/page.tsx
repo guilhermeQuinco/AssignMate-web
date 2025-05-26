@@ -29,17 +29,15 @@ export default async function Professors(props: {
   const initialIndex = limit * (currentPage - 1);
   const finalIndex = limit * currentPage + 1;
 
-  const data = {
-    professors: professors.data,
-    initialIndex,
-    finalIndex,
-  };
+  const paginatedProfessors = professors.data.slice(initialIndex, finalIndex);
 
-  console.log(professors.data);
+  const data = {
+    professors: paginatedProfessors,
+  };
 
   return (
     <main className="min-h-screen bg-[#d9d9d9]">
-      <DataTableProfessor data={data} />
+      <DataTableProfessor data={data.professors} />
       <div className="flex items-center justify-end space-x-2 py-4">
         <PaginationComponent
           totalItems={professors.total}

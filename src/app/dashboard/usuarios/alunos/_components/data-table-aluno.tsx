@@ -2,12 +2,6 @@
 
 import * as React from "react";
 
-import { Header } from "@/app/dashboard/_components/header";
-import { SideBar } from "@/app/dashboard/_components/sidebar";
-import { SidebarProvider } from "@/components/ui/sidebar";
-
-import { SectionHeaderLista } from "@/app/dashboard/_components/sectionHeaderLista";
-
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -66,9 +60,11 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { deleteStudent } from "../actions/students";
+import { Input } from "@/components/ui/input";
+import { SectionHeaderLista } from "@/app/dashboard/_components/sectionHeaderLista";
 
 interface TableAlunoProps {
-  data: { students: Aluno[]; initialIndex: number; finalIndex: number };
+  data: Aluno[];
 }
 
 export default function DataTableAluno({ data }: TableAlunoProps) {
@@ -158,7 +154,7 @@ export default function DataTableAluno({ data }: TableAlunoProps) {
   ];
 
   const table = useReactTable({
-    data: data.students.slice(data.initialIndex, data.finalIndex),
+    data,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
