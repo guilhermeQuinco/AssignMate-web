@@ -48,26 +48,29 @@ export function Header() {
 
   return (
     <header
-      className={`sticky top-0 flex h-14 shrink-0 items-center gap-2 border-b z-10 flex-row justify-between px-5 bg-[#d9d9d9] ${
-        pathname.includes("/portal-professor")
-          ? "border-[#1D3E62]"
-          : "border-zinc-800"
-      } `}
+      className={`sticky top-0 flex h-14 shrink-0 items-center gap-2 border-b z-10 flex-row justify-between px-5 bg-[#d9d9d9] ${pathname.includes("/portal-professor")
+        ? "border-[#1D3E62]"
+        : pathname.includes("/portal-aluno")
+        ? "border-[#0076A3]"
+        : "border-zinc-800"
+        } `}
     >
       <div
-        className={`${
-          pathname.includes("/portal-professor")
+        className={`${pathname.includes("/portal-professor")
             ? "text-[#1D3E62]"
-            : "text-zinc-800"
-        } font-medium text-lg tracking-[1px] gap-3 flex items-center font-robotoSlab`}
+            : pathname.includes("/portal-aluno")
+              ? "text-[#0076A3]"
+              : "text-zinc-800"
+          } font-medium text-lg tracking-[1px] gap-3 flex items-center font-robotoSlab`}
       >
         <SidebarTrigger />
         <div
-          className={`${
-            pathname.includes("/portal-professor")
+          className={`${pathname.includes("/portal-professor")
               ? "bg-[#1D3E62]"
-              : "bg-zinc-800"
-          } w-[1px] h-5`}
+              : pathname.includes("/portal-aluno")
+                ? "bg-[#0076A3]"
+                : "bg-zinc-800"
+            } w-[1px] h-5`}
         />
         {currentDate}
       </div>
@@ -78,11 +81,12 @@ export function Header() {
           {pathname.includes("/portal-professor") ? (
             <button className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-full font-robotoSlab">
               <Bell
-                className={`${
-                  pathname.includes("/portal-professor")
+                className={`${pathname.includes("/portal-professor")
                     ? "text-[#1D3E62]"
-                    : "text-zinc-800"
-                } w-6 h-6`}
+                    : pathname.includes("/portal-aluno")
+                      ? "text-[#0076A3]"
+                      : "text-zinc-800"
+                  } w-6 h-6`}
               />
             </button>
           ) : null}
@@ -90,18 +94,20 @@ export function Header() {
           <DropdownMenuTrigger asChild>
             <button className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-full font-robotoSlab">
               <User
-                className={`${
-                  pathname.includes("/portal-professor")
+                className={`${pathname.includes("/portal-professor")
                     ? "text-[#1D3E62]"
-                    : "text-zinc-800"
-                } w-6 h-6`}
+                    : pathname.includes("/portal-aluno")
+                      ? "text-[#0076A3]"
+                      : "text-zinc-800"
+                  } w-6 h-6`}
               />
               <span
-                className={`${
-                  pathname.includes("/portal-professor")
+                className={`${pathname.includes("/portal-professor")
                     ? "text-[#1D3E62]"
-                    : "text-zinc-800"
-                } font-medium`}
+                    : pathname.includes("/portal-aluno")
+                      ? "text-[#0076A3]"
+                      : "text-zinc-800"
+                  } font-medium`}
               >
                 {user?.name}
               </span>
