@@ -31,6 +31,17 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { deleteDisciplina } from "../actions/disciplinas";
 import { Disciplina } from "@/types";
 import { Button } from "@/components/ui/button";
 
@@ -47,6 +58,10 @@ export default function DataTableDisciplina({ data }: TableDisciplinaProps) {
     React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
   const router = useRouter();
+
+  const removeDisciplina = async (id: string) => {
+    await deleteDisciplina(id);
+  };
 
   const columns: ColumnDef<Disciplina, any>[] = [
     {
@@ -99,9 +114,29 @@ export default function DataTableDisciplina({ data }: TableDisciplinaProps) {
             >
               <Edit size={18} />
             </button>
-            <button>
-              <Trash size={18} />
-            </button>
+            <Dialog>
+              <DialogTrigger>
+                <Trash size={18} />
+              </DialogTrigger>
+              <DialogContent className="bg-white">
+                <DialogHeader>
+                  <DialogTitle>Tem certeza disso?</DialogTitle>
+                  <DialogDescription>
+                    Essa ação não pode ser desfeita. Isso deleterá
+                    permanentemente a disciplina {" "}
+                    <span className="font-bold">
+                      {row.original.nome}
+                    </span>
+                  </DialogDescription>
+                </DialogHeader>
+
+                <DialogFooter>
+                  <DialogClose onClick={() => removeDisciplina(row.original.id)}>
+                    Sim
+                  </DialogClose>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           </div>
         );
       },
@@ -153,16 +188,15 @@ export default function DataTableDisciplina({ data }: TableDisciplinaProps) {
                 {headerGroup.headers.map((header) => (
                   <TableHead
                     key={header.id}
-                    className={`text-white py-2 px-5 ${
-                      (header.column.columnDef.meta as any)?.className ?? ""
-                    }`}
+                    className={`text-white py-2 px-5 ${(header.column.columnDef.meta as any)?.className ?? ""
+                      }`}
                   >
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
                   </TableHead>
                 ))}
               </TableRow>
@@ -179,9 +213,8 @@ export default function DataTableDisciplina({ data }: TableDisciplinaProps) {
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
                       key={cell.id}
-                      className={`px-5 ${
-                        (cell.column.columnDef.meta as any)?.className ?? ""
-                      }`}
+                      className={`px-5 ${(cell.column.columnDef.meta as any)?.className ?? ""
+                        }`}
                     >
                       {flexRender(
                         cell.column.columnDef.cell,
