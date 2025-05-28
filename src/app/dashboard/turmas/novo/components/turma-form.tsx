@@ -81,8 +81,8 @@ export function TurmaForm({
       router.refresh();
       router.back();
     } catch (error) {
-      toast.error("Erro ao cadastrar turma.");
-      console.error(error);
+      toast.error("Turma já existente");
+      // console.error(error);
     }
   };
 

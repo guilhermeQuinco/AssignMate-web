@@ -56,8 +56,8 @@ export default function CursoForm({ initialCode = "" }: CursoFormProps) {
       router.refresh();
       router.back();
     } catch (error) {
-      console.error(error);
-      toast.error("Erro ao cadastrar curso.");
+      // console.error(error);
+      toast.error("Curso já existente");
     }
   }
 
