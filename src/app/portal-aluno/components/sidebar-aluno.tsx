@@ -55,7 +55,8 @@ export function SideBarAluno() {
           },
           {
             title: "Desempenho",
-            url: "/portal-aluno/academico/desempenho",
+            url: "/portal-aluno/",
+            // url: "/portal-aluno/academico/desempenho",
             isActive: pathname.includes("/desempenho"),
           },
         ],
@@ -138,7 +139,8 @@ export function SideBarAluno() {
                   }`}
                 asChild
               >
-                <Link href={"/portal-aluno/quadro"}>Quadro de Horários</Link>
+                <Link href={"/portal-aluno/"}>Quadro de Horários</Link>
+                {/* <Link href={"/portal-aluno/quadro"}>Quadro de Horários</Link> */}
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
