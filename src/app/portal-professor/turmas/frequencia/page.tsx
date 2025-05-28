@@ -6,9 +6,9 @@ import { Container } from "@/app/dashboard/_components/container";
 import { SectionHeaderProfessor } from "@/app/portal-professor/components/sectionHeaderProfessor";
 import { SectionHeaderDetalhes } from "@/app/portal-professor/components/sectionHeaderDetalhes";
 
-const initialAlunos = Array.from({ length: 8 }, () => ({
-  matricula: `25A0001`,
-  nome: "George R.R Martin",
+const initialAlunos = Array.from({ length: 20 }, (_, i) => ({
+  matricula: `25A00${i + 1}`,
+  nome: `Aluno ${i + 1}`,
   frequencia1: false,
   frequencia2: false,
   frequencia3: false,
@@ -29,7 +29,7 @@ const TurmasFrequencia = () => {
   };
 
   return (
-    <main className="bg-[#d9d9d9] min-h-screen">
+    <main className="bg-[#d9d9d9] min-h-screen overflow-y-auto">
       <Container>
         <SectionHeaderProfessor title="Frequência da Turma: SIS221N01" />
         <SectionHeaderDetalhes title="" />

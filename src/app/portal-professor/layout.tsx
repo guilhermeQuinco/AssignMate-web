@@ -13,7 +13,7 @@ const LayoutPortalProfessor = ({ children }: PropsWithChildren) => {
           <Header />
           <div>
             <NextTopLoader color="#098dc0" />
-            <main className="flex-1 overflow-y-auto overflow-x-hidden">
+            <main className="h-screen overflow-y-auto overflow-x-hidden">
               {children}
             </main>
           </div>

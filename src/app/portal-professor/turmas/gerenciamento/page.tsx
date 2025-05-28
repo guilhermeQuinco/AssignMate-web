@@ -7,9 +7,9 @@ import { SectionHeaderProfessor } from "@/app/portal-professor/components/sectio
 import { SectionHeaderDetalhes } from "@/app/portal-professor/components/sectionHeaderDetalhes";
 import { Button } from "@/components/ui/button";
 
-const initialAlunos = Array.from({ length: 8 }, (_, i) => ({
-  matricula: `25A0001`,
-  nome: "George R.R Martin",
+const initialAlunos = Array.from({ length: 20 }, (_, i) => ({
+  matricula: `25A00${i + 1}`,
+  nome: `Aluno ${i + 1}`,
   n1: 0,
   n2: 0,
   n3: 0,
