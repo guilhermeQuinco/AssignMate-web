@@ -54,6 +54,7 @@ export default function StudentForm({ lastRegistration }: StudentFormProps) {
     resolver: zodResolver(formSchema),
     defaultValues: {
       matricula: lastRegistration || "",
+      curso: "",
     }
   });
 

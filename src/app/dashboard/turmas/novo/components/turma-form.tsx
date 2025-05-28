@@ -37,6 +37,13 @@ export function TurmaForm({
     formState: { errors, isSubmitting },
   } = useForm<TurmaSchemaType>({
     resolver: zodResolver(turmaSchema),
+    defaultValues: { // <-- Adicionei ou ajustei aqui
+      codigo: "",
+      semestre: "",
+      turno: undefined, // undefined para z.enum inicial
+      cursoId: "",
+      modalidade: undefined, // undefined para z.enum inicial
+    }
   });
 
   const nomeCurso = watch("cursoId");
@@ -45,26 +52,26 @@ export function TurmaForm({
 
   useEffect(() => {
     if (!nomeCurso) return;
-  
+
     const cursoSelecionado = courses?.find((c) => String(c.id) === nomeCurso);
     if (!cursoSelecionado) return;
-  
+
     if (turno && semestre) {
       const ano = new Date().getFullYear();
       const anoFinal = String(ano).slice(-2);
       const turnoInicial = turno.charAt(0).toUpperCase();
       const semestreNumero = semestre === "01" ? "01" : "02";
-  
+
       const iniciaisCurso = removeAccents(cursoSelecionado.nome)
         .slice(0, 3)
         .toUpperCase();
-  
+
       const codigo = `${iniciaisCurso}${anoFinal}${turnoInicial}${semestreNumero}`;
       setCodigoGerado(codigo);
       setValue("codigo", codigo);
     }
   }, [nomeCurso, turno, semestre, courses, setValue]);
-  
+
 
 
   const onSubmit = async (data: TurmaSchemaType) => {

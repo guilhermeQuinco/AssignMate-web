@@ -44,7 +44,12 @@ export default function DisciplinaForm({
     formState: { errors, isSubmitting },
   } = useForm<DisciplinaSchemaType>({
     resolver: zodResolver(schema),
-    defaultValues: { codigo: lastRegistration },
+    defaultValues: {
+      codigo: lastRegistration,
+      cursoId: "",
+      nome: "", 
+      periodo: "",
+    },
   });
 
   const cursoId = watch("cursoId");
@@ -155,7 +160,9 @@ export default function DisciplinaForm({
                   ))}
                 </SelectContent>
               </Select>
-              {errors.periodo && <span>{errors.periodo.message}</span>}
+              {/* {errors.periodo && <span>{errors.periodo.message}</span>} */}
+              {errors.periodo && <p className="text-rose-500 text-sm mt-1">{errors.periodo.message}</p>}
+
             </div>
 
             {/* Carga Horária */}

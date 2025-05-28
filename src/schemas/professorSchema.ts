@@ -3,7 +3,7 @@ import { z } from "zod";
 export const professorSchema = z.object({
   matricula: z.string(), // A matrícula pode ser gerada automaticamente
   nomeCompleto: z.string().min(1, "Insira o nome completo"),
-  dataNascimento: z.coerce.date(),
+  dataNascimento: z.string().min(1, "Insira a data de nascimento"),
   especialidade: z.string().min(1, "Insira uma especialidade"),
   email: z.string().min(1, "Insira o e-mail"),
   password: z.string(),
