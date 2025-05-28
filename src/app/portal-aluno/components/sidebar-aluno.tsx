@@ -55,7 +55,8 @@ export function SideBarAluno() {
           },
           {
             title: "Desempenho",
-            url: "/portal-aluno/academico/desempenho",
+            url: "/portal-aluno/",
+            // url: "/portal-aluno/academico/desempenho",
             isActive: pathname.includes("/desempenho"),
           },
         ],
@@ -73,7 +74,7 @@ export function SideBarAluno() {
               asChild
               className="hover:bg-zinc-2700 flex flex-row gap-3 py-20"
             >
-              <Link href="/">
+              <Link href="/portal-aluno">
                 <Image
                   src="/logo.png"
                   alt="Logo Assignmate"
@@ -140,7 +141,8 @@ export function SideBarAluno() {
                 }`}
                 asChild
               >
-                <Link href={"/portal-aluno/quadro"}>Quadro de Horários</Link>
+                <Link href={"/portal-aluno/"}>Quadro de Horários</Link>
+                {/* <Link href={"/portal-aluno/quadro"}>Quadro de Horários</Link> */}
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>

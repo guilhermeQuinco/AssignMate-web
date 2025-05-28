@@ -49,10 +49,10 @@ export function Header() {
   return (
     <header
       className={`sticky top-0 flex h-14 shrink-0 items-center gap-2 border-b z-10 flex-row justify-between px-5 bg-[#d9d9d9] ${pathname.includes("/portal-professor")
-        ? "border-[#1D3E62]"
-        : pathname.includes("/portal-aluno")
-        ? "border-[#0076A3]"
-        : "border-zinc-800"
+          ? "border-[#1D3E62]"
+          : pathname.includes("/portal-aluno")
+            ? "border-[#0076A3]"
+            : "border-zinc-800"
         } `}
     >
       <div
@@ -78,7 +78,7 @@ export function Header() {
         <DropdownMenu>
           {/* Botão de notificação */}
 
-          {pathname.includes("/portal-professor") ? (
+          {pathname.includes("/portal-professor") || pathname.includes("/portal-aluno") ? (
             <button className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-full font-robotoSlab">
               <Bell
                 className={`${pathname.includes("/portal-professor")
