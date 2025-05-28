@@ -97,7 +97,7 @@ export function SideBar() {
             <SidebarGroup>
               <SidebarGroupLabel
                 asChild
-                className="group/label text-sm text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                className="group/label text-lg text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
               >
                 <CollapsibleTrigger className="text-white text-[1.12rem] py-3 hover:bg-zinc-700 hover:text-white">
                   {item.title}

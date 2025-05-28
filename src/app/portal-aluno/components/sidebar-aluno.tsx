@@ -73,7 +73,7 @@ export function SideBarAluno() {
               asChild
               className="hover:bg-zinc-2700 flex flex-row gap-3 py-20"
             >
-              <Link href="/">
+              <Link href="/portal-aluno">
                 <Image
                   src="/logo.png"
                   alt="Logo Assignmate"
@@ -88,7 +88,6 @@ export function SideBarAluno() {
       </SidebarHeader>
 
       <SidebarContent className="bg-[#0076A3] text-white gap-0 pt-3">
-        
         {data.navMain.map((item) => (
           <Collapsible
             key={item.title}
@@ -103,9 +102,9 @@ export function SideBarAluno() {
             <SidebarGroup>
               <SidebarGroupLabel
                 asChild
-                className="group/label text-lg text-sidebar-foreground hover:bg-[#244e7c]  hover:text-sidebar-accent-foreground"
+                className="group/label text-lg text-sidebar-foreground hover:text-sidebar-accent-foreground"
               >
-                <CollapsibleTrigger className="text-white text-[1.12rem] py-3 hover:bg-[#0076A3] hover:text-white">
+                <CollapsibleTrigger className="text-white text-[1.12rem] py-3 hover:bg-[#244e7c] hover:text-white">
                   {item.title}
                   <ChevronRight className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-90" />
                 </CollapsibleTrigger>
@@ -117,8 +116,8 @@ export function SideBarAluno() {
                       <SidebarMenuItem key={item.title}>
                         <SidebarMenuButton
                           asChild
-                          isActive={item.isActive}
-                          className=""
+                          className={`text-md hover:bg-[#244e7c] hover:text-white ${item.isActive ? "bg-[#244e7c] text-white" : ""
+                            }`}
                         >
                           <a href={item.url}>{item.title}</a>
                         </SidebarMenuButton>
@@ -135,9 +134,8 @@ export function SideBarAluno() {
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton
-                className={`text-lg hover:bg-[#244e7c] hover:text-white ${
-                  pathname.includes("quadro-de-horarios") ? "bg-[#244e7c] text-white" : ""
-                }`}
+                className={`text-lg hover:bg-[#244e7c] hover:text-white ${pathname.includes("quadro-de-horarios") ? "bg-[#244e7c] text-white" : ""
+                  }`}
                 asChild
               >
                 <Link href={"/portal-aluno/quadro"}>Quadro de Horários</Link>
