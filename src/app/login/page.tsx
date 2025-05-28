@@ -46,6 +46,10 @@ const login = () => {
     } else {
       if (response.email === "admin@escola.com") {
         redirect("dashboard");
+      } else {
+        if(response.email === "aluno@escola.com") {
+          redirect("/portal-aluno");
+        }
       }
     }
   };
