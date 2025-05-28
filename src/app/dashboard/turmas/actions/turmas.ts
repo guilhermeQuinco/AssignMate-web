@@ -4,6 +4,7 @@ import { api } from "@/lib/axios";
 import { TurmaSchemaType } from "@/schemas/turmaSchema";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
+import axios from "axios";
 
 export async function getTurmas() {
   const token = (await cookies()).get("token")?.value;
@@ -42,5 +43,29 @@ export async function addNewTurma(turmaData: TurmaSchemaType) {
     };
   } catch (error) {
     return error;
+  }
+}
+
+export async function deleteTurma(id: string) {
+  const token = (await cookies()).get("token")?.value;
+  try {
+    const response = await api.delete(`/turmas/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    revalidatePath("/dashboard/turmas");
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error("Erro na API ao excluir professor:", error.response?.data);
+      throw new Error(
+        error.response?.data?.message || "Erro ao excluir turma"
+      );
+    }
+
+    console.error("Erro desconhecido ao excluir turma:", error);
+    throw new Error("Erro inesperado ao excluir turma");
   }
 }

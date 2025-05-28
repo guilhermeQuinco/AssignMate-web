@@ -4,6 +4,7 @@ import { api } from "@/lib/axios";
 import { DisciplinaSchemaType } from "@/schemas/disciplinaSchema";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
+import axios from "axios";
 
 export async function getDisciplinas() {
   const token = (await cookies()).get("token")?.value;
@@ -52,5 +53,29 @@ export async function addNewDisciplina(disciplinaData: DisciplinaSchemaType) {
     }
     console.error("Erro em addNewDisciplina:", error);
     throw error;    
+  }
+}
+
+export async function deleteDisciplina(id: string) {
+  const token = (await cookies()).get("token")?.value;
+  try {
+    const response = await api.delete(`/disciplinas/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    revalidatePath("/dashboard/usuarios/disciplinas");
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error("Erro na API ao excluir disciplina:", error.response?.data);
+      throw new Error(
+        error.response?.data?.message || "Erro ao excluir disciplina"
+      );
+    }
+
+    console.error("Erro desconhecido ao excluir disciplina:", error);
+    throw new Error("Erro inesperado ao excluir disciplina");
   }
 }

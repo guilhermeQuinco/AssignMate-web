@@ -66,13 +66,13 @@ export async function deleteStudent(id: number) {
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.error("Erro na API ao excluir professor:", error.response?.data);
+      console.error("Erro na API ao excluir aluno:", error.response?.data);
       throw new Error(
-        error.response?.data?.message || "Erro ao excluir professor"
+        error.response?.data?.message || "Erro ao excluir aluno"
       );
     }
 
-    console.error("Erro desconhecido ao excluir professor:", error);
-    throw new Error("Erro inesperado ao excluir professor");
+    console.error("Erro desconhecido ao excluir aluno:", error);
+    throw new Error("Erro inesperado ao excluir aluno");
   }
 }

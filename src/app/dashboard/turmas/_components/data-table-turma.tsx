@@ -5,7 +5,17 @@ import * as React from "react";
 import { Header } from "../../_components/header";
 import { SideBar } from "../../_components/sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
-
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { deleteTurma } from "../actions/turmas";
 import { SectionHeaderLista } from "../../_components/sectionHeaderLista";
 
 import {
@@ -64,6 +74,10 @@ export default function DataTableTurma({ data }: TableTurmaProps) {
 
   const router = useRouter();
 
+  const removeTurma = async (id: string) => {
+    await deleteTurma(id);
+  };
+
   const columns: ColumnDef<Turma>[] = [
     {
       accessorKey: "codigo",
@@ -100,9 +114,29 @@ export default function DataTableTurma({ data }: TableTurmaProps) {
             <button onClick={() => handleUser()}>
               <Edit size={18} />
             </button>
-            <button>
-              <Trash size={18} />
-            </button>
+            <Dialog>
+              <DialogTrigger>
+                <Trash size={18} />
+              </DialogTrigger>
+              <DialogContent className="bg-white">
+                <DialogHeader>
+                  <DialogTitle>Tem certeza disso?</DialogTitle>
+                  <DialogDescription>
+                    Essa ação não pode ser desfeita. Isso deleterá
+                    permanentemente a turma {" "}
+                    <span className="font-bold">
+                      {row.original.codigo}
+                    </span>
+                  </DialogDescription>
+                </DialogHeader>
+
+                <DialogFooter>
+                  <DialogClose onClick={() => removeTurma(row.original.id)}>
+                    Sim
+                  </DialogClose>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
           </div>
         );
       },
@@ -161,9 +195,9 @@ export default function DataTableTurma({ data }: TableTurmaProps) {
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableHead>
                   );
                 })}
